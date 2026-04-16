@@ -1,0 +1,1498 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <title></title>
+  <meta name="Generator" content="Cocoa HTML Writer">
+  <meta name="CocoaVersion" content="2685.4">
+  <style type="text/css">
+    p.p1 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; -webkit-text-stroke: #000000}
+    p.p2 {margin: 0.0px 0.0px 0.0px 0.0px; font: 12.0px Times; -webkit-text-stroke: #000000; min-height: 14.0px}
+    span.s1 {font-kerning: none}
+  </style>
+</head>
+<body>
+<p class="p1"><span class="s1">&lt;!DOCTYPE html&gt;</span></p>
+<p class="p1"><span class="s1">&lt;html lang="en"&gt;</span></p>
+<p class="p1"><span class="s1">&lt;head&gt;</span></p>
+<p class="p1"><span class="s1">&lt;meta charset="UTF-8"&gt;</span></p>
+<p class="p1"><span class="s1">&lt;meta name="viewport" content="width=device-width, initial-scale=1.0"&gt;</span></p>
+<p class="p1"><span class="s1">&lt;title&gt;Tech Pack Builder — René Bassett&lt;/title&gt;</span></p>
+<p class="p1"><span class="s1">&lt;script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"&gt;&lt;/script&gt;</span></p>
+<p class="p1"><span class="s1">&lt;style&gt;</span></p>
+<p class="p1"><span class="s1">@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&amp;family=DM+Mono:wght@400;500&amp;display=swap');</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">:root{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--black:#0d0d0d;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--white:#fafaf8;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--cream:#f5f2ec;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--border:#e0dbd2;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--muted:#8a8480;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--accent:#1a1a1a;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>--radius:3px;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">body{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-family:'DM Sans',sans-serif;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:var(--cream);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>color:var(--black);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>min-height:100vh;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">/* HEADER */</span></p>
+<p class="p1"><span class="s1">.page-header{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:var(--black);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>color:var(--white);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>padding:36px 48px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>display:flex;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>align-items:center;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>justify-content:space-between;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.header-left{}</span></p>
+<p class="p1"><span class="s1">.brand-label{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-family:'DM Mono',monospace;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-size:10px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>letter-spacing:0.2em;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>text-transform:uppercase;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>opacity:0.4;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>margin-bottom:10px;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.header-title{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-size:26px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-weight:300;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>letter-spacing:-0.02em;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.header-title strong{font-weight:600}</span></p>
+<p class="p1"><span class="s1">.header-sub{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>margin-top:6px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-size:13px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>color:rgba(250,250,248,0.45);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-weight:300;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.header-steps{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>display:flex;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>flex-direction:column;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>gap:6px;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.step-item{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>display:flex;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>align-items:center;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>gap:10px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-size:12px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>color:rgba(250,250,248,0.5);</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.step-num{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>width:22px;height:22px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border:1px solid rgba(255,255,255,0.2);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border-radius:50%;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>display:flex;align-items:center;justify-content:center;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-family:'DM Mono',monospace;font-size:10px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>flex-shrink:0;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.step-item.active .step-num{background:var(--white);color:var(--black);}</span></p>
+<p class="p1"><span class="s1">.step-item.active{color:var(--white);}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">/* FORM WRAPPER */</span></p>
+<p class="p1"><span class="s1">.form-wrapper{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>max-width:900px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>margin:0 auto;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>padding:48px 24px 100px;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">/* SECTION */</span></p>
+<p class="p1"><span class="s1">.section{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:var(--white);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border:1px solid var(--border);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border-radius:var(--radius);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>margin-bottom:24px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>overflow:hidden;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.section-head{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>padding:16px 24px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:var(--black);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>color:var(--white);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>display:flex;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>align-items:center;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>gap:12px;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.section-num{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-family:'DM Mono',monospace;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-size:10px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>opacity:0.4;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>min-width:24px;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.section-title{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-size:12px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-weight:500;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>letter-spacing:0.08em;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>text-transform:uppercase;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.section-body{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>padding:28px 24px;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">/* GRID */</span></p>
+<p class="p1"><span class="s1">.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:16px}</span></p>
+<p class="p1"><span class="s1">.grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}</span></p>
+<p class="p1"><span class="s1">.grid-4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:16px}</span></p>
+<p class="p1"><span class="s1">.col-span-2{grid-column:span 2}</span></p>
+<p class="p1"><span class="s1">.col-span-3{grid-column:span 3}</span></p>
+<p class="p1"><span class="s1">.col-span-4{grid-column:span 4}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">/* FIELD */</span></p>
+<p class="p1"><span class="s1">.field{display:flex;flex-direction:column;gap:6px}</span></p>
+<p class="p1"><span class="s1">.field label{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-family:'DM Mono',monospace;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-size:10px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>letter-spacing:0.12em;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>text-transform:uppercase;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>color:var(--muted);</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.field input,.field select,.field textarea{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border:1px solid var(--border);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border-radius:var(--radius);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>padding:10px 12px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-family:'DM Sans',sans-serif;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-size:14px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>color:var(--black);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:var(--white);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>outline:none;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>transition:border-color 0.15s;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>width:100%;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.field input:focus,.field select:focus,.field textarea:focus{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border-color:var(--black);</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.field textarea{resize:vertical;min-height:80px}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">/* UPLOAD */</span></p>
+<p class="p1"><span class="s1">.upload-zone{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border:2px dashed var(--border);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border-radius:var(--radius);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>padding:32px 20px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>text-align:center;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>cursor:pointer;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>transition:all 0.15s;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>position:relative;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.upload-zone:hover,.upload-zone.dragover{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border-color:var(--black);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:var(--cream);</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.upload-zone input[type=file]{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.upload-icon{font-size:28px;margin-bottom:10px}</span></p>
+<p class="p1"><span class="s1">.upload-label{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-size:13px;font-weight:500;margin-bottom:4px;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.upload-sub{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-size:11px;color:var(--muted);</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.upload-preview{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>margin-top:16px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>display:flex;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>flex-wrap:wrap;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>gap:10px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>justify-content:center;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.preview-img{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>width:80px;height:80px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>object-fit:contain;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border:1px solid var(--border);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border-radius:var(--radius);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:var(--cream);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>padding:4px;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.preview-filename{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-size:10px;color:var(--muted);text-align:center;margin-top:4px;max-width:80px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>overflow:hidden;text-overflow:ellipsis;white-space:nowrap;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">/* SIZE TABLE */</span></p>
+<p class="p1"><span class="s1">.size-table{width:100%;border-collapse:collapse;margin-top:4px}</span></p>
+<p class="p1"><span class="s1">.size-table th{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-family:'DM Mono',monospace;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-size:10px;letter-spacing:0.1em;text-transform:uppercase;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>color:var(--muted);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>padding:8px 10px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:var(--cream);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border:1px solid var(--border);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>text-align:center;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-weight:400;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.size-table td{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border:1px solid var(--border);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>padding:0;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.size-table td input{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border:none;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>padding:10px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-size:14px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>width:100%;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>text-align:center;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:transparent;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>outline:none;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-family:'DM Sans',sans-serif;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>color:var(--black);</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.size-table td input:focus{background:var(--cream)}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">/* PLACEMENT GRID */</span></p>
+<p class="p1"><span class="s1">.placements{display:flex;flex-direction:column;gap:16px}</span></p>
+<p class="p1"><span class="s1">.placement-item{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border:1px solid var(--border);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border-radius:var(--radius);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>overflow:hidden;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.placement-head{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:var(--cream);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>padding:10px 16px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-family:'DM Mono',monospace;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-size:10px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>letter-spacing:0.12em;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>text-transform:uppercase;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>color:var(--muted);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>display:flex;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>justify-content:space-between;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>align-items:center;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.placement-body{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>padding:16px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>display:grid;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>grid-template-columns:1fr 1fr 1fr 1fr;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>gap:12px;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">/* PANTONE ROW */</span></p>
+<p class="p1"><span class="s1">.pantone-row{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>display:flex;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>gap:12px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>flex-wrap:wrap;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.pantone-card{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>flex:1;min-width:160px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border:1px solid var(--border);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border-radius:var(--radius);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>overflow:hidden;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.pantone-swatch{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>height:60px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>display:flex;align-items:center;justify-content:center;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-size:10px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-family:'DM Mono',monospace;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>letter-spacing:0.08em;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>color:rgba(0,0,0,0.4);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>cursor:pointer;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>position:relative;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.pantone-swatch input[type=color]{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.pantone-fields{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>padding:10px 12px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>display:flex;flex-direction:column;gap:6px;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.pantone-fields input{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border:1px solid var(--border);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border-radius:var(--radius);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>padding:6px 8px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-size:12px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>width:100%;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-family:'DM Sans',sans-serif;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>outline:none;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.pantone-fields input:focus{border-color:var(--black)}</span></p>
+<p class="p1"><span class="s1">.pantone-label{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-family:'DM Mono',monospace;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-size:9px;letter-spacing:0.12em;text-transform:uppercase;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>color:var(--muted);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>margin-bottom:2px;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">/* GENERATE BUTTON */</span></p>
+<p class="p1"><span class="s1">.generate-bar{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>position:fixed;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>bottom:0;left:0;right:0;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:var(--white);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border-top:1px solid var(--border);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>padding:16px 24px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>display:flex;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>align-items:center;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>justify-content:space-between;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>z-index:100;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.generate-note{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-size:12px;color:var(--muted);</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.btn-generate{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:var(--black);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>color:var(--white);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border:none;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>padding:14px 36px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-family:'DM Sans',sans-serif;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-size:14px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-weight:500;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>letter-spacing:0.04em;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border-radius:var(--radius);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>cursor:pointer;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>transition:opacity 0.15s;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>display:flex;align-items:center;gap:10px;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.btn-generate:hover{opacity:0.8}</span></p>
+<p class="p1"><span class="s1">.btn-generate:disabled{opacity:0.4;cursor:not-allowed}</span></p>
+<p class="p1"><span class="s1">.spinner{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>width:16px;height:16px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border:2px solid rgba(255,255,255,0.3);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border-top-color:white;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border-radius:50%;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>animation:spin 0.7s linear infinite;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>display:none;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">@keyframes spin{to{transform:rotate(360deg)}}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">/* DIVIDER */</span></p>
+<p class="p1"><span class="s1">.divider{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-family:'DM Mono',monospace;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-size:9px;letter-spacing:0.2em;text-transform:uppercase;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>color:var(--muted);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>margin:4px 0 16px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>display:flex;align-items:center;gap:10px;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">.divider::after{content:'';flex:1;height:1px;background:var(--border)}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">/* SUCCESS */</span></p>
+<p class="p1"><span class="s1">.success-banner{</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>display:none;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>background:#e8f5e9;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border:1px solid #a5d6a7;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>border-radius:var(--radius);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>padding:16px 20px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>margin-bottom:24px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>font-size:14px;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>color:#2d6a4f;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>align-items:center;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>gap:12px;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">@media(max-width:600px){</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>.page-header{flex-direction:column;gap:24px}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>.grid-2,.grid-3,.grid-4{grid-template-columns:1fr}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>.col-span-2,.col-span-3,.col-span-4{grid-column:span 1}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>.placement-body{grid-template-columns:1fr 1fr}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>.form-wrapper{padding:24px 16px 100px}</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">&lt;/style&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/head&gt;</span></p>
+<p class="p1"><span class="s1">&lt;body&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">&lt;!-- HEADER --&gt;</span></p>
+<p class="p1"><span class="s1">&lt;div class="page-header"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div class="header-left"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="brand-label"&gt;René Bassett&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="header-title"&gt;&lt;strong&gt;Tech Pack&lt;/strong&gt; Builder&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="header-sub"&gt;Fill in the details below and download your tech pack.&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div class="header-steps"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="step-item active"&gt;&lt;span class="step-num"&gt;1&lt;/span&gt; Fill in the form&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="step-item"&gt;&lt;span class="step-num"&gt;2&lt;/span&gt; Upload your artwork&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="step-item"&gt;&lt;span class="step-num"&gt;3&lt;/span&gt; Generate &amp; download PDF&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="step-item"&gt;&lt;span class="step-num"&gt;4&lt;/span&gt; Email it to us&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">&lt;div class="form-wrapper"&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div class="success-banner" id="successBanner"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>✓ &amp;nbsp;Your tech pack has been downloaded. Please email it to &lt;strong&gt;info@renebassett.com&lt;/strong&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;!-- SECTION 1: STYLE INFO --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div class="section"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="section-head"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;span class="section-num"&gt;01&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;span class="section-title"&gt;Style Information&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="section-body"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="grid-3" style="gap:16px"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="field"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;label&gt;Brand Name&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;input type="text" id="brandName" placeholder="Your brand name"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="field"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;label&gt;Style Name&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;input type="text" id="styleName" placeholder="e.g. Classic Heavyweight Tee"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="field"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;label&gt;Style Number&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;input type="text" id="styleNumber" placeholder="e.g. SS25-001"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="field col-span-3"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;label&gt;Contact Email&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;input type="email" id="contactEmail" placeholder="your@email.com"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;!-- SECTION 2: GARMENT TYPE --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div class="section"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="section-head"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;span class="section-num"&gt;02&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;span class="section-title"&gt;Garment Type &amp; Quantities&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="section-body"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="grid-3" style="gap:16px;margin-bottom:20px"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="field"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;label&gt;Garment Type&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;select id="garmentType"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;option value=""&gt;Select type...&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;option&gt;T-Shirt&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;option&gt;Hoodie&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;option&gt;Crewneck Sweatshirt&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;option&gt;Sweatpants&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;option&gt;Zip Hoodie&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;option&gt;Long Sleeve&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;option&gt;Shorts&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;option&gt;Other&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/select&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="field"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;label&gt;Garment Color&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;input type="text" id="garmentColor" placeholder="e.g. Vintage Black"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="field"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;label&gt;Total Units&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;input type="number" id="totalUnits" placeholder="e.g. 100"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="divider"&gt;Size Breakdown&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div style="overflow-x:auto"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;table class="size-table"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;thead&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;tr&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;th&gt;XS&lt;/th&gt;&lt;th&gt;S&lt;/th&gt;&lt;th&gt;M&lt;/th&gt;&lt;th&gt;L&lt;/th&gt;&lt;th&gt;XL&lt;/th&gt;&lt;th&gt;XXL&lt;/th&gt;&lt;th&gt;3XL&lt;/th&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/tr&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/thead&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;tbody&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;tr&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;td&gt;&lt;input type="number" id="qXS" placeholder="0"&gt;&lt;/td&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;td&gt;&lt;input type="number" id="qS" placeholder="0"&gt;&lt;/td&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;td&gt;&lt;input type="number" id="qM" placeholder="0"&gt;&lt;/td&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;td&gt;&lt;input type="number" id="qL" placeholder="0"&gt;&lt;/td&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;td&gt;&lt;input type="number" id="qXL" placeholder="0"&gt;&lt;/td&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;td&gt;&lt;input type="number" id="qXXL" placeholder="0"&gt;&lt;/td&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;td&gt;&lt;input type="number" id="q3XL" placeholder="0"&gt;&lt;/td&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/tr&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/tbody&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/table&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;!-- SECTION 3: EMBROIDERY --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div class="section"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="section-head"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;span class="section-num"&gt;03&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;span class="section-title"&gt;Embroidery Details&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="section-body"&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="placements"&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;!-- FRONT CHEST --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="placement-item"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="placement-head"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;span&gt;Front Chest Embroidery&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;label style="cursor:pointer;display:flex;align-items:center;gap:6px;font-size:10px"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;input type="checkbox" id="embFrontChestActive" style="width:auto"&gt; Include</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="placement-body" id="embFrontChestBody"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="field"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;label&gt;Width (cm)&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;input type="number" step="0.5" id="embFC_w" placeholder="e.g. 10"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="field"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;label&gt;Height (cm)&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;input type="number" step="0.5" id="embFC_h" placeholder="e.g. 4"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="field"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;label&gt;Distance from top (cm)&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;input type="number" step="0.5" id="embFC_top" placeholder="e.g. 11"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="field"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;label&gt;Distance from left (cm)&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;input type="number" step="0.5" id="embFC_left" placeholder="e.g. 21"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="field col-span-2" style="grid-column:span 4"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;label&gt;Details / Notes&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;textarea id="embFC_notes" placeholder="e.g. Brand logo, 3D puff embroidery"&gt;&lt;/textarea&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;!-- BACK NECK --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="placement-item"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="placement-head"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;span&gt;Back Neck Embroidery&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;label style="cursor:pointer;display:flex;align-items:center;gap:6px;font-size:10px"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;input type="checkbox" id="embBackNeckActive" style="width:auto"&gt; Include</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="placement-body" id="embBackNeckBody"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="field"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;label&gt;Width (cm)&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;input type="number" step="0.5" id="embBN_w" placeholder="e.g. 6"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="field"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;label&gt;Height (cm)&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;input type="number" step="0.5" id="embBN_h" placeholder="e.g. 3"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="field"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;label&gt;Distance from collar (cm)&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;input type="number" step="0.5" id="embBN_top" placeholder="e.g. 5"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="field"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;label&gt;Centered?&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;select id="embBN_center"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;option value="yes"&gt;Yes, centered&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;option value="no"&gt;No, specify position&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;/select&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="field col-span-2" style="grid-column:span 4"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;label&gt;Details / Notes&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;textarea id="embBN_notes" placeholder="e.g. Small logo hit"&gt;&lt;/textarea&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;!-- EMBROIDERY PANTONES --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="divider" style="margin-top:24px"&gt;Embroidery Thread Colors (Pantone)&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="pantone-row"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="pantone-card" id="embPantone1"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="pantone-swatch" id="embSwatch1" style="background:#f0f0f0"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;input type="color" id="embColor1" value="#f0f0f0" oninput="updateSwatch('embSwatch1','embColor1')"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;span&gt;Click to pick&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="pantone-fields"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="pantone-label"&gt;Pantone Number&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;input type="text" id="embPantoneNum1" placeholder="e.g. 11-4001 TPG"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="pantone-label"&gt;Color Name&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;input type="text" id="embPantoneName1" placeholder="e.g. Brilliant White"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="pantone-card"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="pantone-swatch" id="embSwatch2" style="background:#f0f0f0"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;input type="color" id="embColor2" value="#f0f0f0" oninput="updateSwatch('embSwatch2','embColor2')"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;span&gt;Click to pick&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="pantone-fields"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="pantone-label"&gt;Pantone Number&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;input type="text" id="embPantoneNum2" placeholder="e.g. 19-0303 TPG"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="pantone-label"&gt;Color Name&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;input type="text" id="embPantoneName2" placeholder="e.g. Jet Black"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="pantone-card"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="pantone-swatch" id="embSwatch3" style="background:#f0f0f0"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;input type="color" id="embColor3" value="#f0f0f0" oninput="updateSwatch('embSwatch3','embColor3')"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;span&gt;Click to pick&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="pantone-fields"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="pantone-label"&gt;Pantone Number&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;input type="text" id="embPantoneNum3" placeholder="Optional"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="pantone-label"&gt;Color Name&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;input type="text" id="embPantoneName3" placeholder="Optional"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;!-- EMBROIDERY ARTWORK UPLOAD --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="divider" style="margin-top:24px"&gt;Embroidery Artwork / Reference&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="upload-zone" id="embUploadZone" ondragover="handleDragOver(event,'embUploadZone')" ondragleave="handleDragLeave(event,'embUploadZone')" ondrop="handleDrop(event,'embFiles','embPreview')"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;input type="file" id="embFiles" accept="image/*,.ai,.svg,.eps,.pdf" multiple onchange="previewFiles(this,'embPreview')"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="upload-icon"&gt;✦&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="upload-label"&gt;Drop artwork files here&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="upload-sub"&gt;PNG, JPG, SVG, AI, EPS — up to 10MB per file&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="upload-preview" id="embPreview"&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;!-- SECTION 4: PRINT --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div class="section"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="section-head"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;span class="section-num"&gt;04&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;span class="section-title"&gt;Print Details&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="section-body"&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="grid-2" style="gap:16px;margin-bottom:20px"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="field"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;label&gt;Print Technique&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;select id="printTechnique"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;option value=""&gt;Select technique...&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;option&gt;Screen Print&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;option&gt;DTG (Direct to Garment)&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;option&gt;DTF (Direct to Film)&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;option&gt;Sublimation&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;option&gt;Heat Transfer&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;option&gt;Discharge Print&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;option&gt;Other&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/select&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="field"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;label&gt;Number of Print Colors&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;input type="number" id="printColorCount" placeholder="e.g. 2"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="placements"&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;!-- FRONT PRINT --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="placement-item"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="placement-head"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;span&gt;Front Print&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;label style="cursor:pointer;display:flex;align-items:center;gap:6px;font-size:10px"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;input type="checkbox" id="printFrontActive" style="width:auto"&gt; Include</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="placement-body" id="printFrontBody"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="field"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;label&gt;Width (cm)&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;input type="number" step="0.5" id="prtF_w" placeholder="e.g. 35"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="field"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;label&gt;Height (cm)&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;input type="number" step="0.5" id="prtF_h" placeholder="e.g. 40"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="field"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;label&gt;Distance from top (cm)&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;input type="number" step="0.5" id="prtF_top" placeholder="e.g. 10"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="field"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;label&gt;Centered?&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;select id="prtF_center"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;option value="yes"&gt;Yes, centered&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;option value="no"&gt;No, specify&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;/select&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="field col-span-2" style="grid-column:span 4"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;label&gt;Notes&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;textarea id="prtF_notes" placeholder="e.g. Full front graphic, bleed to edges"&gt;&lt;/textarea&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;!-- BACK PRINT --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="placement-item"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="placement-head"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;span&gt;Back Print&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;label style="cursor:pointer;display:flex;align-items:center;gap:6px;font-size:10px"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;input type="checkbox" id="printBackActive" style="width:auto"&gt; Include</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="placement-body" id="printBackBody"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="field"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;label&gt;Width (cm)&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;input type="number" step="0.5" id="prtB_w" placeholder="e.g. 35"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="field"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;label&gt;Height (cm)&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;input type="number" step="0.5" id="prtB_h" placeholder="e.g. 40"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="field"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;label&gt;Distance from top (cm)&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;input type="number" step="0.5" id="prtB_top" placeholder="e.g. 12"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="field"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;label&gt;Centered?&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;select id="prtB_center"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;option value="yes"&gt;Yes, centered&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">                </span>&lt;option value="no"&gt;No, specify&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;/select&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="field col-span-2" style="grid-column:span 4"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;label&gt;Notes&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">              </span>&lt;textarea id="prtB_notes" placeholder="e.g. Large back graphic"&gt;&lt;/textarea&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;!-- PRINT PANTONES --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="divider" style="margin-top:24px"&gt;Print Colors (Pantone)&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="pantone-row"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="pantone-card"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="pantone-swatch" id="prtSwatch1" style="background:#f0f0f0"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;input type="color" id="prtColor1" value="#f0f0f0" oninput="updateSwatch('prtSwatch1','prtColor1')"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;span&gt;Click to pick&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="pantone-fields"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="pantone-label"&gt;Pantone Number&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;input type="text" id="prtPantoneNum1" placeholder="e.g. 11-4001 TPG"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="pantone-label"&gt;Color Name&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;input type="text" id="prtPantoneName1" placeholder="e.g. Brilliant White"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="pantone-card"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="pantone-swatch" id="prtSwatch2" style="background:#f0f0f0"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;input type="color" id="prtColor2" value="#f0f0f0" oninput="updateSwatch('prtSwatch2','prtColor2')"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;span&gt;Click to pick&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="pantone-fields"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="pantone-label"&gt;Pantone Number&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;input type="text" id="prtPantoneNum2" placeholder="e.g. 19-0303 TPG"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="pantone-label"&gt;Color Name&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;input type="text" id="prtPantoneName2" placeholder="e.g. Jet Black"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="pantone-card"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="pantone-swatch" id="prtSwatch3" style="background:#f0f0f0"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;input type="color" id="prtColor3" value="#f0f0f0" oninput="updateSwatch('prtSwatch3','prtColor3')"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;span&gt;Click to pick&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="pantone-fields"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="pantone-label"&gt;Pantone Number&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;input type="text" id="prtPantoneNum3" placeholder="Optional"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="pantone-label"&gt;Color Name&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;input type="text" id="prtPantoneName3" placeholder="Optional"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;!-- PRINT ARTWORK --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="divider" style="margin-top:24px"&gt;Print Artwork Files&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="upload-zone" id="prtUploadZone" ondragover="handleDragOver(event,'prtUploadZone')" ondragleave="handleDragLeave(event,'prtUploadZone')" ondrop="handleDrop(event,'prtFiles','prtPreview')"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;input type="file" id="prtFiles" accept="image/*,.ai,.svg,.eps,.pdf" multiple onchange="previewFiles(this,'prtPreview')"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="upload-icon"&gt;✦&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="upload-label"&gt;Drop print artwork files here&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="upload-sub"&gt;PNG, JPG, SVG, AI, EPS — high resolution preferred&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="upload-preview" id="prtPreview"&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;!-- SECTION 5: LABELS --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div class="section"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="section-head"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;span class="section-num"&gt;05&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;span class="section-title"&gt;Labels &amp; Packaging&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="section-body"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="grid-2" style="gap:16px"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="field"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;label&gt;Neck Label Type&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;select id="neckLabelType"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;option value=""&gt;Select...&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;option&gt;Woven label&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;option&gt;Printed label&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;option&gt;Heat transfer label&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;option&gt;Tear-away label&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;option&gt;No label (tear-away only)&lt;/option&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/select&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="field"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;label&gt;Label Size (W × H cm)&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;input type="text" id="neckLabelSize" placeholder="e.g. 6 × 3 cm"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="field col-span-2"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;label&gt;Label Details / Notes&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;textarea id="neckLabelNotes" placeholder="e.g. Black background, white text, sewn into neck seam, 0.5cm margins"&gt;&lt;/textarea&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;!-- LABEL PANTONES --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="divider" style="margin-top:20px"&gt;Label Colors (Pantone)&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="pantone-row"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="pantone-card"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="pantone-swatch" id="lblSwatch1" style="background:#f0f0f0"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;input type="color" id="lblColor1" value="#f0f0f0" oninput="updateSwatch('lblSwatch1','lblColor1')"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;span&gt;Click to pick&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="pantone-fields"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="pantone-label"&gt;Pantone Number&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;input type="text" id="lblPantoneNum1" placeholder="e.g. 11-4001 TPG"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="pantone-label"&gt;Color Name&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;input type="text" id="lblPantoneName1" placeholder="e.g. Brilliant White"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="pantone-card"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="pantone-swatch" id="lblSwatch2" style="background:#f0f0f0"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;input type="color" id="lblColor2" value="#f0f0f0" oninput="updateSwatch('lblSwatch2','lblColor2')"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;span&gt;Click to pick&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;div class="pantone-fields"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="pantone-label"&gt;Pantone Number&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;input type="text" id="lblPantoneNum2" placeholder="e.g. 19-0303 TPG"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;div class="pantone-label"&gt;Color Name&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">            </span>&lt;input type="text" id="lblPantoneName2" placeholder="e.g. Jet Black"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;!-- LABEL ARTWORK --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="divider" style="margin-top:20px"&gt;Label Artwork / Reference&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="upload-zone" id="lblUploadZone" ondragover="handleDragOver(event,'lblUploadZone')" ondragleave="handleDragLeave(event,'lblUploadZone')" ondrop="handleDrop(event,'lblFiles','lblPreview')"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;input type="file" id="lblFiles" accept="image/*,.ai,.svg,.eps,.pdf" multiple onchange="previewFiles(this,'lblPreview')"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="upload-icon"&gt;✦&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="upload-label"&gt;Drop label artwork files here&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="upload-sub"&gt;PNG, JPG, SVG, AI, EPS&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;div class="upload-preview" id="lblPreview"&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;!-- SECTION 6: NOTES --&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div class="section"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="section-head"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;span class="section-num"&gt;06&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;span class="section-title"&gt;Additional Notes&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;div class="section-body"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;div class="field"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;label&gt;Any other instructions or special requirements&lt;/label&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>&lt;textarea id="additionalNotes" style="min-height:100px" placeholder="e.g. Special washing instructions, packaging requirements, sample before production..."&gt;&lt;/textarea&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">&lt;/div&gt;&lt;!-- end form-wrapper --&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">&lt;!-- GENERATE BAR --&gt;</span></p>
+<p class="p1"><span class="s1">&lt;div class="generate-bar"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;div class="generate-note"&gt;After downloading, email your tech pack to &lt;strong&gt;info@renebassett.com&lt;/strong&gt;&lt;/div&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;button class="btn-generate" id="generateBtn" onclick="generatePDF()"&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;span class="spinner" id="spinner"&gt;&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>&lt;span id="btnText"&gt;Generate &amp; Download Tech Pack&lt;/span&gt;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>&lt;/button&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/div&gt;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">&lt;script&gt;</span></p>
+<p class="p1"><span class="s1">// ─── UTILS ───────────────────────────────────────────────</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">function updateSwatch(swatchId, colorInputId) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const color = document.getElementById(colorInputId).value;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const swatch = document.getElementById(swatchId);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>swatch.style.background = color;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const brightness = parseInt(color.slice(1,3),16)*0.299 + parseInt(color.slice(3,5),16)*0.587 + parseInt(color.slice(5,7),16)*0.114;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>swatch.querySelector('span').style.color = brightness &gt; 160 ? 'rgba(0,0,0,0.4)' : 'rgba(255,255,255,0.6)';</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">function v(id){ return (document.getElementById(id)||{}).value||''; }</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">function previewFiles(input, previewId) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const preview = document.getElementById(previewId);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>preview.innerHTML = '';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>Array.from(input.files).forEach(file =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if (file.type.startsWith('image/')) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const reader = new FileReader();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>reader.onload = e =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const wrap = document.createElement('div');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const img = document.createElement('img');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>img.src = e.target.result;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>img.className = 'preview-img';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const name = document.createElement('div');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>name.className = 'preview-filename';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>name.textContent = file.name;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>wrap.appendChild(img);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>wrap.appendChild(name);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>preview.appendChild(wrap);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>};</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>reader.readAsDataURL(file);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>} else {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const wrap = document.createElement('div');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>wrap.innerHTML = `&lt;div class="preview-img" style="display:flex;align-items:center;justify-content:center;font-size:22px"&gt;📄&lt;/div&gt;&lt;div class="preview-filename"&gt;${file.name}&lt;/div&gt;`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>preview.appendChild(wrap);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>});</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">function handleDragOver(e, zoneId) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>e.preventDefault();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>document.getElementById(zoneId).classList.add('dragover');</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">function handleDragLeave(e, zoneId) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>document.getElementById(zoneId).classList.remove('dragover');</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">function handleDrop(e, inputId, previewId) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>e.preventDefault();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const zone = e.currentTarget;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>zone.classList.remove('dragover');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const input = document.getElementById(inputId);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const dt = e.dataTransfer;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const files = dt.files;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const fileList = new DataTransfer();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>Array.from(files).forEach(f =&gt; fileList.items.add(f));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>input.files = fileList.files;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>previewFiles(input, previewId);</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">// ─── PDF GENERATION ──────────────────────────────────────</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">async function readImageAsDataURL(fileInput) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const files = fileInput ? fileInput.files : [];</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const images = [];</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>for (let file of Array.from(files)) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if (file.type.startsWith('image/')) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const dataUrl = await new Promise(res =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const r = new FileReader();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>r.onload = e =&gt; res(e.target.result);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>r.readAsDataURL(file);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>images.push(dataUrl);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>return images;</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1">async function generatePDF() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const btn = document.getElementById('generateBtn');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const spinner = document.getElementById('spinner');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>const btnText = document.getElementById('btnText');</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>btn.disabled = true;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>spinner.style.display = 'block';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>btnText.textContent = 'Generating...';</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>try {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>await new Promise(r =&gt; setTimeout(r, 100));</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const { jsPDF } = window.jspdf;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>// A4 landscape: 297 x 210 mm</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const doc = new jsPDF({ orientation: 'landscape', unit: 'mm', format: 'a4' });</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const PW = 297; // page width</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const PH = 210; // page height</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const M = 10; <span class="Apple-converted-space">  </span>// margin</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>// Read images</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const embImages = await readImageAsDataURL(document.getElementById('embFiles'));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const prtImages = await readImageAsDataURL(document.getElementById('prtFiles'));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const lblImages = await readImageAsDataURL(document.getElementById('lblFiles'));</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>// Helper: draw header (matching RB tech pack style)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>function drawHeader() {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>// Top black bar</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setFillColor(20, 20, 20);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.rect(M, M, PW - M*2, 18, 'F');</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>// RENÉ BASSETT text</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setFont('helvetica', 'bold');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setFontSize(8);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setTextColor(255, 255, 255);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.text('RENÉ BASSETT', M + 4, M + 11);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>// Draw header table</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setFillColor(255,255,255);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setDrawColor(180,180,180);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setLineWidth(0.3);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>let x = M + 30;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const drawCell = (label, val, cx, cy, cwidth, cheight) =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.setFillColor(255,255,255);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.rect(cx, cy, cwidth, cheight, 'FD');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.setFont('helvetica', 'normal');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.setFontSize(6);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.setTextColor(100,100,100);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.text(label, cx + 1.5, cy + 4);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.setFont('helvetica', 'bold');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.setFontSize(7);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.setTextColor(20,20,20);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.text(val || '', cx + 1.5, cy + cheight - 1.2);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>};</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>drawCell('Style Name', <span class="Apple-converted-space">  </span>v('styleName'),<span class="Apple-converted-space">    </span>x, <span class="Apple-converted-space">    </span>M,<span class="Apple-converted-space">    </span>80, 6);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>drawCell('Style Number', v('styleNumber'),<span class="Apple-converted-space">  </span>x+80,<span class="Apple-converted-space">  </span>M,<span class="Apple-converted-space">    </span>70, 6);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>drawCell('Brand',<span class="Apple-converted-space">        </span>v('brandName'),<span class="Apple-converted-space">    </span>x+150, M,<span class="Apple-converted-space">    </span>117, 6);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>drawCell('Color',<span class="Apple-converted-space">        </span>v('garmentColor'), x, <span class="Apple-converted-space">    </span>M+6,<span class="Apple-converted-space">  </span>80, 6);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>drawCell('Garment Type', v('garmentType'),<span class="Apple-converted-space">  </span>x+80,<span class="Apple-converted-space">  </span>M+6,<span class="Apple-converted-space">  </span>70, 6);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>drawCell('Contact',<span class="Apple-converted-space">      </span>v('contactEmail'), x+150, M+6,<span class="Apple-converted-space">  </span>117, 6);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>drawCell('Total Units',<span class="Apple-converted-space">  </span>v('totalUnits'), <span class="Apple-converted-space">  </span>x, <span class="Apple-converted-space">    </span>M+12, 80, 6);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setFillColor(245,245,245);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.rect(x+80, M+12, 187, 6, 'FD');</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>// Outer border</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setDrawColor(20,20,20);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setLineWidth(0.5);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.rect(M, M, PW - M*2, 18, 'D');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>// Helper: section title</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>function sectionTitle(text, y) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setFont('helvetica','bold');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setFontSize(18);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setTextColor(20,20,20);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.text(text, M, y);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>// Helper: draw placement box with dimensions</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>function drawPlacement(x, y, w, h, widthCm, heightCm, topCm, label) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setDrawColor(180,180,180);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setFillColor(248,248,248);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setLineWidth(0.3);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.rect(x, y, w, h, 'FD');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>// crosshair center lines</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setDrawColor(210,210,210);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setLineDash([1,1]);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.line(x + w/2, y+2, x+w/2, y+h-2);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.line(x+2, y+h/2, x+w-2, y+h/2);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setLineDash([]);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>// label</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(120,120,120);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.text(label, x + w/2, y+h/2-2, {align:'center'});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>if(widthCm) doc.text(`W: ${widthCm} cm`, x+w/2, y+h/2+3, {align:'center'});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>if(heightCm) doc.text(`H: ${heightCm} cm`, x+w/2, y+h/2+7, {align:'center'});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>if(topCm) doc.text(`↓ ${topCm} cm from top`, x+w/2, y+h/2+11, {align:'center'});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>// Helper: draw pantone swatch block</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>function drawPantone(x, y, colorHex, pantoneNum, colorName) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>if(!pantoneNum &amp;&amp; !colorName) return;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const sw = 28; const sh = 18;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>// Swatch</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const r = parseInt(colorHex.slice(1,3),16);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const g = parseInt(colorHex.slice(3,5),16);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const b = parseInt(colorHex.slice(5,7),16);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setFillColor(r,g,b);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setDrawColor(200,200,200);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.rect(x, y, sw, sh, 'FD');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>// Labels</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setFont('helvetica','bold');doc.setFontSize(6);doc.setTextColor(20,20,20);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.text('PANTONE®', x, y+sh+4);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setFont('helvetica','normal');doc.setFontSize(6);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.text(pantoneNum||'', x, y+sh+8);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setFont('helvetica','bold');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.text(colorName||'', x, y+sh+12);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>// Helper: place image in PDF</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>function placeImage(dataUrl, x, y, maxW, maxH) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>try {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const ext = dataUrl.split(';')[0].split('/')[1].toUpperCase();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const fmt = (ext==='JPG'||ext==='JPEG') ? 'JPEG' : (ext==='PNG'?'PNG':'JPEG');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const img = new Image();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>img.src = dataUrl;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const iw = img.naturalWidth||200, ih = img.naturalHeight||200;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const scale = Math.min(maxW/iw, maxH/ih);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const dw = iw*scale, dh = ih*scale;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const cx = x + (maxW-dw)/2, cy = y + (maxH-dh)/2;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.addImage(dataUrl, fmt, cx, cy, dw, dh);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>} catch(e){}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>// ── PAGE 1: Overview / Style Sheet ──────────────────</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>drawHeader();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>sectionTitle('Style Overview', M + 26);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>// Garment silhouette area (placeholder box)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const garmentY = M + 32;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>drawPlacement(M, garmentY, 90, 130, '', '', '', 'Garment Front View\n(silhouette reference)');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>drawPlacement(M+95, garmentY, 90, 130, '', '', '', 'Garment Back View\n(silhouette reference)');</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>// Side info panel</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const infoX = M + 190;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const fields = [</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>['BRAND', v('brandName')],</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>['STYLE NAME', v('styleName')],</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>['STYLE NO', v('styleNumber')],</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>['GARMENT TYPE', v('garmentType')],</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>['COLOR', v('garmentColor')],</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>['TOTAL UNITS', v('totalUnits')],</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>['CONTACT', v('contactEmail')],</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>];</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>let fieldY = garmentY;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>fields.forEach(([label, val]) =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setFillColor(248,248,246);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setDrawColor(220,215,210);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.rect(infoX, fieldY, PW-M-infoX, 11, 'FD');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setFont('helvetica','normal');doc.setFontSize(6);doc.setTextColor(120,120,120);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.text(label, infoX+2, fieldY+4);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(20,20,20);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.text(val||'—', infoX+2, fieldY+9);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>fieldY += 12;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>});</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>// Size table</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>fieldY += 4;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(20,20,20);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>doc.text('SIZE BREAKDOWN', infoX, fieldY); fieldY+=4;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const sizes = ['XS','S','M','L','XL','XXL','3XL'];</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const sizeVals = ['qXS','qS','qM','qL','qXL','qXXL','q3XL'].map(id=&gt;v(id));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const cw2 = (PW-M-infoX)/sizes.length;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>sizes.forEach((s,i) =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setFillColor(20,20,20);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.rect(infoX + i*cw2, fieldY, cw2, 7, 'F');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setFont('helvetica','bold');doc.setFontSize(6);doc.setTextColor(255,255,255);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.text(s, infoX+i*cw2+cw2/2, fieldY+5, {align:'center'});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>fieldY+=7;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>sizes.forEach((s,i) =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setFillColor(255,255,255);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setDrawColor(200,200,200);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.rect(infoX+i*cw2, fieldY, cw2, 7, 'FD');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(20,20,20);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.text(sizeVals[i]||'0', infoX+i*cw2+cw2/2, fieldY+5, {align:'center'});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>});</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>// Additional notes</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(v('additionalNotes')) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>fieldY += 14;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(20,20,20);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.text('NOTES', infoX, fieldY); fieldY+=4;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(60,60,60);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const lines = doc.splitTextToSize(v('additionalNotes'), PW-M-infoX);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.text(lines, infoX, fieldY);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>// Bottom border</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>doc.setDrawColor(20,20,20);doc.setLineWidth(1);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>doc.line(M, PH-M, PW-M, PH-M);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>// ── PAGE 2: Print &amp; Embroidery Summary ──────────────</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>doc.addPage();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>drawHeader();</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>doc.setFont('helvetica','bold');doc.setFontSize(16);doc.setTextColor(20,20,20);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>doc.text('PRINT AND EMBROIDERY DETAILS', M, M+26);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const bodyY2 = M+32;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>// Garment silhouette with placement annotations</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>drawPlacement(M, bodyY2, 110, 130, '', '', '', 'Front');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>drawPlacement(M+115, bodyY2, 110, 130, '', '', '', 'Back');</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>// Placement annotations</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const annots = [];</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(document.getElementById('embFrontChestActive').checked) annots.push({label:'Front Chest Emb.', x:M+55, y:bodyY2+30, w:v('embFC_w'), h:v('embFC_h')});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(document.getElementById('embBackNeckActive').checked) annots.push({label:'Back Neck Emb.', x:M+165, y:bodyY2+20, w:v('embBN_w'), h:v('embBN_h')});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(document.getElementById('printFrontActive').checked) annots.push({label:'Front Print', x:M+45, y:bodyY2+50, w:v('prtF_w'), h:v('prtF_h')});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(document.getElementById('printBackActive').checked) annots.push({label:'Back Print', x:M+130, y:bodyY2+50, w:v('prtB_w'), h:v('prtB_h')});</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>annots.forEach(a =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setDrawColor(220,50,50);doc.setFillColor(255,240,240);doc.setLineWidth(0.5);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.rect(a.x-10, a.y, 20, 12, 'FD');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setFont('helvetica','bold');doc.setFontSize(6);doc.setTextColor(180,30,30);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.text(a.label, a.x, a.y+5, {align:'center'});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>if(a.w) doc.text(`${a.w}×${a.h}cm`, a.x, a.y+9, {align:'center'});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>});</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>// Right panel: summary list</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const sumX = M+230;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>let sumY = bodyY2;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(20,20,20);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>doc.text('PLACEMENT SUMMARY', sumX, sumY); sumY+=8;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const placements = [</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>{active: document.getElementById('embFrontChestActive').checked, label:'Front Chest Embroidery', w:v('embFC_w'), h:v('embFC_h'), top:v('embFC_top'), notes:v('embFC_notes')},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>{active: document.getElementById('embBackNeckActive').checked, label:'Back Neck Embroidery', w:v('embBN_w'), h:v('embBN_h'), top:v('embBN_top'), notes:v('embBN_notes')},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>{active: document.getElementById('printFrontActive').checked, label:'Front Print', w:v('prtF_w'), h:v('prtF_h'), top:v('prtF_top'), notes:v('prtF_notes')},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>{active: document.getElementById('printBackActive').checked, label:'Back Print', w:v('prtB_w'), h:v('prtB_h'), top:v('prtB_top'), notes:v('prtB_notes')},</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>];</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>placements.filter(p=&gt;p.active).forEach(p =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setFillColor(245,242,236);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.rect(sumX, sumY, PW-M-sumX, 26, 'F');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setDrawColor(200,195,190);doc.setLineWidth(0.2);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.rect(sumX, sumY, PW-M-sumX, 26, 'D');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(20,20,20);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.text(p.label, sumX+2, sumY+5);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setFont('helvetica','normal');doc.setFontSize(6.5);doc.setTextColor(60,60,60);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const dims = [p.w&amp;&amp;`W: ${p.w}cm`, p.h&amp;&amp;`H: ${p.h}cm`, p.top&amp;&amp;`↓ ${p.top}cm from top`].filter(Boolean).join('<span class="Apple-converted-space">  </span>');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.text(dims, sumX+2, sumY+10);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>if(p.notes) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const nl = doc.splitTextToSize(p.notes, PW-M-sumX-4);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.text(nl.slice(0,2), sumX+2, sumY+16);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>sumY += 30;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>});</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>doc.setDrawColor(20,20,20);doc.setLineWidth(1);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>doc.line(M, PH-M, PW-M, PH-M);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>// ── PAGE 3: Front Embroidery Details ──────────────────</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(document.getElementById('embFrontChestActive').checked || document.getElementById('embBackNeckActive').checked) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.addPage();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>drawHeader();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>sectionTitle('Front Embroidery Details', M+26);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const artY3 = M+30;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const artH3 = 100;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const artW3 = PW - M*2;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>if(embImages.length &gt; 0) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>// Show artwork big in center</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.setFillColor(252,252,252);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.setDrawColor(220,220,220);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.rect(M, artY3, artW3*0.6, artH3, 'FD');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>placeImage(embImages[0], M+2, artY3+2, artW3*0.6-4, artH3-4);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>} else {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.setFillColor(248,248,248);doc.setDrawColor(200,200,200);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.rect(M, artY3, artW3*0.6, artH3, 'FD');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(180,180,180);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.text('[Artwork / Logo]', M + artW3*0.3, artY3+artH3/2, {align:'center'});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>// Pantone swatches right side</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const pY3 = artY3;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const pX3 = M + artW3*0.62;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(20,20,20);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.text('Color of chest embroidery', pX3, pY3+6);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const ec1 = document.getElementById('embColor1').value;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const ec2 = document.getElementById('embColor2').value;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const ec3 = document.getElementById('embColor3').value;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>drawPantone(pX3, pY3+10, ec1, v('embPantoneNum1'), v('embPantoneName1'));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>if(v('embPantoneNum2')) drawPantone(pX3+50, pY3+10, ec2, v('embPantoneNum2'), v('embPantoneName2'));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>if(v('embPantoneNum3')) drawPantone(pX3+100, pY3+10, ec3, v('embPantoneNum3'), v('embPantoneName3'));</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>// Reference image (second uploaded image if exists)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>if(embImages.length &gt; 1) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(20,20,20);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.text('Reference Embroidery', pX3, pY3+50);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.setFillColor(245,245,245);doc.setDrawColor(200,200,200);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.rect(pX3, pY3+55, 55, 40, 'FD');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>placeImage(embImages[1], pX3+2, pY3+57, 51, 36);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>// Embroidery specs below</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const specY3 = artY3 + artH3 + 8;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const specData = [</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>['Front Chest', v('embFC_w')&amp;&amp;`${v('embFC_w')} × ${v('embFC_h')} cm`, v('embFC_top')&amp;&amp;`${v('embFC_top')} cm from top`, v('embFC_notes')],</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>['Back Neck', v('embBN_w')&amp;&amp;`${v('embBN_w')} × ${v('embBN_h')} cm`, v('embBN_top')&amp;&amp;`${v('embBN_top')} cm from collar`, v('embBN_notes')],</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>];</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const cws = [40,45,50,PW-M*2-40-45-50];</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>// header</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setFillColor(20,20,20);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.rect(M, specY3, PW-M*2, 7, 'F');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>['PLACEMENT','DIMENSIONS','POSITION','NOTES'].forEach((h,i) =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>let xx = M + cws.slice(0,i).reduce((a,b)=&gt;a+b,0);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.setFont('helvetica','bold');doc.setFontSize(6);doc.setTextColor(255,255,255);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.text(h, xx+2, specY3+5);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>specData.forEach((row, ri) =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const ry = specY3 + 7 + ri*9;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.setFillColor(ri%2===0?255:248);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.rect(M, ry, PW-M*2, 9, 'F');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>row.forEach((cell,ci) =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>let xx = M + cws.slice(0,ci).reduce((a,b)=&gt;a+b,0);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>doc.setFont(ci===0?'helvetica':'helvetica', ci===0?'bold':'normal');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>doc.setFontSize(7);doc.setTextColor(20,20,20);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>doc.text(cell||'—', xx+2, ry+6);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>});</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setDrawColor(20,20,20);doc.setLineWidth(1);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.line(M, PH-M, PW-M, PH-M);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>// ── PAGE 4: Front Print Details ──────────────────────</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(document.getElementById('printFrontActive').checked || document.getElementById('printBackActive').checked) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.addPage();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>drawHeader();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>sectionTitle('Front Print Details', M+26);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const artY4 = M+30;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const artH4 = 100;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const artW4 = PW - M*2;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>if(prtImages.length &gt; 0) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.setFillColor(252,252,252);doc.setDrawColor(220,220,220);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.rect(M, artY4, artW4*0.6, artH4, 'FD');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>placeImage(prtImages[0], M+2, artY4+2, artW4*0.6-4, artH4-4);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>} else {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.setFillColor(248,248,248);doc.setDrawColor(200,200,200);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.rect(M, artY4, artW4*0.6, artH4, 'FD');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(180,180,180);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.text('[Print Artwork]', M+artW4*0.3, artY4+artH4/2, {align:'center'});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const pX4 = M + artW4*0.62;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(20,20,20);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.text('Print Colors', pX4, artY4+6);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const pc1 = document.getElementById('prtColor1').value;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const pc2 = document.getElementById('prtColor2').value;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const pc3 = document.getElementById('prtColor3').value;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>drawPantone(pX4, artY4+10, pc1, v('prtPantoneNum1'), v('prtPantoneName1'));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>if(v('prtPantoneNum2')) drawPantone(pX4+50, artY4+10, pc2, v('prtPantoneNum2'), v('prtPantoneName2'));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>if(v('prtPantoneNum3')) drawPantone(pX4+100, artY4+10, pc3, v('prtPantoneNum3'), v('prtPantoneName3'));</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>// Print specs</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const specY4 = artY4 + artH4 + 8;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(20,20,20);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.text(`Technique: ${v('printTechnique')||'—'} <span class="Apple-converted-space">  </span>Colors: ${v('printColorCount')||'—'}`, M, specY4);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const specData4 = [];</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>if(document.getElementById('printFrontActive').checked)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>specData4.push(['Front', v('prtF_w')&amp;&amp;`${v('prtF_w')} × ${v('prtF_h')} cm`, v('prtF_top')&amp;&amp;`${v('prtF_top')} cm from top`, document.getElementById('prtF_center').value==='yes'?'Centered':'See notes', v('prtF_notes')]);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>if(document.getElementById('printBackActive').checked)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>specData4.push(['Back', v('prtB_w')&amp;&amp;`${v('prtB_w')} × ${v('prtB_h')} cm`, v('prtB_top')&amp;&amp;`${v('prtB_top')} cm from top`, document.getElementById('prtB_center').value==='yes'?'Centered':'See notes', v('prtB_notes')]);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const cws4 = [30,45,50,35,PW-M*2-160];</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const specsY4b = specY4 + 8;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setFillColor(20,20,20);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.rect(M, specsY4b, PW-M*2, 7, 'F');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>['POSITION','DIMENSIONS','FROM TOP','ALIGNMENT','NOTES'].forEach((h,i) =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>let xx = M + cws4.slice(0,i).reduce((a,b)=&gt;a+b,0);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.setFont('helvetica','bold');doc.setFontSize(6);doc.setTextColor(255,255,255);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.text(h, xx+2, specsY4b+5);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>specData4.forEach((row,ri) =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const ry = specsY4b+7+ri*9;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.setFillColor(ri%2===0?255:248);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.rect(M, ry, PW-M*2, 9, 'F');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>row.forEach((cell,ci) =&gt; {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>let xx = M + cws4.slice(0,ci).reduce((a,b)=&gt;a+b,0);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>doc.setFont(ci===0?'helvetica':'helvetica', ci===0?'bold':'normal');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>doc.setFontSize(7);doc.setTextColor(20,20,20);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">          </span>doc.text(cell||'—', xx+2, ry+6);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>});</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setDrawColor(20,20,20);doc.setLineWidth(1);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.line(M, PH-M, PW-M, PH-M);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>// ── PAGE 5: Neck Label ───────────────────────────────</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>if(v('neckLabelType') || v('neckLabelSize') || v('neckLabelNotes') || lblImages.length&gt;0) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.addPage();</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>drawHeader();</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>// NECK LABEL title (centered, large, like original)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setFont('helvetica','bold');doc.setFontSize(22);doc.setTextColor(20,20,20);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.text('NECK LABEL', PW/2, M+28, {align:'center'});</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>// Label diagram center</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const lblW_px = 80; const lblH_px = 50;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const lblX = PW/2 - lblW_px/2;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const lblY = M+38;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>// Parse label dimensions</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const sizeStr = v('neckLabelSize');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>let wLabel = '6 cm', hLabel = '3 cm';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>if(sizeStr) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const parts = sizeStr.split(/[×x]/);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>if(parts.length&gt;=2){wLabel=parts[0].trim()+' cm';hLabel=parts[1].trim()+' cm';}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>// Dimension lines</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setDrawColor(220,50,50);doc.setLineWidth(0.4);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>// Width arrow</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.line(lblX, lblY-4, lblX+lblW_px, lblY-4);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.line(lblX, lblY-6, lblX, lblY-2);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.line(lblX+lblW_px, lblY-6, lblX+lblW_px, lblY-2);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(20,20,20);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.text(wLabel, lblX+lblW_px/2, lblY-6, {align:'center'});</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>// Height arrow</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.line(lblX+lblW_px+4, lblY, lblX+lblW_px+4, lblY+lblH_px);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.line(lblX+lblW_px+2, lblY, lblX+lblW_px+6, lblY);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.line(lblX+lblW_px+2, lblY+lblH_px, lblX+lblW_px+6, lblY+lblH_px);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.text(hLabel, lblX+lblW_px+10, lblY+lblH_px/2+2);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>// Label rectangle (black background like original)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setFillColor(20,20,20);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.rect(lblX, lblY, lblW_px, lblH_px, 'F');</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>// Dashed inner margin lines</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setDrawColor(150,150,150);doc.setLineWidth(0.2);doc.setLineDash([1,1]);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.rect(lblX+4, lblY+4, lblW_px-8, lblH_px-8, 'D');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setLineDash([]);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>// Brand name on label</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setFont('helvetica','bold');doc.setFontSize(12);doc.setTextColor(255,255,255);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.text('RENÉ BASSETT', lblX+lblW_px/2, lblY+lblH_px/2+2, {align:'center'});</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>// Inner width annotation</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const innerW = (parseFloat(wLabel)||6) - 1;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setFont('helvetica','normal');doc.setFontSize(6);doc.setTextColor(220,50,50);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.text(`${innerW} cm`, lblX+lblW_px/2, lblY+lblH_px+5, {align:'center'});</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setFont('helvetica','normal');doc.setFontSize(6);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.text('0.5 cm', lblX-8, lblY+lblH_px-2);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.text('0.5 cm', lblX+lblW_px+2, lblY+lblH_px-2);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>// Label artwork if uploaded</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>if(lblImages.length &gt; 0) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.setFillColor(252,252,252);doc.setDrawColor(200,200,200);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const artX5 = M; const artY5 = lblY+lblH_px+16;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.rect(artX5, artY5, 80, 50, 'FD');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>placeImage(lblImages[0], artX5+2, artY5+2, 76, 46);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(100,100,100);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.text('Label Artwork Reference', artX5, artY5-2);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>// Pantone swatches (2 side by side, like original)</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const swatch1X = M;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const swatch2X = PW/2+10;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const swatchY = lblY + lblH_px + 16;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const lc1 = document.getElementById('lblColor1').value;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>const lc2 = document.getElementById('lblColor2').value;</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>if(v('lblPantoneNum1')) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(20,20,20);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.text(`Pantone number: ${v('lblPantoneNum1')}`, swatch1X, swatchY);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.text(`Color name: ${v('lblPantoneName1')}`, swatch1X, swatchY+6);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>drawPantone(swatch1X, swatchY+10, lc1, v('lblPantoneNum1'), v('lblPantoneName1'));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>}</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>if(v('lblPantoneNum2')) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(20,20,20);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.text(`Pantone number: ${v('lblPantoneNum2')}`, swatch2X, swatchY);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.text(`Color name: ${v('lblPantoneName2')}`, swatch2X, swatchY+6);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>drawPantone(swatch2X, swatchY+10, lc2, v('lblPantoneNum2'), v('lblPantoneName2'));</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>// Notes</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>if(v('neckLabelNotes')) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const notesY = swatchY + 50;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(20,20,20);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.text('LABEL NOTES', M, notesY);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.setFont('helvetica','normal');doc.setFontSize(7);doc.setTextColor(60,60,60);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>const nlines = doc.splitTextToSize(v('neckLabelNotes'), PW-M*2);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">        </span>doc.text(nlines, M, notesY+5);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.setDrawColor(20,20,20);doc.setLineWidth(1);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>doc.line(M, PH-M, PW-M, PH-M);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>}</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>// ── METADATA + SAVE ──────────────────────────────────</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>doc.setProperties({</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>title: `Tech Pack — ${v('brandName')||'Brand'} — ${v('styleName')||'Style'}`,</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>subject: 'Tech Pack',</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>author: v('brandName')||'Client',</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">      </span>creator: 'René Bassett Tech Pack Builder',</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>});</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const filename = `tech-pack_${(v('brandName')||'brand').replace(/\s+/g,'-').toLowerCase()}_${(v('styleNumber')||'style').replace(/\s+/g,'-').toLowerCase()}.pdf`;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>doc.save(filename);</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>// Show success</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>const banner = document.getElementById('successBanner');</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>banner.style.display = 'flex';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>banner.scrollIntoView({behavior:'smooth'});</span></p>
+<p class="p2"><span class="s1"></span><br></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>} catch(err) {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>console.error(err);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>alert('Error generating PDF. Please check all fields and try again.\n\n'+err.message);</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>} finally {</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>btn.disabled = false;</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>spinner.style.display = 'none';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">    </span>btnText.textContent = 'Generate &amp; Download Tech Pack';</span></p>
+<p class="p1"><span class="s1"><span class="Apple-converted-space">  </span>}</span></p>
+<p class="p1"><span class="s1">}</span></p>
+<p class="p1"><span class="s1">&lt;/script&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/body&gt;</span></p>
+<p class="p1"><span class="s1">&lt;/html&gt;</span></p>
+</body>
+</html>
