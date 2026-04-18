@@ -172,84 +172,112 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--black)
     </div>
   </div>
 
-  <!-- SECTION 3 EMBROIDERY -->
+  <!-- SECTION 3 FRONT DECORATION -->
   <div class="section">
-    <div class="section-head"><span class="section-num">03</span><span class="section-title">Embroidery Details</span></div>
+    <div class="section-head"><span class="section-num">03</span><span class="section-title">Front Decoration</span></div>
     <div class="section-body">
-      <div class="placement-item">
-        <div class="placement-head"><span>Front Chest Embroidery</span><label style="cursor:pointer;display:flex;align-items:center;gap:6px;font-size:10px"><input type="checkbox" id="embFrontChestActive" style="width:auto"> Include</label></div>
-        <div class="placement-body">
-          <div class="field"><label>Placement</label><select id="embFC_placement" onchange="renderMockups&&renderMockups()"><option value="center">Front Center</option><option value="left">Front Left Chest</option><option value="right">Front Right Chest</option></select></div>
-          <div class="field"><label>Width (cm)</label><input type="number" step="0.5" id="embFC_w" placeholder="e.g. 10"></div>
-          <div class="field"><label>Distance from top (cm)</label><input type="number" step="0.5" id="embFC_top" placeholder="e.g. 11"></div>
-          <div class="field">&nbsp;</div>
-          <div class="field" style="grid-column:span 4"><label>Notes</label><textarea id="embFC_notes" placeholder="e.g. Brand logo, 3D puff embroidery"></textarea></div>
+      <div class="grid-3" style="gap:16px;margin-bottom:20px">
+        <div class="field">
+          <label>Technique</label>
+          <select id="frontTechnique" onchange="renderMockups&&renderMockups()">
+            <option value="">Select technique...</option>
+            <option>Screen Print</option>
+            <option>Puff Print</option>
+            <option>Embroidery</option>
+            <option>Puff Embroidery</option>
+            <option>DTG</option>
+            <option>DTF</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Placement</label>
+          <select id="frontPlacement" onchange="renderMockups&&renderMockups()">
+            <option value="left">Front Left Chest</option>
+            <option value="center">Front Center</option>
+            <option value="right">Front Right Chest</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Width (cm)</label>
+          <input type="number" step="0.5" id="frontWidth" placeholder="e.g. 10">
+        </div>
+        <div class="field">
+          <label>Distance from top (cm)</label>
+          <input type="number" step="0.5" id="frontTop" placeholder="e.g. 11">
+        </div>
+        <div class="field" style="grid-column:span 2">
+          <label>Notes</label>
+          <input type="text" id="frontNotes" placeholder="e.g. 3D puff, 2 colors">
         </div>
       </div>
-      <div class="placement-item">
-        <div class="placement-head"><span>Back Neck Embroidery</span><label style="cursor:pointer;display:flex;align-items:center;gap:6px;font-size:10px"><input type="checkbox" id="embBackNeckActive" style="width:auto"> Include</label></div>
-        <div class="placement-body">
-          <div class="field"><label>Width (cm)</label><input type="number" step="0.5" id="embBN_w" placeholder="e.g. 6"></div>
-          <div class="field"><label>Distance from collar (cm)</label><input type="number" step="0.5" id="embBN_top" placeholder="e.g. 5"></div>
-          <div class="field"><label>Centered?</label><select id="embBN_center"><option value="yes">Yes, centered</option><option value="no">No, specify</option></select></div>
-          <div class="field">&nbsp;</div>
-          <div class="field" style="grid-column:span 4"><label>Notes</label><textarea id="embBN_notes" placeholder="e.g. Small logo hit"></textarea></div>
-        </div>
-      </div>
-      <div class="divider" style="margin-top:20px">Embroidery Thread Colors (Pantone TPG)</div>
+
+      <div class="divider">Thread / Ink Colors (Pantone TPG)</div>
       <div class="pantone-row">
-        <div class="pantone-card"><div class="pantone-swatch" id="embSwatch1" style="background:#f0f0f0"><input type="color" id="embColor1" value="#f0f0f0" oninput="updateSwatch('embSwatch1','embColor1')"><span>Click to pick</span></div><div class="pantone-fields"><div class="pantone-label">Pantone Number</div><input type="text" id="embPantoneNum1" placeholder="e.g. 11-4001 TPG"><div class="pantone-label">Color Name</div><input type="text" id="embPantoneName1" placeholder="e.g. Brilliant White"></div></div>
-        <div class="pantone-card"><div class="pantone-swatch" id="embSwatch2" style="background:#f0f0f0"><input type="color" id="embColor2" value="#f0f0f0" oninput="updateSwatch('embSwatch2','embColor2')"><span>Click to pick</span></div><div class="pantone-fields"><div class="pantone-label">Pantone Number</div><input type="text" id="embPantoneNum2" placeholder="e.g. 19-0303 TPG"><div class="pantone-label">Color Name</div><input type="text" id="embPantoneName2" placeholder="e.g. Jet Black"></div></div>
-        <div class="pantone-card"><div class="pantone-swatch" id="embSwatch3" style="background:#f0f0f0"><input type="color" id="embColor3" value="#f0f0f0" oninput="updateSwatch('embSwatch3','embColor3')"><span>Click to pick</span></div><div class="pantone-fields"><div class="pantone-label">Pantone Number</div><input type="text" id="embPantoneNum3" placeholder="Optional"><div class="pantone-label">Color Name</div><input type="text" id="embPantoneName3" placeholder="Optional"></div></div>
+        <div class="pantone-card"><div class="pantone-swatch" id="frontSwatch1" style="background:#f0f0f0"><input type="color" id="frontColor1" value="#f0f0f0" oninput="updateSwatch('frontSwatch1','frontColor1')"><span>Click to pick</span></div><div class="pantone-fields"><div class="pantone-label">Pantone Number</div><input type="text" id="frontPantoneNum1" placeholder="e.g. 11-4001 TPG"><div class="pantone-label">Color Name</div><input type="text" id="frontPantoneName1" placeholder="e.g. Brilliant White"></div></div>
+        <div class="pantone-card"><div class="pantone-swatch" id="frontSwatch2" style="background:#f0f0f0"><input type="color" id="frontColor2" value="#f0f0f0" oninput="updateSwatch('frontSwatch2','frontColor2')"><span>Click to pick</span></div><div class="pantone-fields"><div class="pantone-label">Pantone Number</div><input type="text" id="frontPantoneNum2" placeholder="e.g. 19-0303 TPG"><div class="pantone-label">Color Name</div><input type="text" id="frontPantoneName2" placeholder="e.g. Jet Black"></div></div>
+        <div class="pantone-card"><div class="pantone-swatch" id="frontSwatch3" style="background:#f0f0f0"><input type="color" id="frontColor3" value="#f0f0f0" oninput="updateSwatch('frontSwatch3','frontColor3')"><span>Click to pick</span></div><div class="pantone-fields"><div class="pantone-label">Pantone Number</div><input type="text" id="frontPantoneNum3" placeholder="Optional"><div class="pantone-label">Color Name</div><input type="text" id="frontPantoneName3" placeholder="Optional"></div></div>
       </div>
-      <div class="divider" style="margin-top:20px">Embroidery Artwork / Reference</div>
-      <div class="upload-zone" id="embUploadZone">
-        <input type="file" id="embFiles" accept="image/*,.ai,.svg,.eps,.pdf" multiple onchange="previewFiles(this,'embPreview')">
-        <div class="upload-icon">✦</div><div class="upload-label">Drop artwork files here</div><div class="upload-sub">PNG, JPG, SVG, AI, EPS</div>
-        <div class="upload-preview" id="embPreview"></div>
+
+      <div class="divider" style="margin-top:20px">Artwork / Reference File</div>
+      <div class="upload-zone">
+        <input type="file" id="frontFiles" accept="image/*,.ai,.svg,.eps,.pdf" multiple onchange="previewFiles(this,'frontPreview')">
+        <div class="upload-icon">✦</div><div class="upload-label">Drop artwork here</div><div class="upload-sub">PNG, JPG, SVG, AI, EPS — high res preferred</div>
+        <div class="upload-preview" id="frontPreview"></div>
       </div>
     </div>
   </div>
 
-  <!-- SECTION 4 PRINT -->
+  <!-- SECTION 4 BACK DECORATION -->
   <div class="section">
-    <div class="section-head"><span class="section-num">04</span><span class="section-title">Print Details</span></div>
+    <div class="section-head"><span class="section-num">04</span><span class="section-title">Back Decoration</span></div>
     <div class="section-body">
-      <div class="grid-2" style="gap:16px;margin-bottom:20px">
-        <div class="field"><label>Print Technique</label><select id="printTechnique"><option value="">Select...</option><option>Screen Print</option><option>DTG (Direct to Garment)</option><option>DTF (Direct to Film)</option><option>Sublimation</option><option>Discharge Print</option><option>Other</option></select></div>
-        <div class="field"><label>Number of Print Colors</label><input type="number" id="printColorCount" placeholder="e.g. 2"></div>
-      </div>
-      <div class="placement-item">
-        <div class="placement-head"><span>Front Print</span><label style="cursor:pointer;display:flex;align-items:center;gap:6px;font-size:10px"><input type="checkbox" id="printFrontActive" style="width:auto"> Include</label></div>
-        <div class="placement-body">
-          <div class="field"><label>Placement</label><select id="prtF_placement" onchange="renderMockups&&renderMockups()"><option value="center">Front Center</option><option value="left">Front Left</option><option value="right">Front Right</option></select></div>
-          <div class="field"><label>Width (cm)</label><input type="number" step="0.5" id="prtF_w" placeholder="e.g. 35"></div>
-          <div class="field"><label>Distance from top (cm)</label><input type="number" step="0.5" id="prtF_top" placeholder="e.g. 10"></div>
-          <div class="field">&nbsp;</div>
-          <div class="field" style="grid-column:span 4"><label>Notes</label><textarea id="prtF_notes" placeholder="e.g. Full front graphic"></textarea></div>
+      <div class="grid-3" style="gap:16px;margin-bottom:20px">
+        <div class="field">
+          <label>Technique</label>
+          <select id="backTechnique" onchange="renderMockups&&renderMockups()">
+            <option value="">Select technique...</option>
+            <option>Screen Print</option>
+            <option>Puff Print</option>
+            <option>Embroidery</option>
+            <option>Puff Embroidery</option>
+            <option>DTG</option>
+            <option>DTF</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Placement</label>
+          <select id="backPlacement" onchange="renderMockups&&renderMockups()">
+            <option value="center">Back Center</option>
+            <option value="left">Back Left</option>
+            <option value="right">Back Right</option>
+          </select>
+        </div>
+        <div class="field">
+          <label>Width (cm)</label>
+          <input type="number" step="0.5" id="backWidth" placeholder="e.g. 35">
+        </div>
+        <div class="field">
+          <label>Distance from top (cm)</label>
+          <input type="number" step="0.5" id="backTop" placeholder="e.g. 12">
+        </div>
+        <div class="field" style="grid-column:span 2">
+          <label>Notes</label>
+          <input type="text" id="backNotes" placeholder="e.g. Large back graphic">
         </div>
       </div>
-      <div class="placement-item">
-        <div class="placement-head"><span>Back Print</span><label style="cursor:pointer;display:flex;align-items:center;gap:6px;font-size:10px"><input type="checkbox" id="printBackActive" style="width:auto"> Include</label></div>
-        <div class="placement-body">
-          <div class="field"><label>Placement</label><select id="prtB_placement"><option value="center">Back Center</option><option value="left">Back Left</option><option value="right">Back Right</option></select></div>
-          <div class="field"><label>Width (cm)</label><input type="number" step="0.5" id="prtB_w" placeholder="e.g. 35"></div>
-          <div class="field"><label>Distance from top (cm)</label><input type="number" step="0.5" id="prtB_top" placeholder="e.g. 12"></div>
-          <div class="field">&nbsp;</div>
-          <div class="field" style="grid-column:span 4"><label>Notes</label><textarea id="prtB_notes" placeholder="e.g. Large back graphic"></textarea></div>
-        </div>
-      </div>
-      <div class="divider" style="margin-top:20px">Print Colors (Pantone TPG)</div>
+
+      <div class="divider">Thread / Ink Colors (Pantone TPG)</div>
       <div class="pantone-row">
-        <div class="pantone-card"><div class="pantone-swatch" id="prtSwatch1" style="background:#f0f0f0"><input type="color" id="prtColor1" value="#f0f0f0" oninput="updateSwatch('prtSwatch1','prtColor1')"><span>Click to pick</span></div><div class="pantone-fields"><div class="pantone-label">Pantone Number</div><input type="text" id="prtPantoneNum1" placeholder="e.g. 11-4001 TPG"><div class="pantone-label">Color Name</div><input type="text" id="prtPantoneName1" placeholder="e.g. Brilliant White"></div></div>
-        <div class="pantone-card"><div class="pantone-swatch" id="prtSwatch2" style="background:#f0f0f0"><input type="color" id="prtColor2" value="#f0f0f0" oninput="updateSwatch('prtSwatch2','prtColor2')"><span>Click to pick</span></div><div class="pantone-fields"><div class="pantone-label">Pantone Number</div><input type="text" id="prtPantoneNum2" placeholder="e.g. 19-0303 TPG"><div class="pantone-label">Color Name</div><input type="text" id="prtPantoneName2" placeholder="e.g. Jet Black"></div></div>
-        <div class="pantone-card"><div class="pantone-swatch" id="prtSwatch3" style="background:#f0f0f0"><input type="color" id="prtColor3" value="#f0f0f0" oninput="updateSwatch('prtSwatch3','prtColor3')"><span>Click to pick</span></div><div class="pantone-fields"><div class="pantone-label">Pantone Number</div><input type="text" id="prtPantoneNum3" placeholder="Optional"><div class="pantone-label">Color Name</div><input type="text" id="prtPantoneName3" placeholder="Optional"></div></div>
+        <div class="pantone-card"><div class="pantone-swatch" id="backSwatch1" style="background:#f0f0f0"><input type="color" id="backColor1" value="#f0f0f0" oninput="updateSwatch('backSwatch1','backColor1')"><span>Click to pick</span></div><div class="pantone-fields"><div class="pantone-label">Pantone Number</div><input type="text" id="backPantoneNum1" placeholder="e.g. 11-4001 TPG"><div class="pantone-label">Color Name</div><input type="text" id="backPantoneName1" placeholder="e.g. Brilliant White"></div></div>
+        <div class="pantone-card"><div class="pantone-swatch" id="backSwatch2" style="background:#f0f0f0"><input type="color" id="backColor2" value="#f0f0f0" oninput="updateSwatch('backSwatch2','backColor2')"><span>Click to pick</span></div><div class="pantone-fields"><div class="pantone-label">Pantone Number</div><input type="text" id="backPantoneNum2" placeholder="e.g. 19-0303 TPG"><div class="pantone-label">Color Name</div><input type="text" id="backPantoneName2" placeholder="e.g. Jet Black"></div></div>
+        <div class="pantone-card"><div class="pantone-swatch" id="backSwatch3" style="background:#f0f0f0"><input type="color" id="backColor3" value="#f0f0f0" oninput="updateSwatch('backSwatch3','backColor3')"><span>Click to pick</span></div><div class="pantone-fields"><div class="pantone-label">Pantone Number</div><input type="text" id="backPantoneNum3" placeholder="Optional"><div class="pantone-label">Color Name</div><input type="text" id="backPantoneName3" placeholder="Optional"></div></div>
       </div>
-      <div class="divider" style="margin-top:20px">Print Artwork Files</div>
-      <div class="upload-zone" id="prtUploadZone">
-        <input type="file" id="prtFiles" accept="image/*,.ai,.svg,.eps,.pdf" multiple onchange="previewFiles(this,'prtPreview')">
-        <div class="upload-icon">✦</div><div class="upload-label">Drop print artwork here</div><div class="upload-sub">PNG, JPG, SVG, AI, EPS — high res preferred</div>
-        <div class="upload-preview" id="prtPreview"></div>
+
+      <div class="divider" style="margin-top:20px">Artwork / Reference File</div>
+      <div class="upload-zone">
+        <input type="file" id="backFiles" accept="image/*,.ai,.svg,.eps,.pdf" multiple onchange="previewFiles(this,'backPreview')">
+        <div class="upload-icon">✦</div><div class="upload-label">Drop artwork here</div><div class="upload-sub">PNG, JPG, SVG, AI, EPS — high res preferred</div>
+        <div class="upload-preview" id="backPreview"></div>
       </div>
     </div>
   </div>
@@ -412,15 +440,13 @@ function renderFront() {
   var ctx = canvas.getContext('2d');
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.drawImage(TSHIRT_IMG, 0, 0, canvas.width, canvas.height);
-  if (chk('embFrontChestActive') && n('embFC_w') && n('embFC_top')) {
-    var embPlacement = (document.getElementById('embFC_placement')||{}).value || 'left';
-    var pos = cmToCanvas(n('embFC_w'), n('embFC_top'), embPlacement);
-    drawAnnotation(ctx, pos.x, pos.y, pos.w, pos.h, 'Embroidery', n('embFC_top'), n('embFC_w'));
-  }
-  if (chk('printFrontActive') && n('prtF_w') && n('prtF_top')) {
-    var prtPlacement = (document.getElementById('prtF_placement')||{}).value || 'center';
-    var pos2 = cmToCanvas(n('prtF_w'), n('prtF_top'), prtPlacement);
-    drawAnnotation(ctx, pos2.x, pos2.y, pos2.w, pos2.h, 'Print', n('prtF_top'), n('prtF_w'));
+  var tech = v('frontTechnique');
+  var w = n('frontWidth');
+  var top = n('frontTop');
+  var placement = (document.getElementById('frontPlacement')||{value:'left'}).value || 'left';
+  if (tech && w && top) {
+    var pos = cmToCanvas(w, top, placement);
+    drawAnnotation(ctx, pos.x, pos.y, pos.w, pos.h, tech, top, w);
   }
 }
 
@@ -430,13 +456,13 @@ function renderBack() {
   var ctx = canvas.getContext('2d');
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.save(); ctx.scale(-1,1); ctx.drawImage(TSHIRT_IMG, -canvas.width, 0, canvas.width, canvas.height); ctx.restore();
-  if (chk('embBackNeckActive') && n('embBN_w') && n('embBN_top')) {
-    var pos = cmToCanvas(n('embBN_w'), n('embBN_top'), 'center');
-    drawAnnotation(ctx, pos.x, pos.y, pos.w, pos.h, 'Back Neck', n('embBN_top'), n('embBN_w'));
-  }
-  if (chk('printBackActive') && n('prtB_w') && n('prtB_top')) {
-    var pos2 = cmToCanvas(n('prtB_w'), n('prtB_top'), 'center');
-    drawAnnotation(ctx, pos2.x, pos2.y, pos2.w, pos2.h, 'Print', n('prtB_top'), n('prtB_w'));
+  var tech = v('backTechnique');
+  var w = n('backWidth');
+  var top = n('backTop');
+  var placement = (document.getElementById('backPlacement')||{value:'center'}).value || 'center';
+  if (tech && w && top) {
+    var pos = cmToCanvas(w, top, placement);
+    drawAnnotation(ctx, pos.x, pos.y, pos.w, pos.h, tech, top, w);
   }
 }
 
@@ -450,10 +476,8 @@ document.getElementById('garmentType').addEventListener('change', function() {
   else sec.style.display='none';
 });
 
-['embFC_w','embFC_top','embFC_placement','embFrontChestActive',
- 'embBN_w','embBN_top','embBackNeckActive',
- 'prtF_w','prtF_top','prtF_placement','printFrontActive',
- 'prtB_w','prtB_top','prtB_placement','printBackActive'].forEach(function(id) {
+['frontTechnique','frontPlacement','frontWidth','frontTop',
+ 'backTechnique','backPlacement','backWidth','backTop'].forEach(function(id) {
   var el = document.getElementById(id);
   if (el) {
     el.addEventListener('change', renderMockups);
@@ -501,8 +525,8 @@ async function generatePDF() {
       return imgs;
     }
 
-    var embImgs = await readImgs('embFiles');
-    var prtImgs = await readImgs('prtFiles');
+    var frontImgs = await readImgs('frontFiles');
+    var backImgs = await readImgs('backFiles');
     var lblImgs = await readImgs('lblFiles');
 
     function drawHeader() {
@@ -626,109 +650,6 @@ async function generatePDF() {
     doc.text('Front',M+52,by+68,{align:'center'});
     doc.rect(M+110,by,105,130,'FD');
     doc.text('Back',M+162,by+68,{align:'center'});
-    // Placement summary
-    var sx=M+222;
-    doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(20,20,20);
-    doc.text('PLACEMENT SUMMARY',sx,by);
-    var sy=by+8;
-    var placements=[
-      {a:chk('embFrontChestActive'),l:'Front Chest Emb. ('+((document.getElementById('embFC_placement')||{value:'center'}).value)+')',w:v('embFC_w'),h:'',t:v('embFC_top'),note:v('embFC_notes')},
-      {a:chk('embBackNeckActive'),l:'Back Neck Emb.',w:v('embBN_w'),h:'',t:v('embBN_top'),note:v('embBN_notes')},
-      {a:chk('printFrontActive'),l:'Front Print ('+((document.getElementById('prtF_placement')||{value:'center'}).value)+')',w:v('prtF_w'),h:'',t:v('prtF_top'),note:v('prtF_notes')},
-      {a:chk('printBackActive'),l:'Back Print',w:v('prtB_w'),h:'',t:v('prtB_top'),note:v('prtB_notes')},
-    ];
-    placements.filter(function(p){return p.a;}).forEach(function(p){
-      doc.setFillColor(245,242,236);doc.setDrawColor(200,195,190);doc.setLineWidth(0.2);
-      doc.rect(sx,sy,PW-M-sx,24,'FD');
-      doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(20,20,20);
-      doc.text(p.l,sx+2,sy+5);
-      doc.setFont('helvetica','normal');doc.setFontSize(6.5);doc.setTextColor(60,60,60);
-      var dims=[p.w&&('W:'+p.w+'cm'),p.h&&('H:'+p.h+'cm'),p.t&&(p.t+'cm from top')].filter(Boolean).join('  ');
-      doc.text(dims,sx+2,sy+10);
-      if(p.note){var nl=doc.splitTextToSize(p.note,PW-M-sx-4);doc.text(nl.slice(0,2),sx+2,sy+16);}
-      sy+=28;
-    });
-    doc.setDrawColor(20,20,20);doc.setLineWidth(1);
-    doc.line(M,PH-M,PW-M,PH-M);
-
-    // PAGE 3 — Embroidery details
-    if(chk('embFrontChestActive')||chk('embBackNeckActive')){
-      doc.addPage();
-      drawHeader();
-      doc.setFont('helvetica','bold');doc.setFontSize(16);doc.setTextColor(20,20,20);
-      doc.text('Front Embroidery Details',M,M+26);
-      var ay=M+30, aw=(PW-M*2)*0.6;
-      if(embImgs.length>0){
-        doc.setFillColor(252,252,252);doc.setDrawColor(220,220,220);doc.rect(M,ay,aw,100,'FD');
-        placeImg(embImgs[0],M+2,ay+2,aw-4,96);
-      } else {
-        doc.setFillColor(248,248,248);doc.setDrawColor(200,200,200);doc.rect(M,ay,aw,100,'FD');
-        doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(180,180,180);
-        doc.text('[Artwork / Logo]',M+aw/2,ay+53,{align:'center'});
-      }
-      var px=M+aw+8;
-      doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(20,20,20);
-      doc.text('Color of chest embroidery',px,ay+6);
-      drawPantone(px,ay+10,v('embColor1')||'#f0f0f0',v('embPantoneNum1'),v('embPantoneName1'));
-      if(v('embPantoneNum2')) drawPantone(px+40,ay+10,v('embColor2')||'#f0f0f0',v('embPantoneNum2'),v('embPantoneName2'));
-      if(embImgs.length>1){
-        doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(20,20,20);
-        doc.text('Reference Embroidery',px,ay+50);
-        doc.setFillColor(245,245,245);doc.setDrawColor(200,200,200);
-        doc.rect(px,ay+54,55,38,'FD');
-        placeImg(embImgs[1],px+2,ay+56,51,34);
-      }
-      // Spec table
-      var specY=ay+108;
-      var spData=[
-        ['Front Chest',v('embFC_w')?(v('embFC_w')+' cm'):'—',v('embFC_top')?(v('embFC_top')+' cm from top'):'—',v('embFC_notes')||'—'],
-        ['Back Neck',v('embBN_w')?(v('embBN_w')+' cm'):'—',v('embBN_top')?(v('embBN_top')+' cm from collar'):'—',v('embBN_notes')||'—'],
-      ];
-      var cws=[38,44,50,PW-M*2-132];
-      doc.setFillColor(20,20,20);doc.rect(M,specY,PW-M*2,7,'F');
-      ['PLACEMENT','DIMENSIONS','POSITION','NOTES'].forEach(function(h,i){
-        var xx=M+cws.slice(0,i).reduce(function(a,b){return a+b;},0);
-        doc.setFont('helvetica','bold');doc.setFontSize(6);doc.setTextColor(255,255,255);
-        doc.text(h,xx+2,specY+5);
-      });
-      spData.forEach(function(row,ri){
-        var ry=specY+7+ri*9;
-        doc.setFillColor(ri%2===0?255:248);doc.rect(M,ry,PW-M*2,9,'F');
-        row.forEach(function(cell,ci){
-          var xx=M+cws.slice(0,ci).reduce(function(a,b){return a+b;},0);
-          doc.setFont('helvetica',ci===0?'bold':'normal');doc.setFontSize(7);doc.setTextColor(20,20,20);
-          doc.text(cell,xx+2,ry+6);
-        });
-      });
-      doc.setDrawColor(20,20,20);doc.setLineWidth(1);doc.line(M,PH-M,PW-M,PH-M);
-    }
-
-    // PAGE 4 — Print details
-    if(chk('printFrontActive')||chk('printBackActive')){
-      doc.addPage();
-      drawHeader();
-      doc.setFont('helvetica','bold');doc.setFontSize(16);doc.setTextColor(20,20,20);
-      doc.text('Front Print Details',M,M+26);
-      var ay4=M+30, aw4=(PW-M*2)*0.6;
-      if(prtImgs.length>0){
-        doc.setFillColor(252,252,252);doc.setDrawColor(220,220,220);doc.rect(M,ay4,aw4,100,'FD');
-        placeImg(prtImgs[0],M+2,ay4+2,aw4-4,96);
-      } else {
-        doc.setFillColor(248,248,248);doc.setDrawColor(200,200,200);doc.rect(M,ay4,aw4,100,'FD');
-        doc.setFont('helvetica','normal');doc.setFontSize(9);doc.setTextColor(180,180,180);
-        doc.text('[Print Artwork]',M+aw4/2,ay4+53,{align:'center'});
-      }
-      var px4=M+aw4+8;
-      doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(20,20,20);
-      doc.text('Print Colors',px4,ay4+6);
-      drawPantone(px4,ay4+10,v('prtColor1')||'#f0f0f0',v('prtPantoneNum1'),v('prtPantoneName1'));
-      if(v('prtPantoneNum2')) drawPantone(px4+40,ay4+10,v('prtColor2')||'#f0f0f0',v('prtPantoneNum2'),v('prtPantoneName2'));
-      var specY4=ay4+108;
-      doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(20,20,20);
-      doc.text('Technique: '+(v('printTechnique')||'—')+'   Colors: '+(v('printColorCount')||'—'),M,specY4);
-      doc.setDrawColor(20,20,20);doc.setLineWidth(1);doc.line(M,PH-M,PW-M,PH-M);
-    }
-
     // PAGE 5 — Label
     if(v('neckLabelType')||v('neckLabelSize')||v('neckLabelNotes')||lblImgs.length>0){
       doc.addPage();
