@@ -442,75 +442,93 @@ function cmToCanvas(widthCm, topCm, placement, fromCenterCm) {
 function drawAnnotation(ctx, x, y, w, h, label, topCm, widthCm, centerX, fromCenterCm, placement) {
   ctx.save();
   var RED = '#e53935';
-  var GREY = '#888';
-  ctx.font = 'bold 12px sans-serif';
+  var GREY = '#999';
 
-  // 1. Vertical dashed center line (grey)
+  // 1. Vertical dashed grey center line — from collar down to artwork bottom
   ctx.strokeStyle = GREY;
   ctx.lineWidth = 1;
   ctx.setLineDash([4, 3]);
   ctx.beginPath();
-  ctx.moveTo(centerX, COLLAR_Y - 10);
-  ctx.lineTo(centerX, y + h + 20);
+  ctx.moveTo(centerX, COLLAR_Y);
+  ctx.lineTo(centerX, y + h + 30);
   ctx.stroke();
   ctx.setLineDash([]);
 
-  // 2. Dashed artwork box (grey)
+  // 2. Dashed grey artwork box
   ctx.strokeStyle = GREY;
   ctx.lineWidth = 1;
   ctx.setLineDash([4, 3]);
   ctx.strokeRect(x, y, w, h);
   ctx.setLineDash([]);
 
-  // 3. Vertical red arrow: from collar to top of artwork
+  // 3. Vertical RED arrow — from COLLAR_Y (collar bottom) down to top of artwork
+  //    Arrow starts at collar with a tick, ends at artwork top with a tick
   ctx.strokeStyle = RED;
   ctx.fillStyle = RED;
   ctx.lineWidth = 1.5;
-  var vx = centerX; // draw vertical arrow along center line
+
+  // Line from collar to artwork top, offset left of center so it's visible
+  var vx = centerX - 8;
   ctx.beginPath(); ctx.moveTo(vx, COLLAR_Y); ctx.lineTo(vx, y); ctx.stroke();
-  // Arrow heads
-  ctx.beginPath(); ctx.moveTo(vx-4, COLLAR_Y); ctx.lineTo(vx+4, COLLAR_Y); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(vx-4, y); ctx.lineTo(vx+4, y); ctx.stroke();
-  // Label
+  // Tick at collar
+  ctx.beginPath(); ctx.moveTo(vx - 5, COLLAR_Y); ctx.lineTo(vx + 5, COLLAR_Y); ctx.stroke();
+  // Arrowhead at artwork top (pointing down)
+  ctx.beginPath();
+  ctx.moveTo(vx - 5, y);
+  ctx.lineTo(vx, y + 6);
+  ctx.lineTo(vx + 5, y);
+  ctx.closePath();
+  ctx.fill();
+  // Distance label — rotated, to the left of the arrow
   ctx.save();
-  ctx.translate(vx + 10, COLLAR_Y + (y - COLLAR_Y) / 2);
+  ctx.translate(vx - 14, COLLAR_Y + (y - COLLAR_Y) / 2);
   ctx.rotate(-Math.PI / 2);
   ctx.textAlign = 'center';
   ctx.font = 'bold 11px sans-serif';
   ctx.fillText(topCm + ' cm', 0, 0);
   ctx.restore();
 
-  // 4. Horizontal red arrow: from center to artwork edge
-  var artEdge = (placement === 'left' || placement === 'center') ? x : x + w;
-  var arrowY2 = y + h / 2;
-  ctx.beginPath(); ctx.moveTo(centerX, arrowY2); ctx.lineTo(artEdge, arrowY2); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(centerX - 4, arrowY2 - 4); ctx.lineTo(centerX + 4, arrowY2 + 4); ctx.stroke();
-  // tick at center
-  ctx.beginPath(); ctx.moveTo(centerX, arrowY2 - 5); ctx.lineTo(centerX, arrowY2 + 5); ctx.stroke();
-  // tick at art edge
-  ctx.beginPath(); ctx.moveTo(artEdge - 4, arrowY2 - 5); ctx.lineTo(artEdge - 4, arrowY2 + 5); ctx.stroke();
-  // width label below
+  // 4. Horizontal RED arrow — from center line to nearest artwork edge
+  //    Shows distance from center
+  var artEdge = (placement === 'right') ? x + w : x; // nearest edge to center
+  if (placement === 'center') artEdge = x; // left edge for centered
+  var arrowMidY = y + h / 2;
+
+  ctx.beginPath(); ctx.moveTo(centerX, arrowMidY); ctx.lineTo(artEdge, arrowMidY); ctx.stroke();
+  // Tick at center
+  ctx.beginPath(); ctx.moveTo(centerX, arrowMidY - 5); ctx.lineTo(centerX, arrowMidY + 5); ctx.stroke();
+  // Arrowhead pointing toward artwork edge
+  var dir = artEdge > centerX ? 1 : -1;
+  ctx.beginPath();
+  ctx.moveTo(artEdge, arrowMidY - 5);
+  ctx.lineTo(artEdge + dir * 6, arrowMidY);
+  ctx.lineTo(artEdge, arrowMidY + 5);
+  ctx.closePath();
+  ctx.fill();
+  // Label
   ctx.textAlign = 'center';
   ctx.font = 'bold 11px sans-serif';
-  var hLabelX = (centerX + artEdge) / 2;
-  ctx.fillText(fromCenterCm > 0 ? fromCenterCm + ' cm' : (w / (SHIRT_BODY.w / SHIRT_CM_W)).toFixed(1) + ' cm', hLabelX, arrowY2 + 16);
+  var hMid = (centerX + artEdge) / 2;
+  var hLabel = fromCenterCm > 0 ? fromCenterCm + ' cm' : '—';
+  ctx.fillText(hLabel, hMid, arrowMidY - 8);
 
-  // 5. Width arrow below box
-  var arrowY3 = y + h + 22;
+  // 5. Width arrow — below the artwork box
+  var arrowY3 = y + h + 18;
   ctx.beginPath(); ctx.moveTo(x, arrowY3); ctx.lineTo(x + w, arrowY3); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(x, arrowY3 - 4); ctx.lineTo(x, arrowY3 + 4); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(x + w, arrowY3 - 4); ctx.lineTo(x + w, arrowY3 + 4); ctx.stroke();
+  // Arrowheads
+  ctx.beginPath(); ctx.moveTo(x + 6, arrowY3 - 5); ctx.lineTo(x, arrowY3); ctx.lineTo(x + 6, arrowY3 + 5); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(x + w - 6, arrowY3 - 5); ctx.lineTo(x + w, arrowY3); ctx.lineTo(x + w - 6, arrowY3 + 5); ctx.fill();
   ctx.textAlign = 'center';
   ctx.fillText(widthCm + ' cm', x + w / 2, arrowY3 + 14);
 
-  // 6. Label tag
+  // 6. Label tag above artwork
   ctx.textAlign = 'left';
   ctx.font = 'bold 11px sans-serif';
   var tw = ctx.measureText(label).width + 10;
   ctx.fillStyle = RED;
-  ctx.fillRect(x, y - 18, tw, 16);
+  ctx.fillRect(x, y - 20, tw, 17);
   ctx.fillStyle = '#fff';
-  ctx.fillText(label, x + 5, y - 5);
+  ctx.fillText(label, x + 5, y - 6);
 
   ctx.restore();
 }
@@ -727,17 +745,161 @@ async function generatePDF() {
     doc.setDrawColor(20,20,20);doc.setLineWidth(1);
     doc.line(M,PH-M,PW-M,PH-M);
 
-    // PAGE 2 — Placements
-    doc.addPage();
-    drawHeader();
-    doc.setFont('helvetica','bold');doc.setFontSize(14);doc.setTextColor(20,20,20);
-    doc.text('PRINT AND EMBROIDERY DETAILS',M,M+26);
-    var by=M+30;
-    doc.setFillColor(248,248,248);doc.setDrawColor(180,180,180);doc.setLineWidth(0.3);
-    doc.rect(M,by,105,130,'FD');
-    doc.text('Front',M+52,by+68,{align:'center'});
-    doc.rect(M+110,by,105,130,'FD');
-    doc.text('Back',M+162,by+68,{align:'center'});
+    // PAGE 2 — Front Decoration
+    if(v('frontTechnique')) {
+      doc.addPage();
+      drawHeader();
+      doc.setFont('helvetica','bold');doc.setFontSize(16);doc.setTextColor(20,20,20);
+      doc.text('Front Decoration Details',M,M+26);
+
+      // Left: mockup snapshot
+      var mfc = document.getElementById('mockupFront');
+      var mockW = 72; var mockH = 80;
+      if(mfc && v('garmentType')==='T-Shirt') {
+        try {
+          var mfUrl = mfc.toDataURL('image/png');
+          doc.setFillColor(248,248,248);doc.setDrawColor(200,200,200);doc.setLineWidth(0.3);
+          doc.rect(M, M+28, mockW, mockH, 'FD');
+          doc.addImage(mfUrl, 'PNG', M, M+28, mockW, mockH);
+          doc.setFont('helvetica','normal');doc.setFontSize(6);doc.setTextColor(150,150,150);
+          doc.text('Placement preview', M+mockW/2, M+28+mockH+4, {align:'center'});
+        } catch(e) {}
+      }
+
+      // Center: client artwork
+      var artX = M + mockW + 6;
+      var artW2 = 110;
+      var artY = M+28;
+      if(frontImgs.length > 0) {
+        doc.setFillColor(252,252,252);doc.setDrawColor(220,220,220);doc.setLineWidth(0.3);
+        doc.rect(artX, artY, artW2, mockH, 'FD');
+        placeImg(frontImgs[0], artX+2, artY+2, artW2-4, mockH-4);
+        doc.setFont('helvetica','normal');doc.setFontSize(6);doc.setTextColor(150,150,150);
+        doc.text('Artwork', artX+artW2/2, artY+mockH+4, {align:'center'});
+      } else {
+        doc.setFillColor(248,248,248);doc.setDrawColor(200,200,200);doc.setLineWidth(0.3);
+        doc.rect(artX, artY, artW2, mockH, 'FD');
+        doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(180,180,180);
+        doc.text('[No artwork uploaded]', artX+artW2/2, artY+mockH/2, {align:'center'});
+      }
+
+      // Right: info panel
+      var px = artX + artW2 + 8;
+      var infoW = PW - M - px;
+      doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(20,20,20);
+      doc.text('FRONT DECORATION', px, M+32);
+      var frontPlaEl = document.getElementById('frontPlacement');
+      var frontPlaText = frontPlaEl ? frontPlaEl.options[frontPlaEl.selectedIndex].text : '';
+      var fW=n('frontWidth'),fT=n('frontTop'),fC=n('frontCenter');
+      var infoRows = [
+        ['Technique', v('frontTechnique')],
+        ['Placement', frontPlaText],
+        ['Width', fW ? fW+' cm' : '-'],
+        ['Distance from top', fT ? fT+' cm' : '-'],
+        ['Distance from center', fC ? fC+' cm' : 'Centered'],
+        ['Notes', v('frontNotes')||'-'],
+      ];
+      var iry = M+38;
+      infoRows.forEach(function(row) {
+        doc.setFillColor(245,242,238);doc.setDrawColor(220,215,210);doc.setLineWidth(0.2);
+        doc.rect(px, iry, infoW, 11, 'FD');
+        doc.setFont('helvetica','normal');doc.setFontSize(6);doc.setTextColor(100,100,100);
+        doc.text(row[0], px+2, iry+4);
+        doc.setFont('helvetica','bold');doc.setFontSize(7.5);doc.setTextColor(20,20,20);
+        var val = String(row[1]||'—');
+        doc.text(val, px+2, iry+9);
+        iry += 13;
+      });
+
+      // Pantones
+      iry += 4;
+      doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(20,20,20);
+      doc.text('Colors (Pantone TPG)', px, iry);
+      drawPantone(px, iry+4, v('frontColor1')||'#f0f0f0', v('frontPantoneNum1'), v('frontPantoneName1'));
+      if(v('frontPantoneNum2')) drawPantone(px+42, iry+4, v('frontColor2')||'#f0f0f0', v('frontPantoneNum2'), v('frontPantoneName2'));
+      if(v('frontPantoneNum3')) drawPantone(px+84, iry+4, v('frontColor3')||'#f0f0f0', v('frontPantoneNum3'), v('frontPantoneName3'));
+
+      doc.setDrawColor(20,20,20);doc.setLineWidth(1);
+      doc.line(M, PH-M, PW-M, PH-M);
+    }
+
+    // PAGE 3 — Back Decoration
+    if(v('backTechnique')) {
+      doc.addPage();
+      drawHeader();
+      doc.setFont('helvetica','bold');doc.setFontSize(16);doc.setTextColor(20,20,20);
+      doc.text('Back Decoration Details',M,M+26);
+
+      // Left: mockup snapshot
+      var mbc = document.getElementById('mockupBack');
+      var mockW3 = 72; var mockH3 = 80;
+      if(mbc && v('garmentType')==='T-Shirt') {
+        try {
+          var mbUrl = mbc.toDataURL('image/png');
+          doc.setFillColor(248,248,248);doc.setDrawColor(200,200,200);doc.setLineWidth(0.3);
+          doc.rect(M, M+28, mockW3, mockH3, 'FD');
+          doc.addImage(mbUrl, 'PNG', M, M+28, mockW3, mockH3);
+          doc.setFont('helvetica','normal');doc.setFontSize(6);doc.setTextColor(150,150,150);
+          doc.text('Placement preview', M+mockW3/2, M+28+mockH3+4, {align:'center'});
+        } catch(e) {}
+      }
+
+      // Center: client artwork
+      var artX3 = M + mockW3 + 6;
+      var artW3 = 110;
+      var artY3 = M+28;
+      if(backImgs.length > 0) {
+        doc.setFillColor(252,252,252);doc.setDrawColor(220,220,220);doc.setLineWidth(0.3);
+        doc.rect(artX3, artY3, artW3, mockH3, 'FD');
+        placeImg(backImgs[0], artX3+2, artY3+2, artW3-4, mockH3-4);
+        doc.setFont('helvetica','normal');doc.setFontSize(6);doc.setTextColor(150,150,150);
+        doc.text('Artwork', artX3+artW3/2, artY3+mockH3+4, {align:'center'});
+      } else {
+        doc.setFillColor(248,248,248);doc.setDrawColor(200,200,200);doc.setLineWidth(0.3);
+        doc.rect(artX3, artY3, artW3, mockH3, 'FD');
+        doc.setFont('helvetica','normal');doc.setFontSize(8);doc.setTextColor(180,180,180);
+        doc.text('[No artwork uploaded]', artX3+artW3/2, artY3+mockH3/2, {align:'center'});
+      }
+
+      // Right: info panel
+      var px3 = artX3 + artW3 + 8;
+      var infoW3 = PW - M - px3;
+      doc.setFont('helvetica','bold');doc.setFontSize(8);doc.setTextColor(20,20,20);
+      doc.text('BACK DECORATION', px3, M+32);
+      var backPlaEl = document.getElementById('backPlacement');
+      var backPlaText = backPlaEl ? backPlaEl.options[backPlaEl.selectedIndex].text : '';
+      var backW = n('backWidth'); var backT = n('backTop'); var backC = n('backCenter');
+      var infoRows3 = [
+        ['Technique', v('backTechnique')],
+        ['Placement', backPlaText],
+        ['Width', backW ? (backW + ' cm') : '-'],
+        ['Distance from top', backT ? (backT + ' cm') : '-'],
+        ['Distance from center', backC ? (backC + ' cm') : 'Centered'],
+        ['Notes', v('backNotes') || '-'],
+      ];
+      var iry3 = M+38;
+      infoRows3.forEach(function(row) {
+        doc.setFillColor(245,242,238);doc.setDrawColor(220,215,210);doc.setLineWidth(0.2);
+        doc.rect(px3, iry3, infoW3, 11, 'FD');
+        doc.setFont('helvetica','normal');doc.setFontSize(6);doc.setTextColor(100,100,100);
+        doc.text(row[0], px3+2, iry3+4);
+        doc.setFont('helvetica','bold');doc.setFontSize(7.5);doc.setTextColor(20,20,20);
+        var val3 = String(row[1]||'—');
+        doc.text(val3, px3+2, iry3+9);
+        iry3 += 13;
+      });
+
+      iry3 += 4;
+      doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(20,20,20);
+      doc.text('Colors (Pantone TPG)', px3, iry3);
+      drawPantone(px3, iry3+4, v('backColor1')||'#f0f0f0', v('backPantoneNum1'), v('backPantoneName1'));
+      if(v('backPantoneNum2')) drawPantone(px3+42, iry3+4, v('backColor2')||'#f0f0f0', v('backPantoneNum2'), v('backPantoneName2'));
+      if(v('backPantoneNum3')) drawPantone(px3+84, iry3+4, v('backColor3')||'#f0f0f0', v('backPantoneNum3'), v('backPantoneName3'));
+
+      doc.setDrawColor(20,20,20);doc.setLineWidth(1);
+      doc.line(M, PH-M, PW-M, PH-M);
+    }
+
     // PAGE 5 — Label
     if(v('neckLabelType')||v('neckLabelSize')||v('neckLabelNotes')||lblImgs.length>0){
       doc.addPage();
