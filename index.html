@@ -416,6 +416,10 @@ var SHIRT_BODY = {x:80, y:60, w:340, h:430};
 var COLLAR_Y = 95;
 var SHIRT_CM_H = 70;
 var SHIRT_CM_W = 55;
+// HPS = High Point Shoulder — top of shoulder where it meets the neckline
+// viewer's LEFT = wearer's RIGHT chest; viewer's RIGHT = wearer's LEFT chest
+var HPS_VIEWER_LEFT = {x: 142, y: 82};   // wearer's right shoulder
+var HPS_VIEWER_RIGHT = {x: 358, y: 82};  // wearer's left shoulder
 
 function cmToCanvas(widthCm, topCm, placement, fromCenterCm) {
   var scaleX = SHIRT_BODY.w / SHIRT_CM_W;
@@ -426,31 +430,40 @@ function cmToCanvas(widthCm, topCm, placement, fromCenterCm) {
   var artTop = COLLAR_Y + (topCm * scaleY);
   var artLeft;
   var fromCenter = (fromCenterCm || 0) * scaleX;
+  // HPS point: the shoulder on the SAME side as the artwork
+  var hps;
   if (placement === 'left') {
-    // "Left chest when worn" = RIGHT side of the image (viewer's left is wearer's right)
+    // wearer left chest = viewer RIGHT side
     artLeft = centerX + fromCenter;
+    hps = HPS_VIEWER_RIGHT;
   } else if (placement === 'right') {
-    // "Right chest when worn" = LEFT side of the image
+    // wearer right chest = viewer LEFT side
     artLeft = centerX - fromCenter - artW;
+    hps = HPS_VIEWER_LEFT;
   } else {
-    // center
+    // center — use left HPS as industry standard reference
     artLeft = centerX - artW / 2;
+    hps = HPS_VIEWER_LEFT;
   }
-  return {x: artLeft, y: artTop, w: artW, h: artH, centerX: centerX};
+  return {x: artLeft, y: artTop, w: artW, h: artH, centerX: centerX, hps: hps};
 }
 
-function drawAnnotation(ctx, x, y, w, h, label, topCm, widthCm, centerX, fromCenterCm, placement) {
+function drawAnnotation(ctx, x, y, w, h, label, topCm, widthCm, centerX, fromCenterCm, placement, hps) {
   ctx.save();
   var RED = '#e53935';
   var GREY = '#999';
 
-  // 1. Vertical dashed grey center line — from collar down to artwork bottom
+  // hps is the High Point Shoulder on the same side as the artwork
+  var hpsX = hps ? hps.x : centerX;
+  var hpsY = hps ? hps.y : COLLAR_Y;
+
+  // 1. Vertical dashed grey line — from HPS down to artwork bottom (shows the vertical reference)
   ctx.strokeStyle = GREY;
   ctx.lineWidth = 1;
   ctx.setLineDash([4, 3]);
   ctx.beginPath();
-  ctx.moveTo(centerX, COLLAR_Y);
-  ctx.lineTo(centerX, y + h + 30);
+  ctx.moveTo(hpsX, hpsY);
+  ctx.lineTo(hpsX, y + h + 30);
   ctx.stroke();
   ctx.setLineDash([]);
 
@@ -461,26 +474,25 @@ function drawAnnotation(ctx, x, y, w, h, label, topCm, widthCm, centerX, fromCen
   ctx.strokeRect(x, y, w, h);
   ctx.setLineDash([]);
 
-  // 3. Vertical RED arrow — from COLLAR_Y (collar center) down to artwork top
-  //    Goes along the CENTER line of the shirt (same x as centerX)
+  // 3. Vertical RED arrow — from HPS down to top of artwork
   ctx.strokeStyle = RED;
   ctx.fillStyle = RED;
   ctx.lineWidth = 1.5;
 
-  // Line from collar down to artwork top, along center
-  ctx.beginPath(); ctx.moveTo(centerX, COLLAR_Y); ctx.lineTo(centerX, y); ctx.stroke();
-  // Tick at collar top
-  ctx.beginPath(); ctx.moveTo(centerX - 5, COLLAR_Y); ctx.lineTo(centerX + 5, COLLAR_Y); ctx.stroke();
-  // Arrowhead at artwork top (pointing down)
+  ctx.beginPath(); ctx.moveTo(hpsX, hpsY); ctx.lineTo(hpsX, y); ctx.stroke();
+  // Tick at HPS
+  ctx.beginPath(); ctx.moveTo(hpsX - 5, hpsY); ctx.lineTo(hpsX + 5, hpsY); ctx.stroke();
+  // Arrowhead pointing down at artwork top
   ctx.beginPath();
-  ctx.moveTo(centerX - 5, y);
-  ctx.lineTo(centerX, y + 7);
-  ctx.lineTo(centerX + 5, y);
+  ctx.moveTo(hpsX - 5, y);
+  ctx.lineTo(hpsX, y + 7);
+  ctx.lineTo(hpsX + 5, y);
   ctx.closePath();
   ctx.fill();
-  // Distance label — rotated, to the right of the center line
+  // Label — rotated, placed to the side of the arrow
+  var labelSide = (placement === 'left') ? -18 : 18;
   ctx.save();
-  ctx.translate(centerX + 16, COLLAR_Y + (y - COLLAR_Y) / 2);
+  ctx.translate(hpsX + labelSide, hpsY + (y - hpsY) / 2);
   ctx.rotate(-Math.PI / 2);
   ctx.textAlign = 'center';
   ctx.font = 'bold 11px sans-serif';
@@ -548,7 +560,7 @@ function renderFront() {
   var placement = (document.getElementById('frontPlacement')||{value:'left'}).value || 'left';
   if (tech && w && top) {
     var pos = cmToCanvas(w, top, placement, fromCenter);
-    drawAnnotation(ctx, pos.x, pos.y, pos.w, pos.h, tech, top, w, pos.centerX, fromCenter, placement);
+    drawAnnotation(ctx, pos.x, pos.y, pos.w, pos.h, tech, top, w, pos.centerX, fromCenter, placement, pos.hps);
   }
 }
 
@@ -565,7 +577,7 @@ function renderBack() {
   var placement = (document.getElementById('backPlacement')||{value:'center'}).value || 'center';
   if (tech && w && top) {
     var pos = cmToCanvas(w, top, placement, fromCenter);
-    drawAnnotation(ctx, pos.x, pos.y, pos.w, pos.h, tech, top, w, pos.centerX, fromCenter, placement);
+    drawAnnotation(ctx, pos.x, pos.y, pos.w, pos.h, tech, top, w, pos.centerX, fromCenter, placement, pos.hps);
   }
 }
 
