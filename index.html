@@ -419,7 +419,7 @@ var SHIRT_CM_W = 55;
 // HPS = High Point Shoulder — where the shoulder seam meets the neckline
 // Canvas 500x560. Neckline center ~x250. Shoulder/neck junction points:
 var HPS_VIEWER_LEFT = {x: 158, y: 74};   // viewer's left = wearer's RIGHT shoulder
-var HPS_VIEWER_RIGHT = {x: 292, y: 74};  // viewer's right = wearer's LEFT shoulder
+var HPS_VIEWER_RIGHT = {x: 313, y: 74};  // viewer's right = wearer's LEFT shoulder
 
 function cmToCanvas(widthCm, topCm, placement, fromCenterCm) {
   var scaleX = SHIRT_BODY.w / SHIRT_CM_W;
@@ -498,10 +498,10 @@ function drawAnnotation(ctx, x, y, w, h, label, topCm, widthCm, centerX, fromCen
   ctx.fillText(topCm + ' cm', 0, 0);
   ctx.restore();
 
-  // 4. Horizontal RED arrow — from center line to nearest artwork edge
-  //    Shows distance from center to artwork, only when fromCenterCm is set
+  // 4. Horizontal RED arrow — from shirt center to nearest artwork edge
+  //    Drawn at artwork mid-height (avoids overlap with vertical arrow at top)
   var artEdge = (placement === 'right') ? x + w : x;
-  var arrowMidY = y + h / 2;
+  var arrowMidY = y + h + 14; // below the artwork box to avoid overlap
 
   if (fromCenterCm > 0 && placement !== 'center') {
     ctx.beginPath(); ctx.moveTo(centerX, arrowMidY); ctx.lineTo(artEdge, arrowMidY); ctx.stroke();
@@ -520,8 +520,8 @@ function drawAnnotation(ctx, x, y, w, h, label, topCm, widthCm, centerX, fromCen
     ctx.fillText(fromCenterCm + ' cm', (centerX + artEdge) / 2, arrowMidY - 8);
   }
 
-  // 5. Width arrow — below the artwork box
-  var arrowY3 = y + h + 18;
+  // 5. Width arrow — below horizontal arrow
+  var arrowY3 = y + h + 36;
   ctx.beginPath(); ctx.moveTo(x, arrowY3); ctx.lineTo(x + w, arrowY3); ctx.stroke();
   // Arrowheads
   ctx.beginPath(); ctx.moveTo(x + 6, arrowY3 - 5); ctx.lineTo(x, arrowY3); ctx.lineTo(x + 6, arrowY3 + 5); ctx.fill();
