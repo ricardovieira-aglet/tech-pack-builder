@@ -179,10 +179,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--black)
       <div class="placement-item">
         <div class="placement-head"><span>Front Chest Embroidery</span><label style="cursor:pointer;display:flex;align-items:center;gap:6px;font-size:10px"><input type="checkbox" id="embFrontChestActive" style="width:auto"> Include</label></div>
         <div class="placement-body">
+          <div class="field"><label>Placement</label><select id="embFC_placement" onchange="renderMockups&&renderMockups()"><option value="center">Front Center</option><option value="left">Front Left Chest</option><option value="right">Front Right Chest</option></select></div>
           <div class="field"><label>Width (cm)</label><input type="number" step="0.5" id="embFC_w" placeholder="e.g. 10"></div>
-          <div class="field"><label>Height (cm)</label><input type="number" step="0.5" id="embFC_h" placeholder="e.g. 4"></div>
           <div class="field"><label>Distance from top (cm)</label><input type="number" step="0.5" id="embFC_top" placeholder="e.g. 11"></div>
-          <div class="field"><label>Distance from left (cm)</label><input type="number" step="0.5" id="embFC_left" placeholder="e.g. 21"></div>
+          <div class="field">&nbsp;</div>
           <div class="field" style="grid-column:span 4"><label>Notes</label><textarea id="embFC_notes" placeholder="e.g. Brand logo, 3D puff embroidery"></textarea></div>
         </div>
       </div>
@@ -190,9 +190,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--black)
         <div class="placement-head"><span>Back Neck Embroidery</span><label style="cursor:pointer;display:flex;align-items:center;gap:6px;font-size:10px"><input type="checkbox" id="embBackNeckActive" style="width:auto"> Include</label></div>
         <div class="placement-body">
           <div class="field"><label>Width (cm)</label><input type="number" step="0.5" id="embBN_w" placeholder="e.g. 6"></div>
-          <div class="field"><label>Height (cm)</label><input type="number" step="0.5" id="embBN_h" placeholder="e.g. 3"></div>
           <div class="field"><label>Distance from collar (cm)</label><input type="number" step="0.5" id="embBN_top" placeholder="e.g. 5"></div>
           <div class="field"><label>Centered?</label><select id="embBN_center"><option value="yes">Yes, centered</option><option value="no">No, specify</option></select></div>
+          <div class="field">&nbsp;</div>
           <div class="field" style="grid-column:span 4"><label>Notes</label><textarea id="embBN_notes" placeholder="e.g. Small logo hit"></textarea></div>
         </div>
       </div>
@@ -222,20 +222,20 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--black)
       <div class="placement-item">
         <div class="placement-head"><span>Front Print</span><label style="cursor:pointer;display:flex;align-items:center;gap:6px;font-size:10px"><input type="checkbox" id="printFrontActive" style="width:auto"> Include</label></div>
         <div class="placement-body">
+          <div class="field"><label>Placement</label><select id="prtF_placement" onchange="renderMockups&&renderMockups()"><option value="center">Front Center</option><option value="left">Front Left</option><option value="right">Front Right</option></select></div>
           <div class="field"><label>Width (cm)</label><input type="number" step="0.5" id="prtF_w" placeholder="e.g. 35"></div>
-          <div class="field"><label>Height (cm)</label><input type="number" step="0.5" id="prtF_h" placeholder="e.g. 40"></div>
           <div class="field"><label>Distance from top (cm)</label><input type="number" step="0.5" id="prtF_top" placeholder="e.g. 10"></div>
-          <div class="field"><label>Centered?</label><select id="prtF_center"><option value="yes">Yes</option><option value="no">No</option></select></div>
+          <div class="field">&nbsp;</div>
           <div class="field" style="grid-column:span 4"><label>Notes</label><textarea id="prtF_notes" placeholder="e.g. Full front graphic"></textarea></div>
         </div>
       </div>
       <div class="placement-item">
         <div class="placement-head"><span>Back Print</span><label style="cursor:pointer;display:flex;align-items:center;gap:6px;font-size:10px"><input type="checkbox" id="printBackActive" style="width:auto"> Include</label></div>
         <div class="placement-body">
+          <div class="field"><label>Placement</label><select id="prtB_placement"><option value="center">Back Center</option><option value="left">Back Left</option><option value="right">Back Right</option></select></div>
           <div class="field"><label>Width (cm)</label><input type="number" step="0.5" id="prtB_w" placeholder="e.g. 35"></div>
-          <div class="field"><label>Height (cm)</label><input type="number" step="0.5" id="prtB_h" placeholder="e.g. 40"></div>
           <div class="field"><label>Distance from top (cm)</label><input type="number" step="0.5" id="prtB_top" placeholder="e.g. 12"></div>
-          <div class="field"><label>Centered?</label><select id="prtB_center"><option value="yes">Yes</option><option value="no">No</option></select></div>
+          <div class="field">&nbsp;</div>
           <div class="field" style="grid-column:span 4"><label>Notes</label><textarea id="prtB_notes" placeholder="e.g. Large back graphic"></textarea></div>
         </div>
       </div>
@@ -347,14 +347,24 @@ var COLLAR_Y = 95;
 var SHIRT_CM_H = 70;
 var SHIRT_CM_W = 55;
 
-function cmToCanvas(widthCm, heightCm, topCm, leftCm) {
+function cmToCanvas(widthCm, topCm, placement) {
   var scaleX = SHIRT_BODY.w / SHIRT_CM_W;
   var scaleY = SHIRT_BODY.h / SHIRT_CM_H;
   var centerX = SHIRT_BODY.x + SHIRT_BODY.w / 2;
+  // Chest area: left chest center ~35% from left, right chest center ~65%
+  var leftChestX = SHIRT_BODY.x + SHIRT_BODY.w * 0.30;
+  var rightChestX = SHIRT_BODY.x + SHIRT_BODY.w * 0.65;
   var artW = widthCm * scaleX;
-  var artH = (heightCm||2) * scaleY;
+  var artH = 20; // fixed height for annotation box
   var artTop = COLLAR_Y + (topCm * scaleY);
-  var artLeft = (leftCm > 0) ? (SHIRT_BODY.x + leftCm * scaleX) : (centerX - artW / 2);
+  var artLeft;
+  if (placement === 'left') {
+    artLeft = leftChestX - artW / 2;
+  } else if (placement === 'right') {
+    artLeft = rightChestX - artW / 2;
+  } else {
+    artLeft = centerX - artW / 2;
+  }
   return {x: artLeft, y: artTop, w: artW, h: artH};
 }
 
@@ -403,12 +413,14 @@ function renderFront() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.drawImage(TSHIRT_IMG, 0, 0, canvas.width, canvas.height);
   if (chk('embFrontChestActive') && n('embFC_w') && n('embFC_top')) {
-    var pos = cmToCanvas(n('embFC_w'), n('embFC_h'), n('embFC_top'), n('embFC_left'));
-    drawAnnotation(ctx, pos.x, pos.y, pos.w, Math.max(pos.h,18), 'Embroidery', n('embFC_top'), n('embFC_w'));
+    var embPlacement = (document.getElementById('embFC_placement')||{}).value || 'left';
+    var pos = cmToCanvas(n('embFC_w'), n('embFC_top'), embPlacement);
+    drawAnnotation(ctx, pos.x, pos.y, pos.w, pos.h, 'Embroidery', n('embFC_top'), n('embFC_w'));
   }
   if (chk('printFrontActive') && n('prtF_w') && n('prtF_top')) {
-    var pos2 = cmToCanvas(n('prtF_w'), n('prtF_h'), n('prtF_top'), 0);
-    drawAnnotation(ctx, pos2.x, pos2.y, pos2.w, Math.max(pos2.h,28), 'Print', n('prtF_top'), n('prtF_w'));
+    var prtPlacement = (document.getElementById('prtF_placement')||{}).value || 'center';
+    var pos2 = cmToCanvas(n('prtF_w'), n('prtF_top'), prtPlacement);
+    drawAnnotation(ctx, pos2.x, pos2.y, pos2.w, pos2.h, 'Print', n('prtF_top'), n('prtF_w'));
   }
 }
 
@@ -419,12 +431,12 @@ function renderBack() {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   ctx.save(); ctx.scale(-1,1); ctx.drawImage(TSHIRT_IMG, -canvas.width, 0, canvas.width, canvas.height); ctx.restore();
   if (chk('embBackNeckActive') && n('embBN_w') && n('embBN_top')) {
-    var pos = cmToCanvas(n('embBN_w'), n('embBN_h'), n('embBN_top'), 0);
-    drawAnnotation(ctx, pos.x, pos.y, pos.w, Math.max(pos.h,14), 'Back Neck', n('embBN_top'), n('embBN_w'));
+    var pos = cmToCanvas(n('embBN_w'), n('embBN_top'), 'center');
+    drawAnnotation(ctx, pos.x, pos.y, pos.w, pos.h, 'Back Neck', n('embBN_top'), n('embBN_w'));
   }
   if (chk('printBackActive') && n('prtB_w') && n('prtB_top')) {
-    var pos2 = cmToCanvas(n('prtB_w'), n('prtB_h'), n('prtB_top'), 0);
-    drawAnnotation(ctx, pos2.x, pos2.y, pos2.w, Math.max(pos2.h,28), 'Print', n('prtB_top'), n('prtB_w'));
+    var pos2 = cmToCanvas(n('prtB_w'), n('prtB_top'), 'center');
+    drawAnnotation(ctx, pos2.x, pos2.y, pos2.w, pos2.h, 'Print', n('prtB_top'), n('prtB_w'));
   }
 }
 
@@ -438,10 +450,10 @@ document.getElementById('garmentType').addEventListener('change', function() {
   else sec.style.display='none';
 });
 
-['embFC_w','embFC_h','embFC_top','embFC_left','embFrontChestActive',
- 'embBN_w','embBN_h','embBN_top','embBackNeckActive',
- 'prtF_w','prtF_h','prtF_top','printFrontActive',
- 'prtB_w','prtB_h','prtB_top','printBackActive'].forEach(function(id) {
+['embFC_w','embFC_top','embFC_placement','embFrontChestActive',
+ 'embBN_w','embBN_top','embBackNeckActive',
+ 'prtF_w','prtF_top','prtF_placement','printFrontActive',
+ 'prtB_w','prtB_top','prtB_placement','printBackActive'].forEach(function(id) {
   var el = document.getElementById(id);
   if (el) {
     el.addEventListener('change', renderMockups);
@@ -620,10 +632,10 @@ async function generatePDF() {
     doc.text('PLACEMENT SUMMARY',sx,by);
     var sy=by+8;
     var placements=[
-      {a:chk('embFrontChestActive'),l:'Front Chest Emb.',w:v('embFC_w'),h:v('embFC_h'),t:v('embFC_top'),note:v('embFC_notes')},
-      {a:chk('embBackNeckActive'),l:'Back Neck Emb.',w:v('embBN_w'),h:v('embBN_h'),t:v('embBN_top'),note:v('embBN_notes')},
-      {a:chk('printFrontActive'),l:'Front Print',w:v('prtF_w'),h:v('prtF_h'),t:v('prtF_top'),note:v('prtF_notes')},
-      {a:chk('printBackActive'),l:'Back Print',w:v('prtB_w'),h:v('prtB_h'),t:v('prtB_top'),note:v('prtB_notes')},
+      {a:chk('embFrontChestActive'),l:'Front Chest Emb. ('+((document.getElementById('embFC_placement')||{value:'center'}).value)+')',w:v('embFC_w'),h:'',t:v('embFC_top'),note:v('embFC_notes')},
+      {a:chk('embBackNeckActive'),l:'Back Neck Emb.',w:v('embBN_w'),h:'',t:v('embBN_top'),note:v('embBN_notes')},
+      {a:chk('printFrontActive'),l:'Front Print ('+((document.getElementById('prtF_placement')||{value:'center'}).value)+')',w:v('prtF_w'),h:'',t:v('prtF_top'),note:v('prtF_notes')},
+      {a:chk('printBackActive'),l:'Back Print',w:v('prtB_w'),h:'',t:v('prtB_top'),note:v('prtB_notes')},
     ];
     placements.filter(function(p){return p.a;}).forEach(function(p){
       doc.setFillColor(245,242,236);doc.setDrawColor(200,195,190);doc.setLineWidth(0.2);
@@ -631,7 +643,7 @@ async function generatePDF() {
       doc.setFont('helvetica','bold');doc.setFontSize(7);doc.setTextColor(20,20,20);
       doc.text(p.l,sx+2,sy+5);
       doc.setFont('helvetica','normal');doc.setFontSize(6.5);doc.setTextColor(60,60,60);
-      var dims=[p.w&&('W:'+p.w+'cm'),p.h&&('H:'+p.h+'cm'),p.t&&('↓'+p.t+'cm from top')].filter(Boolean).join('  ');
+      var dims=[p.w&&('W:'+p.w+'cm'),p.h&&('H:'+p.h+'cm'),p.t&&(p.t+'cm from top')].filter(Boolean).join('  ');
       doc.text(dims,sx+2,sy+10);
       if(p.note){var nl=doc.splitTextToSize(p.note,PW-M-sx-4);doc.text(nl.slice(0,2),sx+2,sy+16);}
       sy+=28;
@@ -669,8 +681,8 @@ async function generatePDF() {
       // Spec table
       var specY=ay+108;
       var spData=[
-        ['Front Chest',v('embFC_w')?(v('embFC_w')+' × '+(v('embFC_h')||'?')+' cm'):'—',v('embFC_top')?(v('embFC_top')+' cm from top'):'—',v('embFC_notes')||'—'],
-        ['Back Neck',v('embBN_w')?(v('embBN_w')+' × '+(v('embBN_h')||'?')+' cm'):'—',v('embBN_top')?(v('embBN_top')+' cm from collar'):'—',v('embBN_notes')||'—'],
+        ['Front Chest',v('embFC_w')?(v('embFC_w')+' cm'):'—',v('embFC_top')?(v('embFC_top')+' cm from top'):'—',v('embFC_notes')||'—'],
+        ['Back Neck',v('embBN_w')?(v('embBN_w')+' cm'):'—',v('embBN_top')?(v('embBN_top')+' cm from collar'):'—',v('embBN_notes')||'—'],
       ];
       var cws=[38,44,50,PW-M*2-132];
       doc.setFillColor(20,20,20);doc.rect(M,specY,PW-M*2,7,'F');
