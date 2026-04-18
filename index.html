@@ -461,27 +461,26 @@ function drawAnnotation(ctx, x, y, w, h, label, topCm, widthCm, centerX, fromCen
   ctx.strokeRect(x, y, w, h);
   ctx.setLineDash([]);
 
-  // 3. Vertical RED arrow — from COLLAR_Y (collar bottom) down to top of artwork
-  //    Arrow starts at collar with a tick, ends at artwork top with a tick
+  // 3. Vertical RED arrow — from COLLAR_Y (collar center) down to artwork top
+  //    Goes along the CENTER line of the shirt (same x as centerX)
   ctx.strokeStyle = RED;
   ctx.fillStyle = RED;
   ctx.lineWidth = 1.5;
 
-  // Line from collar to artwork top, offset left of center so it's visible
-  var vx = centerX - 8;
-  ctx.beginPath(); ctx.moveTo(vx, COLLAR_Y); ctx.lineTo(vx, y); ctx.stroke();
-  // Tick at collar
-  ctx.beginPath(); ctx.moveTo(vx - 5, COLLAR_Y); ctx.lineTo(vx + 5, COLLAR_Y); ctx.stroke();
+  // Line from collar down to artwork top, along center
+  ctx.beginPath(); ctx.moveTo(centerX, COLLAR_Y); ctx.lineTo(centerX, y); ctx.stroke();
+  // Tick at collar top
+  ctx.beginPath(); ctx.moveTo(centerX - 5, COLLAR_Y); ctx.lineTo(centerX + 5, COLLAR_Y); ctx.stroke();
   // Arrowhead at artwork top (pointing down)
   ctx.beginPath();
-  ctx.moveTo(vx - 5, y);
-  ctx.lineTo(vx, y + 6);
-  ctx.lineTo(vx + 5, y);
+  ctx.moveTo(centerX - 5, y);
+  ctx.lineTo(centerX, y + 7);
+  ctx.lineTo(centerX + 5, y);
   ctx.closePath();
   ctx.fill();
-  // Distance label — rotated, to the left of the arrow
+  // Distance label — rotated, to the right of the center line
   ctx.save();
-  ctx.translate(vx - 14, COLLAR_Y + (y - COLLAR_Y) / 2);
+  ctx.translate(centerX + 16, COLLAR_Y + (y - COLLAR_Y) / 2);
   ctx.rotate(-Math.PI / 2);
   ctx.textAlign = 'center';
   ctx.font = 'bold 11px sans-serif';
@@ -489,28 +488,26 @@ function drawAnnotation(ctx, x, y, w, h, label, topCm, widthCm, centerX, fromCen
   ctx.restore();
 
   // 4. Horizontal RED arrow — from center line to nearest artwork edge
-  //    Shows distance from center
-  var artEdge = (placement === 'right') ? x + w : x; // nearest edge to center
-  if (placement === 'center') artEdge = x; // left edge for centered
+  //    Shows distance from center to artwork, only when fromCenterCm is set
+  var artEdge = (placement === 'right') ? x + w : x;
   var arrowMidY = y + h / 2;
 
-  ctx.beginPath(); ctx.moveTo(centerX, arrowMidY); ctx.lineTo(artEdge, arrowMidY); ctx.stroke();
-  // Tick at center
-  ctx.beginPath(); ctx.moveTo(centerX, arrowMidY - 5); ctx.lineTo(centerX, arrowMidY + 5); ctx.stroke();
-  // Arrowhead pointing toward artwork edge
-  var dir = artEdge > centerX ? 1 : -1;
-  ctx.beginPath();
-  ctx.moveTo(artEdge, arrowMidY - 5);
-  ctx.lineTo(artEdge + dir * 6, arrowMidY);
-  ctx.lineTo(artEdge, arrowMidY + 5);
-  ctx.closePath();
-  ctx.fill();
-  // Label
-  ctx.textAlign = 'center';
-  ctx.font = 'bold 11px sans-serif';
-  var hMid = (centerX + artEdge) / 2;
-  var hLabel = fromCenterCm > 0 ? fromCenterCm + ' cm' : '—';
-  ctx.fillText(hLabel, hMid, arrowMidY - 8);
+  if (fromCenterCm > 0 && placement !== 'center') {
+    ctx.beginPath(); ctx.moveTo(centerX, arrowMidY); ctx.lineTo(artEdge, arrowMidY); ctx.stroke();
+    // Tick at center
+    ctx.beginPath(); ctx.moveTo(centerX, arrowMidY - 5); ctx.lineTo(centerX, arrowMidY + 5); ctx.stroke();
+    // Arrowhead at artwork edge
+    var dir = artEdge > centerX ? 1 : -1;
+    ctx.beginPath();
+    ctx.moveTo(artEdge - dir*6, arrowMidY - 4);
+    ctx.lineTo(artEdge, arrowMidY);
+    ctx.lineTo(artEdge - dir*6, arrowMidY + 4);
+    ctx.closePath();
+    ctx.fill();
+    ctx.textAlign = 'center';
+    ctx.font = 'bold 11px sans-serif';
+    ctx.fillText(fromCenterCm + ' cm', (centerX + artEdge) / 2, arrowMidY - 8);
+  }
 
   // 5. Width arrow — below the artwork box
   var arrowY3 = y + h + 18;
