@@ -416,10 +416,10 @@ var SHIRT_BODY = {x:80, y:60, w:340, h:430};
 var COLLAR_Y = 95;
 var SHIRT_CM_H = 70;
 var SHIRT_CM_W = 55;
-// HPS = High Point Shoulder — top of shoulder where it meets the neckline
-// In the image: viewer's LEFT shoulder ≈ x130, viewer's RIGHT shoulder ≈ x370
-var HPS_VIEWER_LEFT = {x: 175, y: 78};   // viewer's left = wearer's RIGHT shoulder
-var HPS_VIEWER_RIGHT = {x: 325, y: 78};  // viewer's right = wearer's LEFT shoulder
+// HPS = High Point Shoulder — where the shoulder seam meets the neckline
+// Canvas 500x560. Neckline center ~x250. Shoulder/neck junction points:
+var HPS_VIEWER_LEFT = {x: 158, y: 74};   // viewer's left = wearer's RIGHT shoulder
+var HPS_VIEWER_RIGHT = {x: 292, y: 74};  // viewer's right = wearer's LEFT shoulder
 
 function cmToCanvas(widthCm, topCm, placement, fromCenterCm) {
   var scaleX = SHIRT_BODY.w / SHIRT_CM_W;
