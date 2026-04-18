@@ -417,9 +417,9 @@ var COLLAR_Y = 95;
 var SHIRT_CM_H = 70;
 var SHIRT_CM_W = 55;
 // HPS = High Point Shoulder — top of shoulder where it meets the neckline
-// viewer's LEFT = wearer's RIGHT chest; viewer's RIGHT = wearer's LEFT chest
-var HPS_VIEWER_LEFT = {x: 142, y: 82};   // wearer's right shoulder
-var HPS_VIEWER_RIGHT = {x: 358, y: 82};  // wearer's left shoulder
+// In the image: viewer's LEFT shoulder ≈ x130, viewer's RIGHT shoulder ≈ x370
+var HPS_VIEWER_LEFT = {x: 175, y: 78};   // viewer's left = wearer's RIGHT shoulder
+var HPS_VIEWER_RIGHT = {x: 325, y: 78};  // viewer's right = wearer's LEFT shoulder
 
 function cmToCanvas(widthCm, topCm, placement, fromCenterCm) {
   var scaleX = SHIRT_BODY.w / SHIRT_CM_W;
@@ -430,14 +430,14 @@ function cmToCanvas(widthCm, topCm, placement, fromCenterCm) {
   var artTop = COLLAR_Y + (topCm * scaleY);
   var artLeft;
   var fromCenter = (fromCenterCm || 0) * scaleX;
-  // HPS point: the shoulder on the SAME side as the artwork
+  // HPS point: the shoulder ABOVE the artwork (same side as artwork)
   var hps;
   if (placement === 'left') {
-    // wearer left chest = viewer RIGHT side
+    // wearer left chest = viewer RIGHT side → use viewer RIGHT HPS
     artLeft = centerX + fromCenter;
     hps = HPS_VIEWER_RIGHT;
   } else if (placement === 'right') {
-    // wearer right chest = viewer LEFT side
+    // wearer right chest = viewer LEFT side → use viewer LEFT HPS
     artLeft = centerX - fromCenter - artW;
     hps = HPS_VIEWER_LEFT;
   } else {
@@ -489,10 +489,9 @@ function drawAnnotation(ctx, x, y, w, h, label, topCm, widthCm, centerX, fromCen
   ctx.lineTo(hpsX + 5, y);
   ctx.closePath();
   ctx.fill();
-  // Label — rotated, placed to the side of the arrow
-  var labelSide = (placement === 'left') ? -18 : 18;
+  // Label — rotated, always to the LEFT of the arrow (between shoulder and neckline)
   ctx.save();
-  ctx.translate(hpsX + labelSide, hpsY + (y - hpsY) / 2);
+  ctx.translate(hpsX - 14, hpsY + (y - hpsY) / 2);
   ctx.rotate(-Math.PI / 2);
   ctx.textAlign = 'center';
   ctx.font = 'bold 11px sans-serif';
