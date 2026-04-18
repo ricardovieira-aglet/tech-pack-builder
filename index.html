@@ -206,6 +206,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--black)
           <label>Distance from top (cm)</label>
           <input type="number" step="0.5" id="frontTop" placeholder="e.g. 11">
         </div>
+        <div class="field">
+          <label>Distance from center (cm)</label>
+          <input type="number" step="0.5" id="frontCenter" placeholder="e.g. 8">
+        </div>
         <div class="field" style="grid-column:span 2">
           <label>Notes</label>
           <input type="text" id="frontNotes" placeholder="e.g. 3D puff, 2 colors">
@@ -262,6 +266,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--black)
         <div class="field">
           <label>Distance from top (cm)</label>
           <input type="number" step="0.5" id="backTop" placeholder="e.g. 12">
+        </div>
+        <div class="field">
+          <label>Distance from center (cm)</label>
+          <input type="number" step="0.5" id="backCenter" placeholder="e.g. 0 if centered">
         </div>
         <div class="field" style="grid-column:span 2">
           <label>Notes</label>
@@ -409,57 +417,101 @@ var COLLAR_Y = 95;
 var SHIRT_CM_H = 70;
 var SHIRT_CM_W = 55;
 
-function cmToCanvas(widthCm, topCm, placement) {
+function cmToCanvas(widthCm, topCm, placement, fromCenterCm) {
   var scaleX = SHIRT_BODY.w / SHIRT_CM_W;
   var scaleY = SHIRT_BODY.h / SHIRT_CM_H;
   var centerX = SHIRT_BODY.x + SHIRT_BODY.w / 2;
-  // Chest area: left chest center ~35% from left, right chest center ~65%
-  var leftChestX = SHIRT_BODY.x + SHIRT_BODY.w * 0.30;
-  var rightChestX = SHIRT_BODY.x + SHIRT_BODY.w * 0.65;
   var artW = widthCm * scaleX;
-  var artH = 20; // fixed height for annotation box
+  var artH = 20;
   var artTop = COLLAR_Y + (topCm * scaleY);
   var artLeft;
+  var fromCenter = (fromCenterCm || 0) * scaleX;
   if (placement === 'left') {
-    artLeft = leftChestX - artW / 2;
+    // "Left chest when worn" = RIGHT side of the image (viewer's left is wearer's right)
+    artLeft = centerX + fromCenter;
   } else if (placement === 'right') {
-    artLeft = rightChestX - artW / 2;
+    // "Right chest when worn" = LEFT side of the image
+    artLeft = centerX - fromCenter - artW;
   } else {
+    // center
     artLeft = centerX - artW / 2;
   }
-  return {x: artLeft, y: artTop, w: artW, h: artH};
+  return {x: artLeft, y: artTop, w: artW, h: artH, centerX: centerX};
 }
 
-function drawAnnotation(ctx, x, y, w, h, label, topCm, widthCm) {
+function drawAnnotation(ctx, x, y, w, h, label, topCm, widthCm, centerX, fromCenterCm, placement) {
   ctx.save();
-  ctx.strokeStyle = '#e53935';
-  ctx.fillStyle = '#e53935';
-  ctx.lineWidth = 1.5;
-  ctx.font = 'bold 12px DM Sans, sans-serif';
-  // Width arrow
-  var arrowY = y + h + 12;
-  ctx.beginPath(); ctx.moveTo(x, arrowY); ctx.lineTo(x+w, arrowY); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(x, arrowY-4); ctx.lineTo(x, arrowY+4); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(x+w, arrowY-4); ctx.lineTo(x+w, arrowY+4); ctx.stroke();
-  ctx.textAlign = 'center';
-  ctx.fillText(widthCm+' cm', x+w/2, arrowY+14);
-  // Height arrow
-  var arrowX = x - 16;
-  ctx.beginPath(); ctx.moveTo(arrowX, COLLAR_Y); ctx.lineTo(arrowX, y); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(arrowX-4, COLLAR_Y); ctx.lineTo(arrowX+4, COLLAR_Y); ctx.stroke();
-  ctx.beginPath(); ctx.moveTo(arrowX-4, y); ctx.lineTo(arrowX+4, y); ctx.stroke();
-  ctx.save(); ctx.translate(arrowX-12, COLLAR_Y+(y-COLLAR_Y)/2); ctx.rotate(-Math.PI/2); ctx.textAlign='center'; ctx.fillText(topCm+' cm',0,0); ctx.restore();
-  // Dashed box
-  ctx.setLineDash([4,3]);
+  var RED = '#e53935';
+  var GREY = '#888';
+  ctx.font = 'bold 12px sans-serif';
+
+  // 1. Vertical dashed center line (grey)
+  ctx.strokeStyle = GREY;
+  ctx.lineWidth = 1;
+  ctx.setLineDash([4, 3]);
+  ctx.beginPath();
+  ctx.moveTo(centerX, COLLAR_Y - 10);
+  ctx.lineTo(centerX, y + h + 20);
+  ctx.stroke();
+  ctx.setLineDash([]);
+
+  // 2. Dashed artwork box (grey)
+  ctx.strokeStyle = GREY;
+  ctx.lineWidth = 1;
+  ctx.setLineDash([4, 3]);
   ctx.strokeRect(x, y, w, h);
   ctx.setLineDash([]);
-  // Label tag
-  var tw = ctx.measureText(label).width + 10;
-  ctx.fillStyle = '#e53935';
-  ctx.fillRect(x, y-18, tw, 16);
-  ctx.fillStyle = '#fff';
+
+  // 3. Vertical red arrow: from collar to top of artwork
+  ctx.strokeStyle = RED;
+  ctx.fillStyle = RED;
+  ctx.lineWidth = 1.5;
+  var vx = centerX; // draw vertical arrow along center line
+  ctx.beginPath(); ctx.moveTo(vx, COLLAR_Y); ctx.lineTo(vx, y); ctx.stroke();
+  // Arrow heads
+  ctx.beginPath(); ctx.moveTo(vx-4, COLLAR_Y); ctx.lineTo(vx+4, COLLAR_Y); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(vx-4, y); ctx.lineTo(vx+4, y); ctx.stroke();
+  // Label
+  ctx.save();
+  ctx.translate(vx + 10, COLLAR_Y + (y - COLLAR_Y) / 2);
+  ctx.rotate(-Math.PI / 2);
+  ctx.textAlign = 'center';
+  ctx.font = 'bold 11px sans-serif';
+  ctx.fillText(topCm + ' cm', 0, 0);
+  ctx.restore();
+
+  // 4. Horizontal red arrow: from center to artwork edge
+  var artEdge = (placement === 'left' || placement === 'center') ? x : x + w;
+  var arrowY2 = y + h / 2;
+  ctx.beginPath(); ctx.moveTo(centerX, arrowY2); ctx.lineTo(artEdge, arrowY2); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(centerX - 4, arrowY2 - 4); ctx.lineTo(centerX + 4, arrowY2 + 4); ctx.stroke();
+  // tick at center
+  ctx.beginPath(); ctx.moveTo(centerX, arrowY2 - 5); ctx.lineTo(centerX, arrowY2 + 5); ctx.stroke();
+  // tick at art edge
+  ctx.beginPath(); ctx.moveTo(artEdge - 4, arrowY2 - 5); ctx.lineTo(artEdge - 4, arrowY2 + 5); ctx.stroke();
+  // width label below
+  ctx.textAlign = 'center';
+  ctx.font = 'bold 11px sans-serif';
+  var hLabelX = (centerX + artEdge) / 2;
+  ctx.fillText(fromCenterCm > 0 ? fromCenterCm + ' cm' : (w / (SHIRT_BODY.w / SHIRT_CM_W)).toFixed(1) + ' cm', hLabelX, arrowY2 + 16);
+
+  // 5. Width arrow below box
+  var arrowY3 = y + h + 22;
+  ctx.beginPath(); ctx.moveTo(x, arrowY3); ctx.lineTo(x + w, arrowY3); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x, arrowY3 - 4); ctx.lineTo(x, arrowY3 + 4); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(x + w, arrowY3 - 4); ctx.lineTo(x + w, arrowY3 + 4); ctx.stroke();
+  ctx.textAlign = 'center';
+  ctx.fillText(widthCm + ' cm', x + w / 2, arrowY3 + 14);
+
+  // 6. Label tag
   ctx.textAlign = 'left';
-  ctx.fillText(label, x+5, y-5);
+  ctx.font = 'bold 11px sans-serif';
+  var tw = ctx.measureText(label).width + 10;
+  ctx.fillStyle = RED;
+  ctx.fillRect(x, y - 18, tw, 16);
+  ctx.fillStyle = '#fff';
+  ctx.fillText(label, x + 5, y - 5);
+
   ctx.restore();
 }
 
@@ -477,10 +529,11 @@ function renderFront() {
   var tech = v('frontTechnique');
   var w = n('frontWidth');
   var top = n('frontTop');
+  var fromCenter = n('frontCenter');
   var placement = (document.getElementById('frontPlacement')||{value:'left'}).value || 'left';
   if (tech && w && top) {
-    var pos = cmToCanvas(w, top, placement);
-    drawAnnotation(ctx, pos.x, pos.y, pos.w, pos.h, tech, top, w);
+    var pos = cmToCanvas(w, top, placement, fromCenter);
+    drawAnnotation(ctx, pos.x, pos.y, pos.w, pos.h, tech, top, w, pos.centerX, fromCenter, placement);
   }
 }
 
@@ -493,10 +546,11 @@ function renderBack() {
   var tech = v('backTechnique');
   var w = n('backWidth');
   var top = n('backTop');
+  var fromCenter = n('backCenter');
   var placement = (document.getElementById('backPlacement')||{value:'center'}).value || 'center';
   if (tech && w && top) {
-    var pos = cmToCanvas(w, top, placement);
-    drawAnnotation(ctx, pos.x, pos.y, pos.w, pos.h, tech, top, w);
+    var pos = cmToCanvas(w, top, placement, fromCenter);
+    drawAnnotation(ctx, pos.x, pos.y, pos.w, pos.h, tech, top, w, pos.centerX, fromCenter, placement);
   }
 }
 
@@ -510,8 +564,8 @@ document.getElementById('garmentType').addEventListener('change', function() {
   else sec.style.display='none';
 });
 
-['frontTechnique','frontPlacement','frontWidth','frontTop',
- 'backTechnique','backPlacement','backWidth','backTop'].forEach(function(id) {
+['frontTechnique','frontPlacement','frontWidth','frontTop','frontCenter',
+ 'backTechnique','backPlacement','backWidth','backTop','backCenter'].forEach(function(id) {
   var el = document.getElementById(id);
   if (el) {
     el.addEventListener('change', renderMockups);
