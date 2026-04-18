@@ -389,39 +389,28 @@ function showPreviews(input, previewId) {
 
 // ─── MOCKUP DRAWING ─────────────────────────────────────────────────────────
 function getPlacementConfig(placement, widthCm, hpsCm, centerCm) {
-  // Convert cm to px
   var artW = widthCm * SC.pxPerCmX;
-  var artH = 22; // fixed box height for annotation
-
-  // HPS point (where vertical arrow starts)
-  var hps;
-  if (placement === 'left') {
-    // wearer LEFT chest = viewer RIGHT → HPS_RIGHT
-    hps = SC.hpsRight;
-  } else if (placement === 'right') {
-    // wearer RIGHT chest = viewer LEFT → HPS_LEFT
-    hps = SC.hpsLeft;
-  } else {
-    // center → use left HPS as reference
-    hps = SC.hpsLeft;
-  }
-
-  // Artwork top Y: HPS.y + hpsCm * pxPerCmY
-  var artTop = hps.y + hpsCm * SC.pxPerCmY;
-
-  // Artwork left X: depends on placement + distance from center
+  var artH = 22;
   var distPx = (centerCm || 0) * SC.pxPerCmX;
+
+  // Artwork horizontal position
   var artLeft;
   if (placement === 'left') {
-    // artwork is to the RIGHT of center, starting at centerX + distPx
     artLeft = SC.centerX + distPx;
   } else if (placement === 'right') {
-    // artwork is to the LEFT of center, ending at centerX - distPx
     artLeft = SC.centerX - distPx - artW;
   } else {
-    // centered
     artLeft = SC.centerX - artW / 2;
   }
+
+  // HPS x = center of artwork (arrow falls directly above artwork)
+  // HPS y = top of collar (fixed reference point)
+  var hpsX = artLeft + artW / 2;
+  var hpsY = SC.collarY - 8;
+  var hps = { x: hpsX, y: hpsY };
+
+  // Artwork top = HPS y + distance in px
+  var artTop = hpsY + hpsCm * SC.pxPerCmY;
 
   return { hps: hps, artLeft: artLeft, artTop: artTop, artW: artW, artH: artH };
 }
