@@ -54,7 +54,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--black)
 .pantone-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
 .upload-zone{border:2px dashed var(--border);border-radius:var(--radius);padding:28px 20px;text-align:center;cursor:pointer;transition:all 0.15s;position:relative;margin-top:16px}
 .upload-zone:hover,.upload-zone.dragover{border-color:var(--black);background:var(--cream)}
-.upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.upload-zone input[type=file]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;pointer-events:none}
+.upload-zone .upload-click{display:inline-block;margin-top:8px;padding:6px 16px;border:1px solid var(--border);border-radius:var(--radius);font-size:12px;cursor:pointer;background:var(--white)}
 .upload-icon{font-size:24px;margin-bottom:8px}
 .upload-label{font-size:13px;font-weight:500;margin-bottom:4px}
 .upload-sub{font-size:11px;color:var(--muted)}
@@ -219,9 +220,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--black)
       </div>
 
       <div class="divider" style="margin-top:20px">Artwork / Reference File</div>
-      <div class="upload-zone">
-        <input type="file" id="frontFiles" accept="image/*,.ai,.svg,.eps,.pdf" multiple onchange="previewFiles(this,'frontPreview')">
-        <div class="upload-icon">✦</div><div class="upload-label">Drop artwork here</div><div class="upload-sub">PNG, JPG, SVG, AI, EPS — high res preferred</div>
+      <div class="upload-zone" id="frontUploadZone">
+        <div class="upload-icon">✦</div>
+        <div class="upload-label">Drag files here or click to browse</div>
+        <div class="upload-sub">PNG, JPG, SVG, AI, EPS — high res preferred</div>
+        <label class="upload-click">Choose file<input type="file" id="frontFiles" accept="image/*,.ai,.svg,.eps,.pdf" multiple style="display:none" onchange="previewFiles(this,'frontPreview')"></label>
         <div class="upload-preview" id="frontPreview"></div>
       </div>
     </div>
@@ -274,9 +277,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--black)
       </div>
 
       <div class="divider" style="margin-top:20px">Artwork / Reference File</div>
-      <div class="upload-zone">
-        <input type="file" id="backFiles" accept="image/*,.ai,.svg,.eps,.pdf" multiple onchange="previewFiles(this,'backPreview')">
-        <div class="upload-icon">✦</div><div class="upload-label">Drop artwork here</div><div class="upload-sub">PNG, JPG, SVG, AI, EPS — high res preferred</div>
+      <div class="upload-zone" id="backUploadZone">
+        <div class="upload-icon">✦</div>
+        <div class="upload-label">Drag files here or click to browse</div>
+        <div class="upload-sub">PNG, JPG, SVG, AI, EPS — high res preferred</div>
+        <label class="upload-click">Choose file<input type="file" id="backFiles" accept="image/*,.ai,.svg,.eps,.pdf" multiple style="display:none" onchange="previewFiles(this,'backPreview')"></label>
         <div class="upload-preview" id="backPreview"></div>
       </div>
     </div>
@@ -297,9 +302,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--black)
         <div class="pantone-card"><div class="pantone-swatch" id="lblSwatch2" style="background:#f0f0f0"><input type="color" id="lblColor2" value="#f0f0f0" oninput="updateSwatch('lblSwatch2','lblColor2')"><span>Click to pick</span></div><div class="pantone-fields"><div class="pantone-label">Pantone Number</div><input type="text" id="lblPantoneNum2" placeholder="e.g. 19-0303 TPG"><div class="pantone-label">Color Name</div><input type="text" id="lblPantoneName2" placeholder="e.g. Jet Black"></div></div>
       </div>
       <div class="divider" style="margin-top:20px">Label Artwork</div>
-      <div class="upload-zone">
-        <input type="file" id="lblFiles" accept="image/*,.ai,.svg,.eps,.pdf" multiple onchange="previewFiles(this,'lblPreview')">
-        <div class="upload-icon">✦</div><div class="upload-label">Drop label artwork here</div><div class="upload-sub">PNG, JPG, SVG, AI, EPS</div>
+      <div class="upload-zone" id="lblUploadZone">
+        <div class="upload-icon">✦</div>
+        <div class="upload-label">Drag files here or click to browse</div>
+        <div class="upload-sub">PNG, JPG, SVG, AI, EPS</div>
+        <label class="upload-click">Choose file<input type="file" id="lblFiles" accept="image/*,.ai,.svg,.eps,.pdf" multiple style="display:none" onchange="previewFiles(this,'lblPreview')"></label>
         <div class="upload-preview" id="lblPreview"></div>
       </div>
     </div>
@@ -365,6 +372,33 @@ function previewFiles(input, previewId) {
     }
   });
 }
+
+function setupDropZone(zoneId, inputId, previewId) {
+  var zone = document.getElementById(zoneId);
+  if (!zone) return;
+  zone.addEventListener('dragover', function(e) {
+    e.preventDefault(); e.stopPropagation();
+    zone.classList.add('dragover');
+  });
+  zone.addEventListener('dragleave', function(e) {
+    e.preventDefault(); e.stopPropagation();
+    zone.classList.remove('dragover');
+  });
+  zone.addEventListener('drop', function(e) {
+    e.preventDefault(); e.stopPropagation();
+    zone.classList.remove('dragover');
+    var input = document.getElementById(inputId);
+    var files = e.dataTransfer.files;
+    var dt = new DataTransfer();
+    Array.from(files).forEach(function(f) { dt.items.add(f); });
+    input.files = dt.files;
+    previewFiles(input, previewId);
+  });
+}
+
+setupDropZone('frontUploadZone', 'frontFiles', 'frontPreview');
+setupDropZone('backUploadZone', 'backFiles', 'backPreview');
+setupDropZone('lblUploadZone', 'lblFiles', 'lblPreview');
 
 // ── MOCKUP ───────────────────────────────────────────────
 var TSHIRT_IMG = new Image();
