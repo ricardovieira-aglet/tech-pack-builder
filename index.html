@@ -40,12 +40,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--black)
 .size-table td{border:1px solid var(--border);padding:0}
 .size-table td input{border:none;padding:9px;font-size:14px;width:100%;text-align:center;background:transparent;outline:none;font-family:'DM Sans',sans-serif}
 .size-table td input:focus{background:var(--cream)}
-.pantone-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:4px}
-.pantone-card{flex:1;min-width:150px;border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
-.pantone-swatch{height:50px;display:flex;align-items:center;justify-content:center;font-size:10px;font-family:'DM Mono',monospace;color:rgba(0,0,0,0.4);cursor:pointer;position:relative}
-.pantone-swatch input[type=color]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%;pointer-events:none}
-.pantone-swatch .sw-click{position:absolute;inset:0;cursor:pointer}
-.pantone-fields{padding:8px 10px;display:flex;flex-direction:column;gap:4px}
+.pantone-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:4px}
+.pantone-card{border:1px solid var(--border);border-radius:var(--radius);padding:8px 10px;display:flex;flex-direction:column;gap:4px}
+.pantone-fields{display:flex;flex-direction:column;gap:4px}
 .pantone-fields input{border:1px solid var(--border);border-radius:var(--radius);padding:5px 7px;font-size:12px;width:100%;font-family:'DM Sans',sans-serif;outline:none}
 .pantone-fields input:focus{border-color:var(--black)}
 .pantone-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
@@ -199,9 +196,14 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--black)
       </div>
       <div class="divider">Colors (Pantone TPG)</div>
       <div class="pantone-row" id="frontPantones">
-        <div class="pantone-card"><div class="pantone-swatch" id="fSw1" style="background:#f0f0f0"><input type="color" id="fCol1" value="#f0f0f0"><label class="sw-click" onclick="document.getElementById('fCol1').click()"></label></div><div class="pantone-fields"><div class="pantone-label">Pantone No.</div><input type="text" id="fPN1" placeholder="e.g. 11-4001 TPG"><div class="pantone-label">Color Name</div><input type="text" id="fPName1" placeholder="e.g. Brilliant White"></div></div>
-        <div class="pantone-card"><div class="pantone-swatch" id="fSw2" style="background:#f0f0f0"><input type="color" id="fCol2" value="#f0f0f0"><label class="sw-click" onclick="document.getElementById('fCol2').click()"></label></div><div class="pantone-fields"><div class="pantone-label">Pantone No.</div><input type="text" id="fPN2" placeholder="e.g. 19-0303 TPG"><div class="pantone-label">Color Name</div><input type="text" id="fPName2" placeholder="e.g. Jet Black"></div></div>
-        <div class="pantone-card"><div class="pantone-swatch" id="fSw3" style="background:#f0f0f0"><input type="color" id="fCol3" value="#f0f0f0"><label class="sw-click" onclick="document.getElementById('fCol3').click()"></label></div><div class="pantone-fields"><div class="pantone-label">Pantone No.</div><input type="text" id="fPN3" placeholder="Optional"><div class="pantone-label">Color Name</div><input type="text" id="fPName3" placeholder="Optional"></div></div>
+        <div class="pantone-card"><div class="pantone-fields"><div class="pantone-label">Pantone No.</div><input type="text" id="fPN1" placeholder="e.g. 11-4001 TPG"><div class="pantone-label">Color Name</div><input type="text" id="fPName1" placeholder="e.g. Brilliant White"></div></div>
+        <div class="pantone-card"><div class="pantone-fields"><div class="pantone-label">Pantone No.</div><input type="text" id="fPN2" placeholder="e.g. 19-0303 TPG"><div class="pantone-label">Color Name</div><input type="text" id="fPName2" placeholder="e.g. Jet Black"></div></div>
+        <div class="pantone-card"><div class="pantone-fields"><div class="pantone-label">Pantone No.</div><input type="text" id="fPN3" placeholder="Optional"><div class="pantone-label">Color Name</div><input type="text" id="fPName3" placeholder="Optional"></div></div>
+        <div class="pantone-card"><div class="pantone-fields"><div class="pantone-label">Pantone No.</div><input type="text" id="fPN4" placeholder="Optional"><div class="pantone-label">Color Name</div><input type="text" id="fPName4" placeholder="Optional"></div></div>
+        <div class="pantone-card"><div class="pantone-fields"><div class="pantone-label">Pantone No.</div><input type="text" id="fPN5" placeholder="Optional"><div class="pantone-label">Color Name</div><input type="text" id="fPName5" placeholder="Optional"></div></div>
+        <div class="pantone-card"><div class="pantone-fields"><div class="pantone-label">Pantone No.</div><input type="text" id="fPN6" placeholder="Optional"><div class="pantone-label">Color Name</div><input type="text" id="fPName6" placeholder="Optional"></div></div>
+        <div class="pantone-card"><div class="pantone-fields"><div class="pantone-label">Pantone No.</div><input type="text" id="fPN7" placeholder="Optional"><div class="pantone-label">Color Name</div><input type="text" id="fPName7" placeholder="Optional"></div></div>
+        <div class="pantone-card"><div class="pantone-fields"><div class="pantone-label">Pantone No.</div><input type="text" id="fPN8" placeholder="Optional"><div class="pantone-label">Color Name</div><input type="text" id="fPName8" placeholder="Optional"></div></div>
       </div>
       <div class="divider" style="margin-top:18px">Artwork File</div>
       <div class="upload-zone" id="frontZone">
@@ -246,9 +248,14 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--black)
       </div>
       <div class="divider">Colors (Pantone TPG)</div>
       <div class="pantone-row">
-        <div class="pantone-card"><div class="pantone-swatch" id="bSw1" style="background:#f0f0f0"><input type="color" id="bCol1" value="#f0f0f0"><label class="sw-click" onclick="document.getElementById('bCol1').click()"></label></div><div class="pantone-fields"><div class="pantone-label">Pantone No.</div><input type="text" id="bPN1" placeholder="e.g. 11-4001 TPG"><div class="pantone-label">Color Name</div><input type="text" id="bPName1" placeholder="e.g. Brilliant White"></div></div>
-        <div class="pantone-card"><div class="pantone-swatch" id="bSw2" style="background:#f0f0f0"><input type="color" id="bCol2" value="#f0f0f0"><label class="sw-click" onclick="document.getElementById('bCol2').click()"></label></div><div class="pantone-fields"><div class="pantone-label">Pantone No.</div><input type="text" id="bPN2" placeholder="e.g. 19-0303 TPG"><div class="pantone-label">Color Name</div><input type="text" id="bPName2" placeholder="e.g. Jet Black"></div></div>
-        <div class="pantone-card"><div class="pantone-swatch" id="bSw3" style="background:#f0f0f0"><input type="color" id="bCol3" value="#f0f0f0"><label class="sw-click" onclick="document.getElementById('bCol3').click()"></label></div><div class="pantone-fields"><div class="pantone-label">Pantone No.</div><input type="text" id="bPN3" placeholder="Optional"><div class="pantone-label">Color Name</div><input type="text" id="bPName3" placeholder="Optional"></div></div>
+        <div class="pantone-card"><div class="pantone-fields"><div class="pantone-label">Pantone No.</div><input type="text" id="bPN1" placeholder="e.g. 11-4001 TPG"><div class="pantone-label">Color Name</div><input type="text" id="bPName1" placeholder="e.g. Brilliant White"></div></div>
+        <div class="pantone-card"><div class="pantone-fields"><div class="pantone-label">Pantone No.</div><input type="text" id="bPN2" placeholder="e.g. 19-0303 TPG"><div class="pantone-label">Color Name</div><input type="text" id="bPName2" placeholder="e.g. Jet Black"></div></div>
+        <div class="pantone-card"><div class="pantone-fields"><div class="pantone-label">Pantone No.</div><input type="text" id="bPN3" placeholder="Optional"><div class="pantone-label">Color Name</div><input type="text" id="bPName3" placeholder="Optional"></div></div>
+        <div class="pantone-card"><div class="pantone-fields"><div class="pantone-label">Pantone No.</div><input type="text" id="bPN4" placeholder="Optional"><div class="pantone-label">Color Name</div><input type="text" id="bPName4" placeholder="Optional"></div></div>
+        <div class="pantone-card"><div class="pantone-fields"><div class="pantone-label">Pantone No.</div><input type="text" id="bPN5" placeholder="Optional"><div class="pantone-label">Color Name</div><input type="text" id="bPName5" placeholder="Optional"></div></div>
+        <div class="pantone-card"><div class="pantone-fields"><div class="pantone-label">Pantone No.</div><input type="text" id="bPN6" placeholder="Optional"><div class="pantone-label">Color Name</div><input type="text" id="bPName6" placeholder="Optional"></div></div>
+        <div class="pantone-card"><div class="pantone-fields"><div class="pantone-label">Pantone No.</div><input type="text" id="bPN7" placeholder="Optional"><div class="pantone-label">Color Name</div><input type="text" id="bPName7" placeholder="Optional"></div></div>
+        <div class="pantone-card"><div class="pantone-fields"><div class="pantone-label">Pantone No.</div><input type="text" id="bPN8" placeholder="Optional"><div class="pantone-label">Color Name</div><input type="text" id="bPName8" placeholder="Optional"></div></div>
       </div>
       <div class="divider" style="margin-top:18px">Artwork File</div>
       <div class="upload-zone" id="backZone">
@@ -272,8 +279,14 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--black)
       </div>
       <div class="divider" style="margin-top:18px">Label Colors (Pantone TPG)</div>
       <div class="pantone-row">
-        <div class="pantone-card"><div class="pantone-swatch" id="lSw1" style="background:#f0f0f0"><input type="color" id="lCol1" value="#f0f0f0"><label class="sw-click" onclick="document.getElementById('lCol1').click()"></label></div><div class="pantone-fields"><div class="pantone-label">Pantone No.</div><input type="text" id="lPN1" placeholder="e.g. 11-4001 TPG"><div class="pantone-label">Color Name</div><input type="text" id="lPName1" placeholder="e.g. Brilliant White"></div></div>
-        <div class="pantone-card"><div class="pantone-swatch" id="lSw2" style="background:#f0f0f0"><input type="color" id="lCol2" value="#f0f0f0"><label class="sw-click" onclick="document.getElementById('lCol2').click()"></label></div><div class="pantone-fields"><div class="pantone-label">Pantone No.</div><input type="text" id="lPN2" placeholder="e.g. 19-0303 TPG"><div class="pantone-label">Color Name</div><input type="text" id="lPName2" placeholder="e.g. Jet Black"></div></div>
+        <div class="pantone-card"><div class="pantone-fields"><div class="pantone-label">Pantone No.</div><input type="text" id="lPN1" placeholder="e.g. 11-4001 TPG"><div class="pantone-label">Color Name</div><input type="text" id="lPName1" placeholder="e.g. Brilliant White"></div></div>
+        <div class="pantone-card"><div class="pantone-fields"><div class="pantone-label">Pantone No.</div><input type="text" id="lPN2" placeholder="e.g. 19-0303 TPG"><div class="pantone-label">Color Name</div><input type="text" id="lPName2" placeholder="e.g. Jet Black"></div></div>
+        <div class="pantone-card"><div class="pantone-fields"><div class="pantone-label">Pantone No.</div><input type="text" id="lPN3" placeholder="Optional"><div class="pantone-label">Color Name</div><input type="text" id="lPName3" placeholder="Optional"></div></div>
+        <div class="pantone-card"><div class="pantone-fields"><div class="pantone-label">Pantone No.</div><input type="text" id="lPN4" placeholder="Optional"><div class="pantone-label">Color Name</div><input type="text" id="lPName4" placeholder="Optional"></div></div>
+        <div class="pantone-card"><div class="pantone-fields"><div class="pantone-label">Pantone No.</div><input type="text" id="lPN5" placeholder="Optional"><div class="pantone-label">Color Name</div><input type="text" id="lPName5" placeholder="Optional"></div></div>
+        <div class="pantone-card"><div class="pantone-fields"><div class="pantone-label">Pantone No.</div><input type="text" id="lPN6" placeholder="Optional"><div class="pantone-label">Color Name</div><input type="text" id="lPName6" placeholder="Optional"></div></div>
+        <div class="pantone-card"><div class="pantone-fields"><div class="pantone-label">Pantone No.</div><input type="text" id="lPN7" placeholder="Optional"><div class="pantone-label">Color Name</div><input type="text" id="lPName7" placeholder="Optional"></div></div>
+        <div class="pantone-card"><div class="pantone-fields"><div class="pantone-label">Pantone No.</div><input type="text" id="lPN8" placeholder="Optional"><div class="pantone-label">Color Name</div><input type="text" id="lPName8" placeholder="Optional"></div></div>
       </div>
       <div class="divider" style="margin-top:18px">Label Artwork</div>
       <div class="upload-zone" id="lblZone">
@@ -609,10 +622,7 @@ function renderAll() {
 
 // ─── INIT ───────────────────────────────────────────────────────────────────
 document.addEventListener('DOMContentLoaded', function() {
-  // Color swatches
-  [['fCol1','fSw1'],['fCol2','fSw2'],['fCol3','fSw3'],
-   ['bCol1','bSw1'],['bCol2','bSw2'],['bCol3','bSw3'],
-   ['lCol1','lSw1'],['lCol2','lSw2']].forEach(function(p){ setupColorInput(p[0], p[1]); });
+  // Color swatches removed
 
   // Upload zones
   setupUploadZone('frontZone', 'frontFiles', 'frontPreview');
@@ -859,9 +869,14 @@ async function generatePDF() {
       var panY = mockY + 9 + 6*13 + 6;
       doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(20,20,20);
       doc.text('Colors (Pantone TPG)', ipx, panY);
-      drawPantone(ipx, panY+4, v2('fCol1'), v2('fPN1'), v2('fPName1'));
-      if (v2('fPN2')) drawPantone(ipx+32, panY+4, v2('fCol2'), v2('fPN2'), v2('fPName2'));
-      if (v2('fPN3')) drawPantone(ipx+64, panY+4, v2('fCol3'), v2('fPN3'), v2('fPName3'));
+      var fPanX = ipx; var fPanRow = 0;
+      for (var fi=1; fi<=8; fi++) {
+        var fpn = v2('fPN'+fi), fpname = v2('fPName'+fi);
+        if (!fpn && !fpname) continue;
+        var frow = Math.floor(fPanRow/4), fcol = fPanRow%4;
+        drawPantone(ipx + fcol*32, panY+4 + frow*34, '#f0f0f0', fpn, fpname);
+        fPanRow++;
+      }
 
       doc.setDrawColor(20,20,20); doc.setLineWidth(1); doc.line(M, PH-M, PW-M, PH-M);
     }
@@ -931,9 +946,14 @@ async function generatePDF() {
       var panYB = mockYB + 9 + 6*13 + 6;
       doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(20,20,20);
       doc.text('Colors (Pantone TPG)', ipxB, panYB);
-      drawPantone(ipxB, panYB+4, v2('bCol1'), v2('bPN1'), v2('bPName1'));
-      if (v2('bPN2')) drawPantone(ipxB+32, panYB+4, v2('bCol2'), v2('bPN2'), v2('bPName2'));
-      if (v2('bPN3')) drawPantone(ipxB+64, panYB+4, v2('bCol3'), v2('bPN3'), v2('bPName3'));
+      var bPanRow = 0;
+      for (var bi=1; bi<=8; bi++) {
+        var bpn = v2('bPN'+bi), bpname = v2('bPName'+bi);
+        if (!bpn && !bpname) continue;
+        var brow = Math.floor(bPanRow/4), bcol = bPanRow%4;
+        drawPantone(ipxB + bcol*32, panYB+4 + brow*34, '#f0f0f0', bpn, bpname);
+        bPanRow++;
+      }
 
       doc.setDrawColor(20,20,20); doc.setLineWidth(1); doc.line(M, PH-M, PW-M, PH-M);
     }
@@ -959,9 +979,15 @@ async function generatePDF() {
         doc.text(doc.splitTextToSize(v2('neckLabelNotes'), PW-M*2), M, lY+lH+14);
       }
       var lsy = lY+lH+30;
-      doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(20,20,20); doc.text('Colors:', M, lsy);
-      drawPantone(M, lsy+4, v2('lCol1'), v2('lPN1'), v2('lPName1'));
-      if (v2('lPN2')) drawPantone(M+36, lsy+4, v2('lCol2'), v2('lPN2'), v2('lPName2'));
+      doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(20,20,20); doc.text('Colors (Pantone TPG):', M, lsy);
+      var lPanRow = 0;
+      for (var li=1; li<=8; li++) {
+        var lpn = v2('lPN'+li), lpname = v2('lPName'+li);
+        if (!lpn && !lpname) continue;
+        var lrow = Math.floor(lPanRow/4), lcol = lPanRow%4;
+        drawPantone(M + lcol*32, lsy+4 + lrow*34, '#f0f0f0', lpn, lpname);
+        lPanRow++;
+      }
       doc.setDrawColor(20,20,20); doc.setLineWidth(1); doc.line(M, PH-M, PW-M, PH-M);
     }
 
