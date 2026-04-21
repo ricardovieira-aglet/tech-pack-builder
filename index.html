@@ -717,6 +717,9 @@ async function generatePDF() {
 
     function snapCanvas(canvasId) {
       try {
+        // Force re-render to ensure template image is drawn
+        var isFront = canvasId === 'mockupFront';
+        renderCanvas(canvasId, isFront);
         var c = document.getElementById(canvasId);
         return c ? c.toDataURL('image/png') : null;
       } catch(e){ return null; }
@@ -787,13 +790,30 @@ async function generatePDF() {
       doc.setFont('helvetica','bold'); doc.setFontSize(15); doc.setTextColor(20,20,20);
       doc.text('Front Decoration Details', M, M+26);
 
-      var mockUrl = snapCanvas('mockupFront');
       var mockW = 74, mockH = 82, mockY = M+28;
-
+      // Use template image directly for PDF (avoids canvas timing issues)
+      var fGarment = v2('garmentType').toLowerCase().replace(/\s+/g,'');
+      var fPlaVal = (document.getElementById('frontPlacement')||{value:'center'}).value;
+      var fTmplKey = fGarment + '_front_' + fPlaVal;
+      var fTmplImg = TMPL[fTmplKey];
+      var mockUrl = null;
+      if (fTmplImg && fTmplImg.complete && fTmplImg.naturalWidth > 0) {
+        mockUrl = fTmplImg.src;
+      } else {
+        mockUrl = snapCanvas('mockupFront');
+      }
       if (mockUrl) {
         doc.setFillColor(248,248,248); doc.setDrawColor(200,200,200); doc.setLineWidth(0.3);
         doc.rect(M, mockY, mockW, mockH, 'FD');
         doc.addImage(mockUrl, 'PNG', M, mockY, mockW, mockH);
+        // Overlay numeric labels on PDF mockup
+        var fHps = n2('frontHPS'), fCtr = n2('frontCenter'), fWid = n2('frontWidth');
+        var lx = M, ly = mockY;
+        var scx = mockW/500, scy = mockH/560;
+        doc.setFont('helvetica','bold'); doc.setFontSize(5); doc.setTextColor(220,50,50);
+        if (fHps > 0) doc.text(fHps+' cm', lx+322*scx+1, ly+117*scy);
+        if (fCtr > 0) doc.text(fCtr+' cm', lx+251*scx, ly+171*scy);
+        if (fWid > 0) doc.text(fWid+' cm', lx+306*scx, ly+231*scy);
         doc.setFont('helvetica','normal'); doc.setFontSize(6); doc.setTextColor(140,140,140);
         doc.text('Placement preview', M+mockW/2, mockY+mockH+4, {align:'center'});
       }
@@ -845,13 +865,27 @@ async function generatePDF() {
       doc.setFont('helvetica','bold'); doc.setFontSize(15); doc.setTextColor(20,20,20);
       doc.text('Back Decoration Details', M, M+26);
 
-      var mockUrlB = snapCanvas('mockupBack');
       var mockWB = 74, mockHB = 82, mockYB = M+28;
-
+      var bGarment = v2('garmentType').toLowerCase().replace(/\s+/g,'');
+      var bPlaVal = (document.getElementById('backPlacement')||{value:'center'}).value;
+      var bTmplKey = bGarment + '_back_' + bPlaVal;
+      var bTmplImg = TMPL[bTmplKey];
+      var mockUrlB = null;
+      if (bTmplImg && bTmplImg.complete && bTmplImg.naturalWidth > 0) {
+        mockUrlB = bTmplImg.src;
+      } else {
+        mockUrlB = snapCanvas('mockupBack');
+      }
       if (mockUrlB) {
         doc.setFillColor(248,248,248); doc.setDrawColor(200,200,200); doc.setLineWidth(0.3);
         doc.rect(M, mockYB, mockWB, mockHB, 'FD');
         doc.addImage(mockUrlB, 'PNG', M, mockYB, mockWB, mockHB);
+        var bHps = n2('backHPS'), bCtr = n2('backCenter'), bWid = n2('backWidth');
+        var bscx = mockWB/500, bscy = mockHB/560;
+        doc.setFont('helvetica','bold'); doc.setFontSize(5); doc.setTextColor(220,50,50);
+        if (bHps > 0) doc.text(bHps+' cm', M+322*bscx+1, mockYB+117*bscy);
+        if (bCtr > 0) doc.text(bCtr+' cm', M+251*bscx, mockYB+171*bscy);
+        if (bWid > 0) doc.text(bWid+' cm', M+306*bscx, mockYB+231*bscy);
         doc.setFont('helvetica','normal'); doc.setFontSize(6); doc.setTextColor(140,140,140);
         doc.text('Placement preview', M+mockWB/2, mockYB+mockHB+4, {align:'center'});
       }
