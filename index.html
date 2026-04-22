@@ -136,7 +136,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--black)
       <div class="divider">Size Breakdown</div>
       <div style="overflow-x:auto">
         <table class="size-table">
-          <thead><tr><th>XS</th><th>S</th><th>M</th><th>L</th><th>XL</th><th>XXL</th><th>3XL</th></tr></thead>
+          <thead><tr><th>XS</th><th>S</th><th>M</th><th>L</th><th>XL</th><th>XXL</th></tr></thead>
           <tbody><tr>
             <td><input type="number" id="qXS" placeholder="0"></td>
             <td><input type="number" id="qS" placeholder="0"></td>
@@ -144,7 +144,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--black)
             <td><input type="number" id="qL" placeholder="0"></td>
             <td><input type="number" id="qXL" placeholder="0"></td>
             <td><input type="number" id="qXXL" placeholder="0"></td>
-            <td><input type="number" id="q3XL" placeholder="0"></td>
           </tr></tbody>
         </table>
       </div>
@@ -249,7 +248,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--black)
         </div>
         <div class="field"><label>Width (cm)</label><input type="number" step="0.5" id="backWidth" placeholder="e.g. 35"></div>
         <div class="field"><label id="backHPSLabel">Distance HPS to artwork top (cm)</label><input type="number" step="0.5" id="backHPS" placeholder="e.g. 12"></div>
-        <div class="field"><label id="backCenterLabel">Distance center to artwork (cm)</label><input type="number" step="0.5" id="backCenter" placeholder="e.g. 0 if centered"></div>
+        
         
       </div>
       <div class="divider">Colors (Pantone TPG)</div>
@@ -822,7 +821,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Re-render on any relevant input change
   var watchIds = ['frontTech','frontPlacement','frontWidth','frontHPS','frontCenter',
-                  'backTech','backPlacement','backWidth','backHPS','backCenter'];
+                  'backTech','backPlacement','backWidth','backHPS'];
 
   // Disable distance-from-center field when Front Center is selected
   function updateCenterFieldState() {
@@ -903,12 +902,13 @@ async function generatePDF() {
       var x = M+38;
       function cell(lbl,val,cx,cy,cw,ch) {
         doc.setFillColor(255,255,255); doc.rect(cx,cy,cw,ch,'FD');
-        doc.setFont('helvetica','normal'); doc.setFontSize(6); doc.setTextColor(100,100,100);
-        doc.text(lbl, cx+2, cy+4.5);
-        doc.setFont('helvetica','bold'); doc.setFontSize(7.5); doc.setTextColor(20,20,20);
-        doc.text(String(val||'—'), cx+2, cy+ch-1.5);
+        doc.setFont('helvetica','normal'); doc.setFontSize(5.5); doc.setTextColor(120,120,120);
+        doc.text(lbl, cx+2, cy+3.5);
+        doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(20,20,20);
+        doc.text(String(val||'—'), cx+2, cy+ch-2);
       }
-      var cw1=65, cw2=50, cw3=58;
+      var cw1=65, cw2=55, cw3=65;
+      var rh = hh/3;
       cell('Style Name', v2('styleName'), x, M, cw1, 7.5);
       cell('Style Number', v2('styleNumber'), x+cw1, M, cw2, 7.5);
       cell('Brand', v2('brandName'), x+cw1+cw2, M, cw3, 7.5);
@@ -982,8 +982,8 @@ async function generatePDF() {
 
     var steps = [
       ['01', 'Submit Your Tech Pack', 'Fill in all details and email to info@renebassett.com. Our team will review and reply within 24 hours.'],
-      ['02', 'Order Your Sample', 'Before production, you must approve a physical sample. We will send a quote once we receive your tech pack. Samples take 2–3 weeks.'],
-      ['03', 'Approve & Go to Production', 'Once the sample is approved, we start production. You will receive a full timeline with your quote.'],
+      ['02', 'Order Your Sample', 'Before production, you must approve a physical sample. We will send a quote once we receive your tech pack. Samples take 3–4 weeks.'],
+      ['03', 'Approve & Go to Production', 'Once the sample is approved, we start production.'],
     ];
 
     var sy = M+37;
@@ -1040,8 +1040,8 @@ async function generatePDF() {
     ry += 4;
     doc.setFont('helvetica','bold'); doc.setFontSize(6.5); doc.setTextColor(20,20,20);
     doc.text('SIZE BREAKDOWN', colR+2, ry); ry += 4;
-    var sizes = ['XS','S','M','L','XL','XXL','3XL'];
-    var sVals = [v2('qXS'),v2('qS'),v2('qM'),v2('qL'),v2('qXL'),v2('qXXL'),v2('q3XL')];
+    var sizes = ['XS','S','M','L','XL','XXL'];
+    var sVals = [v2('qXS'),v2('qS'),v2('qM'),v2('qL'),v2('qXL'),v2('qXXL')];
     var scw2 = colRW/sizes.length;
     doc.setFillColor(20,20,20); doc.rect(colR, ry, colRW, 7, 'F');
     sizes.forEach(function(s,i){
