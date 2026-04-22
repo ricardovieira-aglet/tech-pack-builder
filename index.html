@@ -285,18 +285,10 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--black)
       <div class="grid-2" style="gap:14px">
         <div class="field"><label>Neck Label Type</label><select id="neckLabelType"><option value="">Select...</option><option>Woven label</option><option>Printed label</option><option>Heat transfer label</option><option>Tear-away label</option><option>No label</option></select></div>
         <div class="field"><label>Label Size (W × H cm)</label><input type="text" id="neckLabelSize" placeholder="e.g. 6 × 3 cm"></div>
+        <div class="field"><label>Background Color</label><input type="text" id="lblBgColor" placeholder="e.g. 19-3911 TPG — Jet Black"></div>
+        <div class="field"><label>Text / Logo Color</label><input type="text" id="lblTextColor" placeholder="e.g. 11-4001 TPG — Brilliant White"></div>
       </div>
-      <div class="divider" style="margin-top:18px">Label Colors (Pantone TPG)</div>
-      <div class="pantone-row">
-        <div class="pantone-card"><div class="pantone-fields"><div class="pantone-label">Pantone No.</div><input type="text" id="lPN1" placeholder="e.g. 11-4001 TPG"><div class="pantone-label">Color Name</div><input type="text" id="lPName1" placeholder="e.g. Brilliant White"></div></div>
-        <div class="pantone-card"><div class="pantone-fields"><div class="pantone-label">Pantone No.</div><input type="text" id="lPN2" placeholder="e.g. 19-0303 TPG"><div class="pantone-label">Color Name</div><input type="text" id="lPName2" placeholder="e.g. Jet Black"></div></div>
-        <div class="pantone-card"><div class="pantone-fields"><div class="pantone-label">Pantone No.</div><input type="text" id="lPN3" placeholder="Optional"><div class="pantone-label">Color Name</div><input type="text" id="lPName3" placeholder="Optional"></div></div>
-        <div class="pantone-card"><div class="pantone-fields"><div class="pantone-label">Pantone No.</div><input type="text" id="lPN4" placeholder="Optional"><div class="pantone-label">Color Name</div><input type="text" id="lPName4" placeholder="Optional"></div></div>
-        <div class="pantone-card"><div class="pantone-fields"><div class="pantone-label">Pantone No.</div><input type="text" id="lPN5" placeholder="Optional"><div class="pantone-label">Color Name</div><input type="text" id="lPName5" placeholder="Optional"></div></div>
-        <div class="pantone-card"><div class="pantone-fields"><div class="pantone-label">Pantone No.</div><input type="text" id="lPN6" placeholder="Optional"><div class="pantone-label">Color Name</div><input type="text" id="lPName6" placeholder="Optional"></div></div>
-        <div class="pantone-card"><div class="pantone-fields"><div class="pantone-label">Pantone No.</div><input type="text" id="lPN7" placeholder="Optional"><div class="pantone-label">Color Name</div><input type="text" id="lPName7" placeholder="Optional"></div></div>
-        <div class="pantone-card"><div class="pantone-fields"><div class="pantone-label">Pantone No.</div><input type="text" id="lPN8" placeholder="Optional"><div class="pantone-label">Color Name</div><input type="text" id="lPName8" placeholder="Optional"></div></div>
-      </div>
+
       <div class="divider" style="margin-top:18px">Label Artwork</div>
       <div class="upload-zone" id="lblZone">
         <div class="upload-icon">✦</div>
@@ -1049,26 +1041,29 @@ async function generatePDF() {
     var lblImgs = await readImgs('lblFiles');
 
     function drawHeader() {
-      doc.setFillColor(20,20,20); doc.rect(M,M,PW-M*2,18,'F');
-      doc.setFont('helvetica','bold'); doc.setFontSize(8); doc.setTextColor(255,255,255);
-      doc.text('RENÉ BASSETT', M+4, M+11);
-      var x = M+32;
+      var hh = 22; // header height
+      doc.setFillColor(20,20,20); doc.rect(M,M,PW-M*2,hh,'F');
+      doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(255,255,255);
+      doc.text('RENÉ BASSETT', M+4, M+13);
+      var x = M+38;
       function cell(lbl,val,cx,cy,cw,ch) {
         doc.setFillColor(255,255,255); doc.rect(cx,cy,cw,ch,'FD');
         doc.setFont('helvetica','normal'); doc.setFontSize(6); doc.setTextColor(100,100,100);
-        doc.text(lbl, cx+1.5, cy+4);
-        doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(20,20,20);
-        doc.text(String(val||''), cx+1.5, cy+ch-1.2);
+        doc.text(lbl, cx+2, cy+4.5);
+        doc.setFont('helvetica','bold'); doc.setFontSize(7.5); doc.setTextColor(20,20,20);
+        doc.text(String(val||'—'), cx+2, cy+ch-1.5);
       }
-      cell('Style Name', v2('styleName'), x, M, 70, 6);
-      cell('Style Number', v2('styleNumber'), x+70, M, 55, 6);
-      cell('Brand', v2('brandName'), x+125, M, 60, 6);
-      cell('Color', v2('garmentColor'), x, M+6, 70, 6);
-      cell('Garment', v2('garmentType'), x+70, M+6, 55, 6);
-      cell('Contact', v2('contactEmail'), x+125, M+6, 130, 6);
-      cell('Units', v2('totalUnits'), x, M+12, 70, 6);
-      doc.setFillColor(245,245,245); doc.rect(x+70, M+12, 185, 6, 'F');
-      doc.setDrawColor(20,20,20); doc.setLineWidth(0.5); doc.rect(M,M,PW-M*2,18,'D');
+      var cw1=65, cw2=50, cw3=58;
+      cell('Style Name', v2('styleName'), x, M, cw1, 7.5);
+      cell('Style Number', v2('styleNumber'), x+cw1, M, cw2, 7.5);
+      cell('Brand', v2('brandName'), x+cw1+cw2, M, cw3, 7.5);
+      cell('Color', v2('garmentColor'), x, M+7.5, cw1, 7.5);
+      cell('Garment', v2('garmentType'), x+cw1, M+7.5, cw2, 7.5);
+      cell('Contact', v2('contactEmail'), x+cw1+cw2, M+7.5, PW-M-x-cw1-cw2, 7.5);
+      cell('Units', v2('totalUnits'), x, M+15, cw1, 7);
+      doc.setFillColor(245,245,245); doc.setDrawColor(200,200,200);
+      doc.rect(x+cw1, M+15, PW-M-x-cw1, 7, 'FD');
+      doc.setDrawColor(20,20,20); doc.setLineWidth(0.5); doc.rect(M,M,PW-M*2,hh,'D');
     }
 
     function drawPantone(x,y,hex,num,name) {
@@ -1116,51 +1111,89 @@ async function generatePDF() {
       });
     }
 
-    // ── PAGE 1: Overview ────────────────────────────────────────────────────
+    // ── PAGE 1: How it works ────────────────────────────────────────────────
     drawHeader();
-    doc.setFont('helvetica','bold'); doc.setFontSize(16); doc.setTextColor(20,20,20);
-    doc.text('Style Overview', M, M+26);
-    var gy = M+30;
-    doc.setFillColor(248,248,248); doc.setDrawColor(180,180,180); doc.setLineWidth(0.3);
-    doc.rect(M, gy, 88, 128, 'FD');
-    doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(160,160,160);
-    doc.text('Front View', M+44, gy+66, {align:'center'});
-    doc.rect(M+93, gy, 88, 128, 'FD');
-    doc.text('Back View', M+137, gy+66, {align:'center'});
-    var ix = M+186;
-    var flds = [['BRAND',v2('brandName')],['STYLE NAME',v2('styleName')],['STYLE NO',v2('styleNumber')],
-                ['GARMENT',v2('garmentType')],['COLOR',v2('garmentColor')],['UNITS',v2('totalUnits')],['CONTACT',v2('contactEmail')]];
-    var fy = gy;
-    flds.forEach(function(f){
-      doc.setFillColor(248,248,246); doc.setDrawColor(220,215,210); doc.setLineWidth(0.2);
-      doc.rect(ix, fy, PW-M-ix, 11, 'FD');
-      doc.setFont('helvetica','normal'); doc.setFontSize(6); doc.setTextColor(120,120,120); doc.text(f[0], ix+2, fy+4);
-      doc.setFont('helvetica','bold'); doc.setFontSize(8); doc.setTextColor(20,20,20); doc.text(f[1]||'—', ix+2, fy+9);
-      fy += 12;
+
+    // Title
+    doc.setFont('helvetica','bold'); doc.setFontSize(18); doc.setTextColor(20,20,20);
+    doc.text('Tech Pack — '+( v2('brandName')||'Your Brand'), M, M+32);
+
+    // Order info box
+    var by = M+38;
+    doc.setFillColor(20,20,20); doc.rect(M, by, PW-M*2, 10, 'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(8); doc.setTextColor(255,255,255);
+    doc.text('HOW IT WORKS', M+4, by+7);
+
+    var steps = [
+      ['01', 'Submit Your Tech Pack', 'Fill in all the details in this tech pack and email it to info@renebassett.com. Our team will review your specifications and get back to you within 24 hours.'],
+      ['02', 'Order Your Sample', 'Before going into production, you need to approve a physical sample. Once we receive your tech pack, we will send you a quote for the sample. Samples are produced in 2–3 weeks.'],
+      ['03', 'Approve & Go to Production', 'Once you approve the sample, we move into production. Delivery times vary by garment and quantity. You will receive a full production timeline with your quote.'],
+      ['04', 'Get a Price Estimate', 'To estimate costs before submitting, use our profitability calculator at renebassett.com. Enter your garment type, decoration and quantity to get an instant price estimate.'],
+    ];
+
+    var sy = by+14;
+    steps.forEach(function(step, i) {
+      var isEven = i % 2 === 0;
+      doc.setFillColor(isEven ? 248 : 255, isEven ? 248 : 255, isEven ? 248 : 255);
+      doc.setDrawColor(220,215,210); doc.setLineWidth(0.2);
+      doc.rect(M, sy, PW-M*2, 28, 'FD');
+      // Step number
+      doc.setFillColor(20,20,20); doc.rect(M, sy, 18, 28, 'F');
+      doc.setFont('helvetica','bold'); doc.setFontSize(11); doc.setTextColor(255,255,255);
+      doc.text(step[0], M+9, sy+16, {align:'center'});
+      // Step title
+      doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(20,20,20);
+      doc.text(step[1], M+22, sy+8);
+      // Step description
+      doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(60,60,60);
+      var lines = doc.splitTextToSize(step[2], PW-M*2-26);
+      doc.text(lines, M+22, sy+15);
+      sy += 30;
     });
-    // Size table
-    fy += 4;
+
+    // Style summary box
+    sy += 4;
+    doc.setFont('helvetica','bold'); doc.setFontSize(8); doc.setTextColor(20,20,20);
+    doc.setFillColor(20,20,20); doc.rect(M, sy, PW-M*2, 10, 'F');
+    doc.setTextColor(255,255,255);
+    doc.text('STYLE SUMMARY', M+4, sy+7);
+    sy += 10;
+    var sumFields = [
+      ['Brand', v2('brandName')], ['Style Name', v2('styleName')], ['Style No', v2('styleNumber')],
+      ['Garment', v2('garmentType')], ['Color', v2('garmentColor')], ['Total Units', v2('totalUnits')],
+      ['Contact', v2('contactEmail')]
+    ];
+    var scw = (PW-M*2) / 4;
+    sumFields.forEach(function(f, i) {
+      var col = i % 4, row = Math.floor(i / 4);
+      var sx2 = M + col*scw, sy2 = sy + row*12;
+      doc.setFillColor(col%2===0 ? 248 : 252, col%2===0 ? 248 : 252, col%2===0 ? 248 : 252);
+      doc.setDrawColor(220,215,210); doc.setLineWidth(0.2);
+      doc.rect(sx2, sy2, scw, 12, 'FD');
+      doc.setFont('helvetica','normal'); doc.setFontSize(6); doc.setTextColor(120,120,120);
+      doc.text(f[0].toUpperCase(), sx2+2, sy2+4.5);
+      doc.setFont('helvetica','bold'); doc.setFontSize(7.5); doc.setTextColor(20,20,20);
+      doc.text(String(f[1]||'—'), sx2+2, sy2+10);
+    });
+
+    // Size breakdown
+    sy += 24+4;
     var sizes = ['XS','S','M','L','XL','XXL','3XL'];
     var sVals = [v2('qXS'),v2('qS'),v2('qM'),v2('qL'),v2('qXL'),v2('qXXL'),v2('q3XL')];
-    var cw = (PW-M-ix)/sizes.length;
+    var cw = (PW-M*2)/sizes.length;
+    doc.setFillColor(20,20,20); doc.rect(M, sy, PW-M*2, 8, 'F');
     sizes.forEach(function(s,i){
-      doc.setFillColor(20,20,20); doc.rect(ix+i*cw, fy, cw, 7, 'F');
-      doc.setFont('helvetica','bold'); doc.setFontSize(6); doc.setTextColor(255,255,255);
-      doc.text(s, ix+i*cw+cw/2, fy+5, {align:'center'});
+      doc.setFont('helvetica','bold'); doc.setFontSize(6.5); doc.setTextColor(255,255,255);
+      doc.text(s, M+i*cw+cw/2, sy+5.5, {align:'center'});
     });
-    fy += 7;
+    sy += 8;
     sizes.forEach(function(s,i){
       doc.setFillColor(255,255,255); doc.setDrawColor(200,200,200);
-      doc.rect(ix+i*cw, fy, cw, 7, 'FD');
+      doc.rect(M+i*cw, sy, cw, 8, 'FD');
       doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(20,20,20);
-      doc.text(sVals[i]||'0', ix+i*cw+cw/2, fy+5, {align:'center'});
+      doc.text(sVals[i]||'0', M+i*cw+cw/2, sy+5.5, {align:'center'});
     });
-    if (v2('additionalNotes')) {
-      fy += 12;
-      doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(20,20,20); doc.text('NOTES', ix, fy); fy += 4;
-      doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(60,60,60);
-      doc.text(doc.splitTextToSize(v2('additionalNotes'), PW-M-ix), ix, fy);
-    }
+
     doc.setDrawColor(20,20,20); doc.setLineWidth(1); doc.line(M, PH-M, PW-M, PH-M);
 
     // ── PAGE 2: Front Decoration ────────────────────────────────────────────
@@ -1185,14 +1218,7 @@ async function generatePDF() {
         doc.setFillColor(248,248,248); doc.setDrawColor(200,200,200); doc.setLineWidth(0.3);
         doc.rect(M, mockY, mockW, mockH, 'FD');
         doc.addImage(mockUrl, 'PNG', M, mockY, mockW, mockH);
-        // Overlay numeric labels on PDF mockup
-        var fHps = n2('frontHPS'), fCtr = n2('frontCenter'), fWid = n2('frontWidth');
-        var lx = M, ly = mockY;
-        var scx = mockW/500, scy = mockH/560;
-        doc.setFont('helvetica','bold'); doc.setFontSize(5); doc.setTextColor(220,50,50);
-        if (fHps > 0) doc.text(fHps+' cm', lx+322*scx+1, ly+117*scy);
-        if (fCtr > 0) doc.text(fCtr+' cm', lx+251*scx, ly+171*scy);
-        if (fWid > 0) doc.text(fWid+' cm', lx+306*scx, ly+231*scy);
+        // No numeric overlay — values shown in info panel
         doc.setFont('helvetica','normal'); doc.setFontSize(6); doc.setTextColor(140,140,140);
         doc.text('Placement preview', M+mockW/2, mockY+mockH+4, {align:'center'});
       }
@@ -1264,12 +1290,7 @@ async function generatePDF() {
         doc.setFillColor(248,248,248); doc.setDrawColor(200,200,200); doc.setLineWidth(0.3);
         doc.rect(M, mockYB, mockWB, mockHB, 'FD');
         doc.addImage(mockUrlB, 'PNG', M, mockYB, mockWB, mockHB);
-        var bHps = n2('backHPS'), bCtr = n2('backCenter'), bWid = n2('backWidth');
-        var bscx = mockWB/500, bscy = mockHB/560;
-        doc.setFont('helvetica','bold'); doc.setFontSize(5); doc.setTextColor(220,50,50);
-        if (bHps > 0) doc.text(bHps+' cm', M+322*bscx+1, mockYB+117*bscy);
-        if (bCtr > 0) doc.text(bCtr+' cm', M+251*bscx, mockYB+171*bscy);
-        if (bWid > 0) doc.text(bWid+' cm', M+306*bscx, mockYB+231*bscy);
+        // No numeric overlay — values shown in info panel
         doc.setFont('helvetica','normal'); doc.setFontSize(6); doc.setTextColor(140,140,140);
         doc.text('Placement preview', M+mockWB/2, mockYB+mockHB+4, {align:'center'});
       }
@@ -1336,9 +1357,26 @@ async function generatePDF() {
       doc.rect(lX+3, lY+3, lW-6, lH-6, 'D'); doc.setLineDash([]);
       doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor(255,255,255);
       doc.text('RENÉ BASSETT', lX+lW/2, lY+lH/2+2, {align:'center'});
+      // Label color info
+      var lblInfoY = lY+lH+14;
+      if (v2('lblBgColor') || v2('lblTextColor')) {
+        doc.setFillColor(248,248,246); doc.setDrawColor(220,215,210); doc.setLineWidth(0.2);
+        doc.rect(M, lblInfoY, (PW-M*2)/2-2, 14, 'FD');
+        doc.setFont('helvetica','normal'); doc.setFontSize(6); doc.setTextColor(120,120,120);
+        doc.text('BACKGROUND COLOR', M+2, lblInfoY+5);
+        doc.setFont('helvetica','bold'); doc.setFontSize(8); doc.setTextColor(20,20,20);
+        doc.text(v2('lblBgColor')||'—', M+2, lblInfoY+11);
+        var half = (PW-M*2)/2+M;
+        doc.setFillColor(248,248,246); doc.rect(half, lblInfoY, (PW-M*2)/2-2, 14, 'FD');
+        doc.setFont('helvetica','normal'); doc.setFontSize(6); doc.setTextColor(120,120,120);
+        doc.text('TEXT / LOGO COLOR', half+2, lblInfoY+5);
+        doc.setFont('helvetica','bold'); doc.setFontSize(8); doc.setTextColor(20,20,20);
+        doc.text(v2('lblTextColor')||'—', half+2, lblInfoY+11);
+        lblInfoY += 18;
+      }
       if (v2('neckLabelNotes')) {
         doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(60,60,60);
-        doc.text(doc.splitTextToSize(v2('neckLabelNotes'), PW-M*2), M, lY+lH+14);
+        doc.text(doc.splitTextToSize(v2('neckLabelNotes'), PW-M*2), M, lblInfoY);
       }
       var lsy = lY+lH+30;
       doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(20,20,20); doc.text('Colors (Pantone TPG):', M, lsy);
