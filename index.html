@@ -283,7 +283,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--black)
     <div class="section-head"><span class="section-num">05</span><span class="section-title">Labels &amp; Packaging</span></div>
     <div class="section-body">
       <div class="grid-2" style="gap:14px">
-        <div class="field"><label>Neck Label Type</label><select id="neckLabelType"><option value="">Select...</option><option>Woven label</option><option>Printed label</option><option>Heat transfer label</option><option>Tear-away label</option><option>No label</option></select></div>
+        <div class="field"><label>Neck Label Type</label><select id="neckLabelType"><option value="Woven label">Woven label</option></select></div>
         <div class="field"><label>Label Size (W × H cm)</label><input type="text" id="neckLabelSize" placeholder="e.g. 6 × 3 cm"></div>
         <div class="field"><label>Background Color</label><input type="text" id="lblBgColor" placeholder="e.g. 19-3911 TPG — Jet Black"></div>
         <div class="field"><label>Text / Logo Color</label><input type="text" id="lblTextColor" placeholder="e.g. 11-4001 TPG — Brilliant White"></div>
@@ -822,6 +822,30 @@ document.addEventListener('DOMContentLoaded', function() {
   // Re-render on any relevant input change
   var watchIds = ['frontTech','frontPlacement','frontWidth','frontHPS','frontCenter',
                   'backTech','backPlacement','backWidth','backHPS','backCenter'];
+
+  // Disable distance-from-center field when Front Center is selected
+  function updateCenterFieldState() {
+    var g = v('garmentType');
+    var placement = v('frontPlacement');
+    var centerField = document.getElementById('frontCenter');
+    var centerLabel = document.getElementById('frontCenterLabel');
+    var isChestGarment = ['T-Shirt','Hoodie','Crewneck','Zip Hoodie','Knit Sweater','Long Sleeve'].includes(g);
+    var disabled = isChestGarment && placement === 'center';
+    if (centerField) {
+      centerField.disabled = disabled;
+      centerField.style.opacity = disabled ? '0.35' : '1';
+      centerField.style.pointerEvents = disabled ? 'none' : '';
+      if (disabled) centerField.value = '';
+    }
+    if (centerLabel) centerLabel.style.opacity = disabled ? '0.35' : '1';
+  }
+  document.getElementById('frontPlacement').addEventListener('change', function() {
+    updateCenterFieldState(); renderAll();
+  });
+  document.getElementById('garmentType').addEventListener('change', function() {
+    setTimeout(updateCenterFieldState, 50);
+  });
+  updateCenterFieldState();
   watchIds.forEach(function(id) {
     var el = document.getElementById(id);
     if (!el) return;
