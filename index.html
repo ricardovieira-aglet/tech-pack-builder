@@ -746,177 +746,7 @@ function renderCanvas(canvasId, isFront) {
   ctx.fillStyle = '#e53935';
 
   if (tmpl && tmpl.naturalWidth > 0) {
-    // Overlay numbers on pre-drawn template arrows
-    // Canvas 500x560, template image scaled from 1080x1080
-    // front_left positions (tuned to Untitled_design__17_ template):
-    ctx.font = 'bold 13px sans-serif';
-    // Label positions per garment type
-    var isZipHoodie = garment === 'ziphoodie';
-
-    if (isFront && placement === 'left') {
-      if (isZipHoodie) {
-        // Zip hoodie front left — calibrated to zip-hoodie_peito_esquerdo.png (1080x1080→500x560)
-        // Vertical arrow: x≈306, top≈267, bottom≈398 → label right of arrow
-        if (hCm > 0) {
-          ctx.save(); ctx.translate(320, 333); ctx.rotate(-Math.PI/2);
-          ctx.textAlign='center'; ctx.fillText(hCm + ' cm', 0, 0); ctx.restore();
-        }
-        // Horizontal arrow: y≈398, from x≈470 to x≈608 → label above
-        if (cCm > 0) { ctx.textAlign='center'; ctx.fillText(cCm + ' cm', 251, 388); }
-        // Width arrow: y≈425, from x≈524 to x≈660 → label below
-        if (wCm > 0) { ctx.textAlign='center'; ctx.fillText(wCm + ' cm', 305, 415); }
-      } else if (garment === 'hoodie') {
-        // Hoodie front left
-        if (hCm > 0) {
-          ctx.save(); ctx.translate(310, 154); ctx.rotate(-Math.PI/2);
-          ctx.textAlign='center'; ctx.fillText(hCm + ' cm', 0, 0); ctx.restore();
-        }
-        if (cCm > 0) { ctx.textAlign='center'; ctx.fillText(cCm + ' cm', 255, 192); }
-        if (wCm > 0) { ctx.textAlign='center'; ctx.fillText(wCm + ' cm', 308, 222); }
-      } else if (garment === 'crewneck' || garment === 'knitsweater' || garment === 'longsleeve') {
-        // Crewneck / Knit Sweater / Long Sleeve front left
-        if (hCm > 0) {
-          ctx.save(); ctx.translate(310, 168); ctx.rotate(-Math.PI/2);
-          ctx.textAlign='center'; ctx.fillText(hCm + ' cm', 0, 0); ctx.restore();
-        }
-        if (cCm > 0) { ctx.textAlign='center'; ctx.fillText(cCm + ' cm', 255, 161); }
-        if (wCm > 0) { ctx.textAlign='center'; ctx.fillText(wCm + ' cm', 310, 177); }
-      } else if (garment === 'shorts') {
-        if (placement === 'right') {
-          if (hCm > 0) {
-            ctx.save(); ctx.translate(144, 253); ctx.rotate(-Math.PI/2);
-            ctx.textAlign='center'; ctx.fillText(hCm + ' cm', 0, 0); ctx.restore();
-          }
-          if (cCm > 0) { ctx.textAlign='center'; ctx.fillText(cCm + ' cm', 145, 272); }
-          if (wCm > 0) { ctx.textAlign='center'; ctx.fillText(wCm + ' cm', 196, 293); }
-        } else {
-          if (hCm > 0) {
-            ctx.save(); ctx.translate(317, 263); ctx.rotate(-Math.PI/2);
-            ctx.textAlign='center'; ctx.fillText(hCm + ' cm', 0, 0); ctx.restore();
-          }
-          if (cCm > 0) { ctx.textAlign='center'; ctx.fillText(cCm + ' cm', 360, 270); }
-          if (wCm > 0) { ctx.textAlign='center'; ctx.fillText(wCm + ' cm', 303, 295); }
-        }
-      } else if (garment === 'sweatpants') {
-        if (placement === 'left') {
-          // Sweatpant left leg — calibrated to sweatpant_perna_esquerda.png
-          if (hCm > 0) {
-            ctx.save(); ctx.translate(313, 185); ctx.rotate(-Math.PI/2);
-            ctx.textAlign='center'; ctx.fillText(hCm + ' cm', 0, 0); ctx.restore();
-          }
-          if (cCm > 0) { ctx.textAlign='center'; ctx.fillText(cCm + ' cm', 365, 193); }
-          if (wCm > 0) { ctx.textAlign='center'; ctx.fillText(wCm + ' cm', 303, 210); }
-        } else {
-          // Sweatpant right leg — calibrated to sweatpant_perna_direita.png
-          if (hCm > 0) {
-            ctx.save(); ctx.translate(184, 185); ctx.rotate(-Math.PI/2);
-            ctx.textAlign='center'; ctx.fillText(hCm + ' cm', 0, 0); ctx.restore();
-          }
-          if (cCm > 0) { ctx.textAlign='center'; ctx.fillText(cCm + ' cm', 135, 189); }
-          if (wCm > 0) { ctx.textAlign='center'; ctx.fillText(wCm + ' cm', 197, 207); }
-        }
-      } else {
-        // T-Shirt front left
-        if (hCm > 0) {
-          ctx.save(); ctx.translate(322, 117); ctx.rotate(-Math.PI/2);
-          ctx.textAlign='center'; ctx.fillText(hCm + ' cm', 0, 0); ctx.restore();
-        }
-        if (cCm > 0) { ctx.textAlign='center'; ctx.fillText(cCm + ' cm', 251, 171); }
-        if (wCm > 0) { ctx.textAlign='center'; ctx.fillText(wCm + ' cm', 306, 231); }
-      }
-    } else if (isFront && placement === 'center') {
-      if (garment === 'hoodie') {
-        // Hoodie front center — calibrated to hoodie_frente_centro.png
-        // Vertical arrow: x≈250, top≈117, bottom≈210 → label right
-        if (hCm > 0) {
-          ctx.save(); ctx.translate(264, 163); ctx.rotate(-Math.PI/2);
-          ctx.textAlign='center'; ctx.fillText(hCm + ' cm', 0, 0); ctx.restore();
-        }
-        // Width arrow: y≈226
-        if (wCm > 0) { ctx.textAlign='center'; ctx.fillText(wCm + ' cm', 250, 236); }
-      } else if (garment === 'tshirt') {
-        // T-Shirt front center — calibrated to t-sheirt_centro.png
-        if (hCm > 0) {
-          ctx.save(); ctx.translate(264, 145); ctx.rotate(-Math.PI/2);
-          ctx.textAlign='center'; ctx.fillText(hCm + ' cm', 0, 0); ctx.restore();
-        }
-        if (wCm > 0) { ctx.textAlign='center'; ctx.fillText(wCm + ' cm', 250, 179); }
-      } else if (garment === 'crewneck' || garment === 'knitsweater' || garment === 'longsleeve') {
-        // Crewneck / Knit Sweater / Long Sleeve front center — calibrated to long_sleeve_centro.png
-        if (hCm > 0) {
-          ctx.save(); ctx.translate(264, 152); ctx.rotate(-Math.PI/2);
-          ctx.textAlign='center'; ctx.fillText(hCm + ' cm', 0, 0); ctx.restore();
-        }
-        if (wCm > 0) { ctx.textAlign='center'; ctx.fillText(wCm + ' cm', 250, 169); }
-      } else {
-        if (hCm > 0) {
-          ctx.save(); ctx.translate(262, isZipHoodie ? 333 : 117); ctx.rotate(-Math.PI/2);
-          ctx.textAlign='center'; ctx.fillText(hCm + ' cm', 0, 0); ctx.restore();
-        }
-        if (wCm > 0) { ctx.textAlign='center'; ctx.fillText(wCm + ' cm', 250, isZipHoodie ? 415 : 231); }
-      }
-    } else if (isFront && placement === 'right') {
-      if (isZipHoodie) {
-        // Zip hoodie front right
-        if (hCm > 0) {
-          ctx.save(); ctx.translate(168, 290); ctx.rotate(-Math.PI/2);
-          ctx.textAlign='center'; ctx.fillText(hCm + ' cm', 0, 0); ctx.restore();
-        }
-        if (cCm > 0) { ctx.textAlign='center'; ctx.fillText(cCm + ' cm', 248, 388); }
-        if (wCm > 0) { ctx.textAlign='center'; ctx.fillText(wCm + ' cm', 193, 415); }
-      } else if (garment === 'hoodie') {
-        // Hoodie front right
-        if (hCm > 0) {
-          ctx.save(); ctx.translate(168, 250); ctx.rotate(-Math.PI/2);
-          ctx.textAlign='center'; ctx.fillText(hCm + ' cm', 0, 0); ctx.restore();
-        }
-        if (cCm > 0) { ctx.textAlign='center'; ctx.fillText(cCm + ' cm', 245, 200); }
-        if (wCm > 0) { ctx.textAlign='center'; ctx.fillText(wCm + ' cm', 196, 217); }
-      } else if (garment === 'crewneck' || garment === 'knitsweater' || garment === 'longsleeve') {
-        // Crewneck / Knit Sweater / Long Sleeve front right — calibrated to long_sleeve_peito_direito.png
-        if (hCm > 0) {
-          ctx.save(); ctx.translate(168, 168); ctx.rotate(-Math.PI/2);
-          ctx.textAlign='center'; ctx.fillText(hCm + ' cm', 0, 0); ctx.restore();
-        }
-        if (cCm > 0) { ctx.textAlign='center'; ctx.fillText(cCm + ' cm', 245, 161); }
-        if (wCm > 0) { ctx.textAlign='center'; ctx.fillText(wCm + ' cm', 194, 177); }
-      } else {
-        // T-Shirt front right — calibrated to t-shirt_peiro_direito.png
-        if (hCm > 0) {
-          ctx.save(); ctx.translate(168, 165); ctx.rotate(-Math.PI/2);
-          ctx.textAlign='center'; ctx.fillText(hCm + ' cm', 0, 0); ctx.restore();
-        }
-        if (cCm > 0) { ctx.textAlign='center'; ctx.fillText(cCm + ' cm', 245, 177); }
-        if (wCm > 0) { ctx.textAlign='center'; ctx.fillText(wCm + ' cm', 194, 192); }
-      }
-    }
-  } else if (!isFront && tmpl && tmpl.naturalWidth > 0) {
-    // Back template with numeric labels
-    ctx.drawImage(tmpl, 0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = '#e53935';
-    ctx.font = 'bold 13px sans-serif';
-    if (garment === 'tshirt') {
-      // T-shirt back — calibrated to t-shirt_costas.png
-      if (hCm > 0) {
-        ctx.save(); ctx.translate(264, 174); ctx.rotate(-Math.PI/2);
-        ctx.textAlign = 'center'; ctx.fillText(hCm + ' cm', 0, 0); ctx.restore();
-      }
-      if (wCm > 0) { ctx.textAlign = 'center'; ctx.fillText(wCm + ' cm', 250, 313); }
-    } else if (garment === 'crewneck' || garment === 'knitsweater' || garment === 'longsleeve') {
-      // Long sleeve / crewneck / knit sweater back — calibrated to costa.png
-      if (hCm > 0) {
-        ctx.save(); ctx.translate(264, 182); ctx.rotate(-Math.PI/2);
-        ctx.textAlign = 'center'; ctx.fillText(hCm + ' cm', 0, 0); ctx.restore();
-      }
-      if (wCm > 0) { ctx.textAlign = 'center'; ctx.fillText(wCm + ' cm', 250, 295); }
-    } else {
-      // Hoodie/zip hoodie back — calibrated to costas.png
-      if (hCm > 0) {
-        ctx.save(); ctx.translate(264, 193); ctx.rotate(-Math.PI/2);
-        ctx.textAlign = 'center'; ctx.fillText(hCm + ' cm', 0, 0); ctx.restore();
-      }
-      if (wCm > 0) { ctx.textAlign = 'center'; ctx.fillText(wCm + ' cm', 250, 296); }
-    }
+    // Canvas shows template image only — numeric values in PDF info panel
   } else {
     // No template — show plain text
     ctx.font = 'bold 12px sans-serif'; ctx.textAlign='left';
@@ -1041,7 +871,7 @@ async function generatePDF() {
     var lblImgs = await readImgs('lblFiles');
 
     function drawHeader() {
-      var hh = 22; // header height
+      var hh = 26; // header height
       doc.setFillColor(20,20,20); doc.rect(M,M,PW-M*2,hh,'F');
       doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(255,255,255);
       doc.text('RENÉ BASSETT', M+4, M+13);
@@ -1114,85 +944,100 @@ async function generatePDF() {
     // ── PAGE 1: How it works ────────────────────────────────────────────────
     drawHeader();
 
-    // Title
-    doc.setFont('helvetica','bold'); doc.setFontSize(18); doc.setTextColor(20,20,20);
-    doc.text('Tech Pack — '+( v2('brandName')||'Your Brand'), M, M+32);
+    // Two column layout
+    var colL = M;
+    var colW = (PW-M*2) * 0.52; // left col ~52%
+    var colR = M + colW + 4;
+    var colRW = PW - M - colR;
 
-    // Order info box
-    var by = M+38;
-    doc.setFillColor(20,20,20); doc.rect(M, by, PW-M*2, 10, 'F');
-    doc.setFont('helvetica','bold'); doc.setFontSize(8); doc.setTextColor(255,255,255);
-    doc.text('HOW IT WORKS', M+4, by+7);
+    // LEFT: HOW IT WORKS
+    doc.setFillColor(20,20,20); doc.rect(colL, M+28, colW, 9, 'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(7.5); doc.setTextColor(255,255,255);
+    doc.text('HOW IT WORKS', colL+3, M+35);
 
     var steps = [
-      ['01', 'Submit Your Tech Pack', 'Fill in all the details in this tech pack and email it to info@renebassett.com. Our team will review your specifications and get back to you within 24 hours.'],
-      ['02', 'Order Your Sample', 'Before going into production, you need to approve a physical sample. Once we receive your tech pack, we will send you a quote for the sample. Samples are produced in 2–3 weeks.'],
-      ['03', 'Approve & Go to Production', 'Once you approve the sample, we move into production. Delivery times vary by garment and quantity. You will receive a full production timeline with your quote.'],
-      ['04', 'Get a Price Estimate', 'To estimate costs before submitting, use our profitability calculator at renebassett.com. Enter your garment type, decoration and quantity to get an instant price estimate.'],
+      ['01', 'Submit Your Tech Pack', 'Fill in all details and email to info@renebassett.com. Our team will review and reply within 24 hours.'],
+      ['02', 'Order Your Sample', 'Before production, you must approve a physical sample. We will send a quote once we receive your tech pack. Samples take 2–3 weeks.'],
+      ['03', 'Approve & Go to Production', 'Once the sample is approved, we start production. You will receive a full timeline with your quote.'],
     ];
 
-    var sy = by+14;
+    var sy = M+37;
     steps.forEach(function(step, i) {
       var isEven = i % 2 === 0;
+      var sh = 28;
       doc.setFillColor(isEven ? 248 : 255, isEven ? 248 : 255, isEven ? 248 : 255);
-      doc.setDrawColor(220,215,210); doc.setLineWidth(0.2);
-      doc.rect(M, sy, PW-M*2, 28, 'FD');
-      // Step number
-      doc.setFillColor(20,20,20); doc.rect(M, sy, 18, 28, 'F');
-      doc.setFont('helvetica','bold'); doc.setFontSize(11); doc.setTextColor(255,255,255);
-      doc.text(step[0], M+9, sy+16, {align:'center'});
-      // Step title
-      doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(20,20,20);
-      doc.text(step[1], M+22, sy+8);
-      // Step description
-      doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(60,60,60);
-      var lines = doc.splitTextToSize(step[2], PW-M*2-26);
-      doc.text(lines, M+22, sy+15);
-      sy += 30;
+      doc.setDrawColor(218,213,208); doc.setLineWidth(0.2);
+      doc.rect(colL, sy, colW, sh, 'FD');
+      doc.setFillColor(20,20,20); doc.rect(colL, sy, 14, sh, 'F');
+      doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(255,255,255);
+      doc.text(step[0], colL+7, sy+sh/2+3, {align:'center'});
+      doc.setFont('helvetica','bold'); doc.setFontSize(7.5); doc.setTextColor(20,20,20);
+      doc.text(step[1], colL+17, sy+8);
+      doc.setFont('helvetica','normal'); doc.setFontSize(6.5); doc.setTextColor(60,60,60);
+      var lines = doc.splitTextToSize(step[2], colW-20);
+      doc.text(lines, colL+17, sy+14);
+      sy += sh+1;
     });
 
-    // Style summary box
-    sy += 4;
-    doc.setFont('helvetica','bold'); doc.setFontSize(8); doc.setTextColor(20,20,20);
-    doc.setFillColor(20,20,20); doc.rect(M, sy, PW-M*2, 10, 'F');
-    doc.setTextColor(255,255,255);
-    doc.text('STYLE SUMMARY', M+4, sy+7);
-    sy += 10;
+    // Note (step 4)
+    doc.setFillColor(245,242,238); doc.setDrawColor(218,213,208); doc.setLineWidth(0.2);
+    doc.rect(colL, sy, colW, 20, 'FD');
+    doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(20,20,20);
+    doc.text('★  Price Estimate', colL+4, sy+7);
+    doc.setFont('helvetica','normal'); doc.setFontSize(6.5); doc.setTextColor(60,60,60);
+    var noteLines = doc.splitTextToSize('Use our profitability calculator at renebassett.com to estimate costs before submitting. Enter your garment, decoration and quantity for an instant price.', colW-8);
+    doc.text(noteLines, colL+4, sy+13);
+
+    // RIGHT: STYLE SUMMARY
+    doc.setFillColor(20,20,20); doc.rect(colR, M+28, colRW, 9, 'F');
+    doc.setFont('helvetica','bold'); doc.setFontSize(7.5); doc.setTextColor(255,255,255);
+    doc.text('STYLE SUMMARY', colR+3, M+35);
+
     var sumFields = [
-      ['Brand', v2('brandName')], ['Style Name', v2('styleName')], ['Style No', v2('styleNumber')],
-      ['Garment', v2('garmentType')], ['Color', v2('garmentColor')], ['Total Units', v2('totalUnits')],
+      ['Brand', v2('brandName')], ['Style Name', v2('styleName')],
+      ['Style No', v2('styleNumber')], ['Garment', v2('garmentType')],
+      ['Color', v2('garmentColor')], ['Total Units', v2('totalUnits')],
       ['Contact', v2('contactEmail')]
     ];
-    var scw = (PW-M*2) / 4;
+    var ry = M+37;
     sumFields.forEach(function(f, i) {
-      var col = i % 4, row = Math.floor(i / 4);
-      var sx2 = M + col*scw, sy2 = sy + row*12;
-      doc.setFillColor(col%2===0 ? 248 : 252, col%2===0 ? 248 : 252, col%2===0 ? 248 : 252);
-      doc.setDrawColor(220,215,210); doc.setLineWidth(0.2);
-      doc.rect(sx2, sy2, scw, 12, 'FD');
+      doc.setFillColor(i%2===0 ? 248 : 255, i%2===0 ? 248 : 255, i%2===0 ? 248 : 255);
+      doc.setDrawColor(218,213,208); doc.setLineWidth(0.2);
+      doc.rect(colR, ry, colRW, 11, 'FD');
       doc.setFont('helvetica','normal'); doc.setFontSize(6); doc.setTextColor(120,120,120);
-      doc.text(f[0].toUpperCase(), sx2+2, sy2+4.5);
+      doc.text(f[0].toUpperCase(), colR+2, ry+4.5);
       doc.setFont('helvetica','bold'); doc.setFontSize(7.5); doc.setTextColor(20,20,20);
-      doc.text(String(f[1]||'—'), sx2+2, sy2+10);
+      doc.text(String(f[1]||'—'), colR+2, ry+9.5);
+      ry += 11;
     });
 
-    // Size breakdown
-    sy += 24+4;
+    // Size table
+    ry += 4;
+    doc.setFont('helvetica','bold'); doc.setFontSize(6.5); doc.setTextColor(20,20,20);
+    doc.text('SIZE BREAKDOWN', colR+2, ry); ry += 4;
     var sizes = ['XS','S','M','L','XL','XXL','3XL'];
     var sVals = [v2('qXS'),v2('qS'),v2('qM'),v2('qL'),v2('qXL'),v2('qXXL'),v2('q3XL')];
-    var cw = (PW-M*2)/sizes.length;
-    doc.setFillColor(20,20,20); doc.rect(M, sy, PW-M*2, 8, 'F');
+    var scw2 = colRW/sizes.length;
+    doc.setFillColor(20,20,20); doc.rect(colR, ry, colRW, 7, 'F');
     sizes.forEach(function(s,i){
-      doc.setFont('helvetica','bold'); doc.setFontSize(6.5); doc.setTextColor(255,255,255);
-      doc.text(s, M+i*cw+cw/2, sy+5.5, {align:'center'});
+      doc.setFont('helvetica','bold'); doc.setFontSize(6); doc.setTextColor(255,255,255);
+      doc.text(s, colR+i*scw2+scw2/2, ry+5, {align:'center'});
     });
-    sy += 8;
+    ry += 7;
     sizes.forEach(function(s,i){
       doc.setFillColor(255,255,255); doc.setDrawColor(200,200,200);
-      doc.rect(M+i*cw, sy, cw, 8, 'FD');
+      doc.rect(colR+i*scw2, ry, scw2, 7, 'FD');
       doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(20,20,20);
-      doc.text(sVals[i]||'0', M+i*cw+cw/2, sy+5.5, {align:'center'});
+      doc.text(sVals[i]||'0', colR+i*scw2+scw2/2, ry+5, {align:'center'});
     });
+
+    if (v2('additionalNotes')) {
+      ry += 11;
+      doc.setFont('helvetica','bold'); doc.setFontSize(6.5); doc.setTextColor(20,20,20);
+      doc.text('ADDITIONAL NOTES', colR+2, ry); ry += 4;
+      doc.setFont('helvetica','normal'); doc.setFontSize(6.5); doc.setTextColor(60,60,60);
+      doc.text(doc.splitTextToSize(v2('additionalNotes'), colRW-4), colR+2, ry);
+    }
 
     doc.setDrawColor(20,20,20); doc.setLineWidth(1); doc.line(M, PH-M, PW-M, PH-M);
 
@@ -1352,11 +1197,31 @@ async function generatePDF() {
       doc.line(lX, lY-6, lX, lY-2); doc.line(lX+lW, lY-6, lX+lW, lY-2);
       doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(20,20,20);
       doc.text(v2('neckLabelSize')||'—', lX+lW/2, lY-6, {align:'center'});
-      doc.setFillColor(20,20,20); doc.rect(lX, lY, lW, lH, 'F');
+      // Left: label mockup with "Your Logo" placeholder
+      doc.setFillColor(40,40,40); doc.rect(lX, lY, lW, lH, 'F');
       doc.setDrawColor(140,140,140); doc.setLineWidth(0.2); doc.setLineDash([1,1]);
       doc.rect(lX+3, lY+3, lW-6, lH-6, 'D'); doc.setLineDash([]);
       doc.setFont('helvetica','bold'); doc.setFontSize(10); doc.setTextColor(255,255,255);
-      doc.text('RENÉ BASSETT', lX+lW/2, lY+lH/2+2, {align:'center'});
+      doc.text('YOUR LOGO', lX+lW/2, lY+lH/2-2, {align:'center'});
+      doc.setFont('helvetica','normal'); doc.setFontSize(7); doc.setTextColor(rgba(255,255,255,0.5));
+      doc.setTextColor(180,180,180);
+      doc.text('(see artwork file)', lX+lW/2, lY+lH/2+6, {align:'center'});
+
+      // Right: client label artwork if uploaded
+      var artLX = lX + lW + 8;
+      var artLW = PW/2 - M - lW - 12;
+      if (lblImgs.length > 0) {
+        doc.setFillColor(252,252,252); doc.setDrawColor(218,218,218); doc.setLineWidth(0.3);
+        doc.rect(artLX, lY, artLW, lH, 'FD');
+        placeImg(lblImgs[0], artLX+2, lY+2, artLW-4, lH-4);
+        doc.setFont('helvetica','normal'); doc.setFontSize(6); doc.setTextColor(140,140,140);
+        doc.text('Client artwork', artLX+artLW/2, lY+lH+4, {align:'center'});
+      } else {
+        doc.setFillColor(245,245,245); doc.setDrawColor(210,210,210); doc.setLineWidth(0.3);
+        doc.rect(artLX, lY, artLW, lH, 'FD');
+        doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(180,180,180);
+        doc.text('[No artwork uploaded]', artLX+artLW/2, lY+lH/2, {align:'center'});
+      }
       // Label color info
       var lblInfoY = lY+lH+14;
       if (v2('lblBgColor') || v2('lblTextColor')) {
