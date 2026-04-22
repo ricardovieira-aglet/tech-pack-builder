@@ -690,6 +690,22 @@ function renderCanvas(canvasId, isFront) {
   var key = garment + '_' + (isFront ? 'front' : 'back') + '_' + placement;
   var tmpl = TMPL[key];
 
+  // Zip hoodie front center not available (zipper)
+  if (garment === 'ziphoodie' && isFront && placement === 'center') {
+    ctx.drawImage(TSHIRT_IMG, 0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = 'rgba(0,0,0,0.45)';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    ctx.fillStyle = '#ffffff';
+    ctx.font = 'bold 16px sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillText('Front Center not available', canvas.width / 2, canvas.height / 2 - 12);
+    ctx.font = '13px sans-serif';
+    ctx.fillStyle = 'rgba(255,255,255,0.7)';
+    ctx.fillText('Zip hoodies cannot be decorated at front center', canvas.width / 2, canvas.height / 2 + 12);
+    ctx.fillText('due to the zipper. Choose Left or Right Chest.', canvas.width / 2, canvas.height / 2 + 30);
+    return;
+  }
+
   // Shorts / Sweatpants back — not available for decoration
   if ((garment === 'shorts' || garment === 'sweatpants') && !isFront) {
     var noDecoBgKey = garment === 'sweatpants' ? 'sweatpants_back_center' : 'shorts_back_center';
@@ -710,21 +726,6 @@ function renderCanvas(canvasId, isFront) {
     return;
   }
 
-  // Zip hoodie front center not available
-  if (garment === 'ziphoodie' && isFront && placement === 'center') {
-    ctx.drawImage(TSHIRT_IMG, 0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = 'rgba(0,0,0,0.45)';
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 16px sans-serif';
-    ctx.textAlign = 'center';
-    ctx.fillText('Front Center not available', canvas.width / 2, canvas.height / 2 - 12);
-    ctx.font = '13px sans-serif';
-    ctx.fillStyle = 'rgba(255,255,255,0.7)';
-    ctx.fillText('Zip hoodies cannot be decorated at front center', canvas.width / 2, canvas.height / 2 + 12);
-    ctx.fillText('due to the zipper. Choose Left or Right Chest.', canvas.width / 2, canvas.height / 2 + 30);
-    return;
-  }
 
   if (tmpl && tmpl.naturalWidth > 0) {
     ctx.drawImage(tmpl, 0, 0, canvas.width, canvas.height);
