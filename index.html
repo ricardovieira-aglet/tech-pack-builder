@@ -48,6 +48,11 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--black)
 .pantone-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
 .upload-zone{border:2px dashed var(--border);border-radius:var(--radius);padding:24px 16px;text-align:center;transition:all 0.15s;margin-top:14px;cursor:pointer}
 .upload-zone:hover,.upload-zone.dragover{border-color:var(--black);background:var(--cream)}
+input.field-error, select.field-error, textarea.field-error {
+  border-color: #c0392b !important;
+  background: #fff5f5 !important;
+  box-shadow: 0 0 0 2px rgba(192,57,43,0.15);
+}
 .section-disabled{opacity:0.4;pointer-events:none;position:relative}
 .section-disabled::after{content:'Not available for this garment';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(13,13,13,0.85);color:#fff;padding:8px 18px;border-radius:3px;font-size:13px;white-space:nowrap;pointer-events:none}
 .upload-icon{font-size:22px;margin-bottom:6px}
@@ -105,7 +110,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--black)
         <div class="field"><label>Brand Name</label><input type="text" id="brandName" placeholder="Your brand name"></div>
         <div class="field"><label>Style Name</label><input type="text" id="styleName" placeholder="e.g. Classic Heavyweight Tee"></div>
         <div class="field"><label>Style Number</label><input type="text" id="styleNumber" placeholder="e.g. SS25-001"></div>
-        <div class="field" style="grid-column:span 2"><label>Contact Email</label><input type="email" id="contactEmail" placeholder="your@email.com"></div>
+        <div class="field"><label>Designer's Name</label><input type="text" id="designerName" placeholder="e.g. Alex"></div>
+        <div class="field" style="grid-column:span 1"><label>Contact Email</label><input type="email" id="contactEmail" placeholder="your@email.com"></div>
       </div>
     </div>
   </div>
@@ -313,11 +319,17 @@ body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--black)
 </div>
 
 <div class="generate-bar">
-  <div class="generate-note">After downloading, email to <strong>info@renebassett.com</strong></div>
-  <button class="btn-gen" id="genBtn" onclick="generatePDF()">
-    <span class="spinner" id="spinner"></span>
-    <span id="btnText">Generate &amp; Download Tech Pack</span>
-  </button>
+  <label style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:#0d0d0d;cursor:pointer;margin-bottom:10px;line-height:1.4">
+    <input type="checkbox" id="artworkConsent" style="margin-top:2px;width:16px;height:16px;flex-shrink:0;accent-color:#0d0d0d;cursor:pointer">
+    When sending the tech pack, I will also include the artwork in the same email.
+  </label>
+  <div style="display:flex;align-items:center;justify-content:space-between;width:100%;gap:16px">
+    <div class="generate-note">After downloading, email to <strong>info@renebassett.com</strong></div>
+    <button class="btn-gen" id="genBtn" onclick="generatePDF()">
+      <span class="spinner" id="spinner"></span>
+      <span id="btnText">Generate &amp; Download Tech Pack</span>
+    </button>
+  </div>
 </div>
 
 <script>
@@ -861,7 +873,44 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 // ─── PDF GENERATION ─────────────────────────────────────────────────────────
+function validateForm() {
+    var errors = [];
+    var fields = [
+      { id: 'garmentColor',  label: 'Garment Color' },
+      { id: 'totalUnits',    label: 'Total Units' },
+      { id: 'frontWidth',    label: 'Width (cm) in Front Decoration' },
+      { id: 'neckLabelSize', label: 'Label Size (W × H cm)' },
+    ];
+    fields.forEach(function(f) {
+      var el = document.getElementById(f.id);
+      if (!el) return;
+      var val = el.value.trim();
+      if (!val || val === '0') {
+        errors.push(f.label);
+        el.classList.add('field-error');
+        el.addEventListener('input', function() {
+          if (this.value.trim()) this.classList.remove('field-error');
+        }, { once: true });
+      } else {
+        el.classList.remove('field-error');
+      }
+    });
+    return errors;
+  }
+
 async function generatePDF() {
+    var errors = validateForm();
+    if (errors.length > 0) {
+      alert('Please fill in the following required fields before downloading:\n\n• ' + errors.join('\n• '));
+      return;
+    }
+    var consent = document.getElementById('artworkConsent');
+    if (!consent || !consent.checked) {
+      consent.style.outline = '2px solid #c0392b';
+      setTimeout(function(){ consent.style.outline = ''; }, 3000);
+      alert('Please confirm that you will include the artwork when sending the tech pack.');
+      return;
+    }
   var btn = document.getElementById('genBtn');
   var spinner = document.getElementById('spinner');
   var btnText = document.getElementById('btnText');
