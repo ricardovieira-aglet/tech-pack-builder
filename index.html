@@ -288,8 +288,8 @@ input.field-error, select.field-error, textarea.field-error {
     <div class="section-head"><span class="section-num">05</span><span class="section-title">Labels &amp; Packaging</span></div>
     <div class="section-body">
       <div class="grid-2" style="gap:14px">
-        <div class="field"><label>Neck Label Type</label><select id="neckLabelType"><option value="Woven label">Woven label</option></select></div>
-        <div class="field"><label>Label Size (W × H cm)</label><input type="text" id="neckLabelSize" placeholder="e.g. 6 × 3 cm"></div>
+        <div class="field"><label>Neck Label Type</label><select id="neckLabelType" onchange="toggleLabelSize(this.value)"><option value="None" selected>None</option><option value="Woven label">Woven label</option><option value="Printed label">Printed label</option><option value="Heat transfer">Heat transfer</option></select></div>
+        <div class="field" id="labelSizeField" style="display:none"><label>Label Size (W × H cm)</label><input type="text" id="neckLabelSize" placeholder="e.g. 6 × 3 cm"></div>
         <div class="field"><label>Background Color</label><input type="text" id="lblBgColor" placeholder="e.g. 19-3911 TPG — Jet Black"></div>
         <div class="field"><label>Text / Logo Color</label><input type="text" id="lblTextColor" placeholder="e.g. 11-4001 TPG — Brilliant White"></div>
       </div>
@@ -880,7 +880,7 @@ function validateForm() {
       { id: 'totalUnits',    label: 'Total Units' },
       { id: 'frontWidth',    label: 'Width (cm) in Front Decoration' },
       { id: 'backWidth',     label: 'Width (cm) in Back Decoration' },
-      { id: 'neckLabelSize', label: 'Label Size (W × H cm)' },
+
     ];
 
     // Pantone validation for techniques requiring color specs
@@ -923,6 +923,15 @@ function validateForm() {
         el.classList.remove('field-error');
       }
     });
+    // Neck label size only required if type is not None
+    var lblType = document.getElementById('neckLabelType').value;
+    if (lblType !== 'None') {
+      var lblSize = document.getElementById('neckLabelSize');
+      if (!lblSize || !lblSize.value.trim()) {
+        errors.push('Label Size (W × H cm)');
+        if (lblSize) { lblSize.classList.add('field-error'); lblSize.addEventListener('input', function(){ if(this.value.trim()) this.classList.remove('field-error'); }, {once:true}); }
+      }
+    }
     return errors;
   }
 
