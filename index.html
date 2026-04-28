@@ -891,14 +891,15 @@ function validateForm() {
       if (colorTechniques.includes(tech)) {
         // Check if at least one pantone number is filled
         var hasPantone = false;
+        var prefix = side === 'front' ? 'f' : 'b';
         for (var i = 1; i <= 8; i++) {
-          var pn = document.getElementById(side + 'PN' + i);
+          var pn = document.getElementById(prefix + 'PN' + i);
           if (pn && pn.value.trim()) { hasPantone = true; break; }
         }
         if (!hasPantone) {
           errors.push((side === 'front' ? 'Front' : 'Back') + ' Decoration: at least one Pantone color is required for ' + tech);
           // Highlight first pantone field
-          var firstPN = document.getElementById(side + 'PN1');
+          var firstPN = document.getElementById(prefix + 'PN1');
           if (firstPN) {
             firstPN.classList.add('field-error');
             firstPN.addEventListener('input', function() {
