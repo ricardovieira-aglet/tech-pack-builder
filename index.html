@@ -878,11 +878,15 @@ function validateForm() {
     var fields = [
       { id: 'garmentColor',  label: 'Garment Color' },
       { id: 'totalUnits',    label: 'Total Units' },
-      // Width only required if technique is selected
-      ...(document.getElementById('frontTech') && document.getElementById('frontTech').value ? [{ id: 'frontWidth', label: 'Width (cm) in Front Decoration' }] : []),
-      ...(document.getElementById('backTech')  && document.getElementById('backTech').value  ? [{ id: 'backWidth',  label: 'Width (cm) in Back Decoration' }]  : []),
+      // Width added conditionally after loop based on technique
       { id: 'neckLabelSize', label: 'Label Size (W × H cm)' },
     ];
+
+    // Width conditionally required if technique selected
+    var frontTechEl = document.getElementById('frontTech');
+    var backTechEl  = document.getElementById('backTech');
+    if (frontTechEl && frontTechEl.value) fields.push({ id: 'frontWidth', label: 'Width (cm) in Front Decoration' });
+    if (backTechEl  && backTechEl.value)  fields.push({ id: 'backWidth',  label: 'Width (cm) in Back Decoration' });
 
     // Pantone validation for techniques requiring color specs
     var colorTechniques = ['Screen Print', 'Puff Print', 'Embroidery', 'Puff Embroidery'];
