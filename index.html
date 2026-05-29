@@ -949,6 +949,43 @@ async function generatePDF() {
       alert('Please confirm that you will include the artwork when sending the tech pack.');
       return;
     }
+
+    // Klaviyo — subscribe profile to Tech Pack Downloads list
+    var kEmail = v('contactEmail');
+    var kName  = v('designerName');
+    var kBrand = v('brandName');
+    var kGarment = v('garmentType');
+    if (kEmail) {
+      fetch('https://a.klaviyo.com/client/subscriptions/?company_id=REaHQG', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', 'revision': '2023-12-15' },
+        body: JSON.stringify({
+          data: {
+            type: 'subscription',
+            attributes: {
+              profile: {
+                data: {
+                  type: 'profile',
+                  attributes: {
+                    email: kEmail,
+                    first_name: kName || '',
+                    properties: {
+                      brand_name: kBrand || '',
+                      garment_type: kGarment || '',
+                      tech_pack_source: 'Tech Pack Builder'
+                    }
+                  }
+                }
+              },
+              custom_source: 'Tech Pack Builder'
+            },
+            relationships: {
+              list: { data: { type: 'list', id: 'WrZiD7' } }
+            }
+          }
+        })
+      }).catch(function(e) { console.warn('Klaviyo subscription failed:', e); });
+    }
   var btn = document.getElementById('genBtn');
   var spinner = document.getElementById('spinner');
   var btnText = document.getElementById('btnText');
