@@ -288,7 +288,7 @@ input.field-error, select.field-error, textarea.field-error {
     <div class="section-head"><span class="section-num">05</span><span class="section-title">Labels &amp; Packaging</span></div>
     <div class="section-body">
       <div class="grid-2" style="gap:14px">
-        <div class="field"><label>Neck Label Type</label><select id="neckLabelType"><option value="">Select...</option><option value="Woven label">Woven label</option><option value="No label">No label</option></select></div>
+        <div class="field"><label>Neck Label Type</label><select id="neckLabelType"><option value="" disabled selected>Select...</option><option value="Woven label">Woven label</option><option value="No label">No label</option></select></div>
         <div class="field"><label>Label Size (W × H cm)</label><input type="text" id="neckLabelSize" placeholder="e.g. 6 × 3 cm"></div>
         <div class="field"><label>Background Color</label><input type="text" id="lblBgColor" placeholder="e.g. 19-3911 TPG — Jet Black"></div>
         <div class="field"><label>Text / Logo Color</label><input type="text" id="lblTextColor" placeholder="e.g. 11-4001 TPG — Brilliant White"></div>
@@ -897,19 +897,19 @@ function validateForm() {
     // Pantone validation for techniques requiring color specs
     var colorTechniques = ['Screen Print', 'Puff Print', 'Embroidery', 'Puff Embroidery'];
 
+    var pantonePrefix = { 'front': 'fPN', 'back': 'bPN' };
     ['front', 'back'].forEach(function(side) {
       var tech = (document.getElementById(side + 'Tech') || {}).value || '';
       if (colorTechniques.includes(tech)) {
-        // Check if at least one pantone number is filled
+        var prefix = pantonePrefix[side];
         var hasPantone = false;
         for (var i = 1; i <= 8; i++) {
-          var pn = document.getElementById(side + 'PN' + i);
+          var pn = document.getElementById(prefix + i);
           if (pn && pn.value.trim()) { hasPantone = true; break; }
         }
         if (!hasPantone) {
           errors.push((side === 'front' ? 'Front' : 'Back') + ' Decoration: at least one Pantone color is required for ' + tech);
-          // Highlight first pantone field
-          var firstPN = document.getElementById(side + 'PN1');
+          var firstPN = document.getElementById(prefix + '1');
           if (firstPN) {
             firstPN.classList.add('field-error');
             firstPN.addEventListener('input', function() {
