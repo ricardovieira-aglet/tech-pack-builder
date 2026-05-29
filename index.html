@@ -288,7 +288,7 @@ input.field-error, select.field-error, textarea.field-error {
     <div class="section-head"><span class="section-num">05</span><span class="section-title">Labels &amp; Packaging</span></div>
     <div class="section-body">
       <div class="grid-2" style="gap:14px">
-        <div class="field"><label>Neck Label Type</label><select id="neckLabelType"><option value="Woven label">Woven label</option></select></div>
+        <div class="field"><label>Neck Label Type</label><select id="neckLabelType"><option value="">Select...</option><option value="Woven label">Woven label</option><option value="No label">No label</option></select></div>
         <div class="field"><label>Label Size (W × H cm)</label><input type="text" id="neckLabelSize" placeholder="e.g. 6 × 3 cm"></div>
         <div class="field"><label>Background Color</label><input type="text" id="lblBgColor" placeholder="e.g. 19-3911 TPG — Jet Black"></div>
         <div class="field"><label>Text / Logo Color</label><input type="text" id="lblTextColor" placeholder="e.g. 11-4001 TPG — Brilliant White"></div>
@@ -879,7 +879,7 @@ function validateForm() {
       { id: 'garmentColor',  label: 'Garment Color' },
       { id: 'totalUnits',    label: 'Total Units' },
       // Width added conditionally after loop based on technique
-      { id: 'neckLabelSize', label: 'Label Size (W × H cm)' },
+      // Label size only required if Woven label selected
     ];
 
     // Width conditionally required if technique selected
@@ -887,6 +887,12 @@ function validateForm() {
     var backTechEl  = document.getElementById('backTech');
     if (frontTechEl && frontTechEl.value) fields.push({ id: 'frontWidth', label: 'Width (cm) in Front Decoration' });
     if (backTechEl  && backTechEl.value)  fields.push({ id: 'backWidth',  label: 'Width (cm) in Back Decoration' });
+
+    // Label size only required if Woven label selected
+    var labelTypeEl = document.getElementById('neckLabelType');
+    if (labelTypeEl && labelTypeEl.value === 'Woven label') {
+      fields.push({ id: 'neckLabelSize', label: 'Label Size (W × H cm)' });
+    }
 
     // Pantone validation for techniques requiring color specs
     var colorTechniques = ['Screen Print', 'Puff Print', 'Embroidery', 'Puff Embroidery'];
