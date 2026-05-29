@@ -1384,5 +1384,16 @@ async function generatePDF() {
   }
 }
 </script>
+<script>
+  function sendHeight() {
+    var h = document.documentElement.scrollHeight;
+    window.parent.postMessage({ type: 'iframeHeight', height: h }, '*');
+  }
+  // Send on load and on any resize/change
+  window.addEventListener('load', sendHeight);
+  window.addEventListener('resize', sendHeight);
+  // Also send periodically to catch dynamic content changes
+  setInterval(sendHeight, 500);
+</script>
 </body>
 </html>
