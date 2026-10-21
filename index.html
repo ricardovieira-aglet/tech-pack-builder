@@ -314,6 +314,8 @@ input.field-error, select.field-error, textarea.field-error {
       <div class="field">
         <textarea id="frontNotes" style="min-height:65px" placeholder="e.g. 3D puff, metallic ink, exact thread color reference..."></textarea>
       </div>
+      <div id="frontExtra"></div>
+      <button class="upload-btn" type="button" style="margin-top:14px;border-color:var(--blue);color:var(--blue)" onclick="rbAddDeco('front')">+ Add another technique on the front</button>
     </div>
   </div>
 
@@ -371,6 +373,18 @@ input.field-error, select.field-error, textarea.field-error {
       <div class="field">
         <textarea id="backNotes" style="min-height:65px" placeholder="e.g. Large back graphic, distressed print, vintage wash effect..."></textarea>
       </div>
+      <div id="backExtra"></div>
+      <button class="upload-btn" type="button" style="margin-top:14px;border-color:var(--blue);color:var(--blue)" onclick="rbAddDeco('back')">+ Add another technique on the back</button>
+    </div>
+  </div>
+
+  <!-- 04b SLEEVE DECORATION -->
+  <div class="section">
+    <div class="section-head"><span class="section-num">—</span><span class="section-title">Sleeve Decoration</span></div>
+    <div class="section-body">
+      <p class="divider" style="margin-top:0">Add a decoration on the sleeve (e.g. DTG). Sleeve prints are reviewed and confirmed by René Bassett.</p>
+      <div id="sleeveExtra"></div>
+      <button class="upload-btn" type="button" style="margin-top:4px;border-color:var(--blue);color:var(--blue)" onclick="rbAddDeco('sleeve')">+ Add a sleeve decoration</button>
     </div>
   </div>
 
@@ -1068,6 +1082,7 @@ function validateForm() {
         el.classList.remove('field-error');
       }
     });
+    if (typeof rbValidateExtras === 'function') errors = errors.concat(rbValidateExtras());
     return errors;
   }
 
@@ -1561,6 +1576,51 @@ async function generatePDF() {
       doc.setDrawColor(20,20,20); doc.setLineWidth(1); doc.line(M, PH-M, PW-M, PH-M);
     }
 
+    // ── EXTRA / SLEEVE DECORATIONS (one page each) ──────────────────────────
+    var xblocks = Array.prototype.slice.call(document.querySelectorAll('.xdeco')).filter(function(x){ return (x.querySelector('.xTech')||{}).value; });
+    for (var xi=0; xi<xblocks.length; xi++) {
+      var xb = xblocks[xi];
+      var side = xb.getAttribute('data-side');
+      var title = (side==='sleeve' ? 'Sleeve' : side.charAt(0).toUpperCase()+side.slice(1)) + ' Decoration' + (side==='sleeve' ? '' : ' (extra)');
+      doc.addPage(); drawHeader();
+      doc.setFont('helvetica','bold'); doc.setFontSize(15); doc.setTextColor(20,20,20);
+      doc.text(title, M, M+26);
+      var mockY = M+28, mockH = 82, artX = M, artW2 = 108;
+      var xImgs = []; var xinp = xb.querySelector('.xFiles');
+      if (xinp && xinp.files) { for (var xf of Array.prototype.slice.call(xinp.files)) { var xit = await fileToImage(xf); if (xit) xImgs.push(xit); } }
+      if (xImgs.length>0) {
+        doc.setFillColor(252,252,252); doc.setDrawColor(218,218,218); doc.setLineWidth(0.3); doc.rect(artX, mockY, artW2, mockH, 'FD');
+        placeImg(xImgs[0], artX+2, mockY+2, artW2-4, mockH-4);
+        doc.setFont('helvetica','normal'); doc.setFontSize(6); doc.setTextColor(140,140,140); doc.text('Client artwork', artX+artW2/2, mockY+mockH+4, {align:'center'});
+      } else {
+        doc.setFillColor(246,246,246); doc.setDrawColor(210,210,210); doc.setLineWidth(0.3); doc.rect(artX, mockY, artW2, mockH, 'FD');
+        var xnames = (xinp && xinp.files && xinp.files.length) ? Array.prototype.slice.call(xinp.files).map(function(f){return f.name;}).join(', ') : '';
+        doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(160,160,160);
+        if (xnames) doc.text(doc.splitTextToSize('Artwork: '+xnames+' (sent separately)', artW2-8), artX+artW2/2, mockY+mockH/2-2, {align:'center'});
+        else doc.text('[No artwork uploaded]', artX+artW2/2, mockY+mockH/2, {align:'center'});
+      }
+      var ipx = artX + artW2 + 6, ipw = PW - M - ipx;
+      var xtech = (xb.querySelector('.xTech')||{}).value || '';
+      var xpsel = xb.querySelector('.xPlace'); var xplace = xpsel ? xpsel.options[xpsel.selectedIndex].text : '';
+      var xw = parseFloat((xb.querySelector('.xWidth')||{}).value)||0;
+      var xc = parseInt((xb.querySelector('.xColors')||{}).value)||0;
+      var xa = (xb.querySelector('.xArea')||{}).value || '';
+      var xd = parseFloat((xb.querySelector('.xDist')||{}).value)||0;
+      var xn = (xb.querySelector('.xNotes')||{}).value || '';
+      doc.setFont('helvetica','bold'); doc.setFontSize(8); doc.setTextColor(20,20,20); doc.text(title.toUpperCase(), ipx, mockY+5);
+      var xrows = [['Technique', xtech], ['Placement', xplace], ['Width', xw ? xw+' cm' : '-']];
+      if (xc) xrows.push(['Colors', String(xc)]);
+      if (xa) xrows.push(['Embroidery area', xa+' cm²']);
+      xrows.push(['Distance', xd ? xd+' cm' : '-']);
+      xrows.push(['Notes', xn || '-']);
+      infoPanel(ipx, mockY+9, ipw, xrows);
+      var panY = mockY + 9 + xrows.length*13 + 6;
+      doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(20,20,20); doc.text('Colors (Pantone TPG)', ipx, panY);
+      var xpr = 0; var xpns = xb.querySelectorAll('.xPN'); var xnms = xb.querySelectorAll('.xPNm');
+      for (var pi=0; pi<xpns.length; pi++) { var pnv = xpns[pi].value, pnn = xnms[pi] ? xnms[pi].value : ''; if (!pnv && !pnn) continue; var prr = Math.floor(xpr/4), pcc = xpr%4; drawPantone(ipx + pcc*32, panY+4 + prr*34, '#f0f0f0', pnv, pnn); xpr++; }
+      doc.setDrawColor(20,20,20); doc.setLineWidth(1); doc.line(M, PH-M, PW-M, PH-M);
+    }
+
     // Save
     doc.setProperties({title:'Tech Pack — '+(v2('brandName')||'Brand'), creator:'René Bassett Tech Pack Builder'});
     var fn = 'tech-pack_'+(v2('brandName')||'brand').replace(/\s+/g,'-').toLowerCase()+'_'+(v2('styleNumber')||'style').replace(/\s+/g,'-').toLowerCase()+'.pdf';
@@ -1700,19 +1760,20 @@ function decorationUnit(P, dec, tier_idx) {
     const size = spSize(dec.widthCm);
     const colors = Math.max(1, Math.min(7, Number(dec.colors) || 1));
     const base = P.sp[size] && P.sp[size][colors] ? P.sp[size][colors][tier_idx] : undefined;
-    if (base == null) return { price: 0, onRequest: true };
+    if (base == null) return { price: 0, onRequest: true, separate: false };
     const puff = isPuff(t) ? (P.puff.print.producao || 0) : 0;
-    return { price: base + puff, onRequest: false };
+    return { price: base + puff, onRequest: false, separate: false };
   }
   if (isEmb(t)) {
     const area = embBandArea(P, dec.areaCm2);
     const base = P.emb[area] ? P.emb[area][tier_idx] : undefined;
-    if (base == null) return { price: 0, onRequest: true };
+    if (base == null) return { price: 0, onRequest: true, separate: false };
     const puff = isPuff(t) ? (P.puff.emb.producao || 0) : 0;
-    return { price: base + puff, onRequest: false };
+    return { price: base + puff, onRequest: false, separate: false };
   }
-  // DTG / DTF -> quoted separately
-  return { price: 0, onRequest: true };
+  // DTG / DTF -> quoted separately. Does NOT block the tier price:
+  // the screen/embroidery/blank components stay priced; DTG/DTF is a note.
+  return { price: 0, onRequest: false, separate: true };
 }
 
 /* ---- Sample add per decoration -------------------------------------------- */
@@ -1750,10 +1811,13 @@ function quote(rows, config) {
     const blankUnit = (blankUnitRaw && blankUnitRaw > 0) ? blankUnitRaw : 0;
     let decoSum = 0;
     let onRequest = !blankUnit; // missing/zero blank price -> whole break on request
+    let hasSeparate = false;    // DTG/DTF present -> priced extra, quoted separately
 
     decos.forEach(d => {
       const u = decorationUnit(P, d, tier.tier_idx);
-      if (u.onRequest) onRequest = true; else decoSum += u.price;
+      if (u.separate) hasSeparate = true;
+      else if (u.onRequest) onRequest = true;
+      else decoSum += u.price;
     });
 
     return {
@@ -1765,6 +1829,7 @@ function quote(rows, config) {
       decorationUnit: round2(decoSum),
       pricePerPiece: onRequest ? null : round2(blankUnit + decoSum),
       onRequest: onRequest,
+      hasSeparate: hasSeparate,
     };
   });
 
@@ -1874,6 +1939,7 @@ function rbCurrentQuote(){
   var model = (document.getElementById('garmentType')||{}).value || '';
   var finish = rbFinishOf();
   var decos = [rbDecoration('front'), rbDecoration('back')].filter(Boolean);
+  if (typeof rbExtraDecos === 'function') decos = decos.concat(rbExtraDecos());
   if (!model || !finish || decos.length === 0) return null;
   if (!RB_PRICES || !RB_PRICES.blank) return null;
   try { return quote(RB_PRICES, { model: model, finish: finish, decorations: decos }); }
@@ -2228,6 +2294,86 @@ function downloadBlankPDF(){
   if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
 })();
 
+</script>
+<script>
+/* ===== Extra / sleeve decorations (add more techniques per side) ===== */
+var RB_TECH_OPTS='<option value="" disabled selected>Select technique...</option><option>Screen Print</option><option>Puff Print</option><option>Embroidery</option><option>Puff Embroidery</option><option>DTG</option><option>DTF</option>';
+var RB_AREA_OPTS='<option value="">Select area...</option><option>4</option><option>10</option><option>16</option><option>22</option><option>30</option><option>40</option><option>75</option><option>150</option>';
+var RB_PLACE={
+  front:'<option value="" disabled selected>Select placement...</option><option>Front Left Chest</option><option>Front Center</option><option>Front Right Chest</option>',
+  back:'<option value="" disabled selected>Select placement...</option><option>Back Center</option><option>Upper Back</option><option>Other</option>',
+  sleeve:'<option value="" disabled selected>Select placement...</option><option>Left sleeve</option><option>Right sleeve</option><option>Both sleeves</option>'
+};
+function rbPantoneCards(n){
+  var h='';
+  for(var i=0;i<n;i++){
+    h+='<div class="pantone-card"><div class="pantone-fields"><div class="pantone-label">Pantone No.</div><input type="text" class="xPN" placeholder="'+(i===0?'e.g. 11-4001 TPG':'Optional')+'"><div class="pantone-label">Color Name</div><input type="text" class="xPNm" placeholder="'+(i===0?'e.g. Brilliant White':'Optional')+'"></div></div>';
+  }
+  return h;
+}
+function rbAddDeco(side){
+  var wrap=document.createElement('div');
+  wrap.className='xdeco'; wrap.setAttribute('data-side',side);
+  wrap.style.cssText='border:1px solid var(--border);border-radius:10px;padding:16px;margin-top:14px;background:var(--white)';
+  wrap.innerHTML=
+    '<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">'+
+      '<div style="font-size:11px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);font-weight:600">'+(side==='sleeve'?'Sleeve decoration':'Extra decoration')+'</div>'+
+      '<button type="button" class="upload-btn" style="padding:4px 12px" onclick="this.closest(\'.xdeco\').remove();rbQuote()">✕ remove</button>'+
+    '</div>'+
+    '<div class="grid-3" style="gap:14px;margin-bottom:12px">'+
+      '<div class="field"><label>Technique</label><select class="xTech" onchange="rbXTech(this);rbQuote()">'+RB_TECH_OPTS+'</select></div>'+
+      '<div class="field"><label>Placement</label><select class="xPlace">'+RB_PLACE[side]+'</select></div>'+
+      '<div class="field"><label>Width (cm)</label><input type="number" step="0.5" class="xWidth" placeholder="e.g. 10" oninput="rbQuote()"></div>'+
+      '<div class="field xColorsF" style="display:none"><label>Number of colors (1-7)</label><input type="number" min="1" max="7" class="xColors" placeholder="e.g. 2" oninput="rbQuote()"></div>'+
+      '<div class="field xAreaF" style="display:none"><label>Embroidery area (cm²)</label><select class="xArea" onchange="rbQuote()">'+RB_AREA_OPTS+'</select></div>'+
+      '<div class="field"><label>Distance from collar / seam (cm)</label><input type="number" step="0.5" class="xDist" placeholder="e.g. 8"></div>'+
+    '</div>'+
+    '<div class="divider">Colors (Pantone TPG)</div>'+
+    '<div class="pantone-row xPantones">'+rbPantoneCards(4)+'</div>'+
+    '<div class="divider" style="margin-top:14px">Artwork</div>'+
+    '<label class="upload-btn" style="display:inline-block">Choose file<input type="file" class="xFiles" accept="image/*,.ai,.svg,.eps,.pdf" multiple style="display:none" onchange="rbXFileLabel(this)"></label> <span class="xFileName" style="color:var(--muted);font-size:12px;margin-left:6px"></span>'+
+    '<div class="divider" style="margin-top:14px">Notes</div>'+
+    '<textarea class="xNotes" style="min-height:55px" placeholder="e.g. 3D puff, metallic ink, placement notes..."></textarea>';
+  document.getElementById(side+'Extra').appendChild(wrap);
+}
+function rbXTech(sel){
+  var x=sel.closest('.xdeco'); var t=sel.value;
+  var isScreen=(t==='Screen Print'||t==='Puff Print'), isEmb=(t==='Embroidery'||t==='Puff Embroidery');
+  var cf=x.querySelector('.xColorsF'), af=x.querySelector('.xAreaF');
+  if(cf) cf.style.display=isScreen?'':'none';
+  if(af) af.style.display=isEmb?'':'none';
+}
+function rbXFileLabel(inp){ var s=inp.closest('.xdeco').querySelector('.xFileName'); if(s) s.textContent=(inp.files&&inp.files.length)?(inp.files.length+' file(s) selected'):''; }
+function rbExtraDecos(){
+  var out=[];
+  document.querySelectorAll('.xdeco').forEach(function(x){
+    var t=(x.querySelector('.xTech')||{}).value; if(!t) return;
+    out.push({ technique:t, side:x.getAttribute('data-side'),
+      widthCm:parseFloat((x.querySelector('.xWidth')||{}).value)||0,
+      colors:parseInt((x.querySelector('.xColors')||{}).value)||1,
+      areaCm2:parseFloat((x.querySelector('.xArea')||{}).value)||0 });
+  });
+  return out;
+}
+function rbValidateExtras(){
+  var errs=[];
+  document.querySelectorAll('.xdeco').forEach(function(x){
+    var t=(x.querySelector('.xTech')||{}).value; if(!t) return;
+    var side=x.getAttribute('data-side');
+    var label=(side==='sleeve'?'Sleeve':'Extra '+side)+' decoration';
+    function bad(el){ if(!el||el.offsetParent===null) return false; var v=(el.value||'').trim(); var b=(!v||v==='0'); el.classList.toggle('field-error',b); return b; }
+    if(bad(x.querySelector('.xWidth'))) errs.push('Width in '+label);
+    var isScreen=(t==='Screen Print'||t==='Puff Print'), isEmb=(t==='Embroidery'||t==='Puff Embroidery');
+    if(isScreen && bad(x.querySelector('.xColors'))) errs.push('Number of colors in '+label);
+    if(isEmb && bad(x.querySelector('.xArea'))) errs.push('Embroidery area in '+label);
+    if(bad(x.querySelector('.xDist'))) errs.push('Distance in '+label);
+    if(isScreen||isEmb){
+      var has=false; x.querySelectorAll('.xPN').forEach(function(p){ if((p.value||'').trim()) has=true; });
+      if(!has){ errs.push('At least one Pantone color in '+label); var first=x.querySelector('.xPN'); if(first) first.classList.add('field-error'); }
+    }
+  });
+  return errs;
+}
 </script>
 </body>
 </html>
