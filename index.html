@@ -1628,7 +1628,7 @@ async function generatePDF() {
       var xrows = [['Technique', xtech], ['Placement', xplace||'-'], ['Width', xw ? xw+' cm' : '-']];
       if (xc) xrows.push(['Colors', String(xc)]);
       if (xa) xrows.push(['Embroidery area', xa+' cm²']);
-      xrows.push(['Distance', xd ? xd+' cm' : '-']);
+      if (side!=='sleeve') xrows.push(['Distance', xd ? xd+' cm' : '-']);
       xrows.push(['Notes', xn || '-']);
       infoPanel(ipx, mockY+9, ipw, xrows);
       var panY = mockY + 9 + xrows.length*13 + 6;
@@ -2124,6 +2124,13 @@ function rbShow(id){
   });
   var bar=document.getElementById('generateBar'); if(bar) bar.style.display=(id==='customScreen'?'':'none');
   window.scrollTo(0,0);
+  // Ask the embedding page (Shopify) to scroll this iframe to the top, so the
+  // result (prices + buttons) is visible without the user scrolling up.
+  try {
+    if (typeof sendHeight === 'function') sendHeight();
+    window.parent.postMessage({ type: 'scrollToTop' }, '*');
+    setTimeout(function(){ try { window.parent.postMessage({ type: 'scrollToTop' }, '*'); } catch(e){} }, 120);
+  } catch(e){}
 }
 function rbDetailsOk(){
   var n=((document.getElementById('leadName')||{}).value||'').trim();
@@ -2347,7 +2354,7 @@ function rbAddDeco(side){
       '<div class="field"><label>Width (cm)</label><input type="number" step="0.5" class="xWidth" placeholder="e.g. 10" oninput="rbQuote()"></div>'+
       '<div class="field xColorsF" style="display:none"><label>Number of colors (1-7)</label><input type="number" min="1" max="7" class="xColors" placeholder="e.g. 2" oninput="rbQuote()"></div>'+
       '<div class="field xAreaF" style="display:none"><label>Embroidery area (cm²)</label><select class="xArea" onchange="rbQuote()">'+RB_AREA_OPTS+'</select></div>'+
-      '<div class="field"><label>Distance from collar / seam (cm)</label><input type="number" step="0.5" class="xDist" placeholder="e.g. 8"></div>'+
+      (side==='sleeve' ? '' : '<div class="field"><label>Distance from collar / seam (cm)</label><input type="number" step="0.5" class="xDist" placeholder="e.g. 8"></div>')+
     '</div>'+
     '<div class="divider">Colors (Pantone TPG)</div>'+
     '<div class="pantone-row xPantones">'+rbPantoneCards(4)+'</div>'+
