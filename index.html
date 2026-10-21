@@ -5,102 +5,185 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tech Pack Builder — René Bassett</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--black:#0d0d0d;--white:#fafaf8;--cream:#f5f2ec;--border:#e0dbd2;--muted:#8a8480;--radius:3px}
-body{font-family:'DM Sans',sans-serif;background:var(--cream);color:var(--black);min-height:100vh}
-.page-header{background:var(--black);color:var(--white);padding:28px 40px;display:flex;align-items:center;justify-content:space-between}
-.brand-label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.2em;text-transform:uppercase;opacity:0.4;margin-bottom:8px}
-.header-title{font-size:22px;font-weight:300;letter-spacing:-0.02em}
+:root{--ink:#111111;--white:#ffffff;--card:#f2f2f2;--grey2:#eaeaea;--border:#e4e4e4;--muted:#777777;--blue:#1846d7;--radius:10px;
+  /* legacy tokens kept so existing rules inherit the RB palette */
+  --black:#111111;--cream:#f2f2f2}
+body{font-family:'Poppins',sans-serif;background:var(--white);color:var(--ink);min-height:100vh;line-height:1.5}
+/* Header - white, no black block */
+.page-header{background:var(--white);color:var(--ink);padding:26px 40px;display:flex;align-items:flex-start;justify-content:space-between;border-bottom:1px solid var(--border);flex-wrap:wrap;gap:16px}
+.brand-label{font-size:11px;letter-spacing:0.16em;text-transform:uppercase;color:var(--blue);font-weight:600;margin-bottom:8px}
+.header-title{font-size:24px;font-weight:300;letter-spacing:-0.02em;color:var(--ink)}
 .header-title strong{font-weight:600}
-.header-sub{margin-top:5px;font-size:13px;color:rgba(250,250,248,0.45)}
-.header-steps{display:flex;flex-direction:column;gap:5px}
-.step-item{display:flex;align-items:center;gap:8px;font-size:12px;color:rgba(250,250,248,0.5)}
-.step-num{width:20px;height:20px;border:1px solid rgba(255,255,255,0.2);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'DM Mono',monospace;font-size:9px;flex-shrink:0}
-.step-item.active .step-num{background:var(--white);color:var(--black)}
-.step-item.active{color:var(--white)}
-.form-wrapper{max-width:900px;margin:0 auto;padding:36px 24px 100px}
+.header-sub{margin-top:5px;font-size:13px;color:var(--muted)}
+.header-steps{display:flex;flex-direction:column;gap:6px}
+.step-item{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--muted)}
+.step-num{width:20px;height:20px;border:1px solid var(--border);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;flex-shrink:0;font-weight:600}
+.step-item.active .step-num{background:var(--blue);color:#fff;border-color:var(--blue)}
+.step-item.active{color:var(--ink);font-weight:500}
+.form-wrapper{max-width:900px;margin:0 auto;padding:36px 24px 120px}
+/* Cards / sections - white card, grey header bar (never black) */
 .section{background:var(--white);border:1px solid var(--border);border-radius:var(--radius);margin-bottom:18px;overflow:hidden}
-.section-head{padding:13px 22px;background:var(--black);color:var(--white);display:flex;align-items:center;gap:10px}
-.section-num{font-family:'DM Mono',monospace;font-size:10px;opacity:0.4;min-width:22px}
-.section-title{font-size:12px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase}
+.section-head{padding:14px 22px;background:var(--card);color:var(--ink);display:flex;align-items:center;gap:10px;border-bottom:1px solid var(--border)}
+.section-num{font-size:11px;color:var(--blue);min-width:22px;font-weight:600}
+.section-title{font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase}
 .section-body{padding:22px}
 .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
 .field{display:flex;flex-direction:column;gap:5px}
-.field label{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted)}
-.field input,.field select,.field textarea{border:1px solid var(--border);border-radius:var(--radius);padding:9px 11px;font-family:'DM Sans',sans-serif;font-size:14px;color:var(--black);background:var(--white);outline:none;transition:border-color 0.15s;width:100%}
-.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--black)}
+.field label{font-size:11px;letter-spacing:0.04em;color:var(--muted);font-weight:500}
+.field input,.field select,.field textarea{border:1px solid var(--border);border-radius:8px;padding:10px 12px;font-family:'Poppins',sans-serif;font-size:14px;color:var(--ink);background:var(--white);outline:none;transition:border-color 0.15s;width:100%}
+.field input:focus,.field select:focus,.field textarea:focus{border-color:var(--blue)}
 .field textarea{resize:vertical;min-height:65px}
-.divider{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin:4px 0 14px;display:flex;align-items:center;gap:8px}
+.divider{font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin:4px 0 14px;display:flex;align-items:center;gap:8px;font-weight:500}
 .divider::after{content:'';flex:1;height:1px;background:var(--border)}
 .size-table{width:100%;border-collapse:collapse}
-.size-table th{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:0.1em;text-transform:uppercase;color:var(--muted);padding:7px 8px;background:var(--cream);border:1px solid var(--border);text-align:center;font-weight:400}
+.size-table th{font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);padding:8px;background:var(--card);border:1px solid var(--border);text-align:center;font-weight:600}
 .size-table td{border:1px solid var(--border);padding:0}
-.size-table td input{border:none;padding:9px;font-size:14px;width:100%;text-align:center;background:transparent;outline:none;font-family:'DM Sans',sans-serif}
-.size-table td input:focus{background:var(--cream)}
+.size-table td input{border:none;padding:9px;font-size:14px;width:100%;text-align:center;background:transparent;outline:none;font-family:'Poppins',sans-serif}
+.size-table td input:focus{background:var(--card)}
 .pantone-row{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:4px}
-.pantone-card{border:1px solid var(--border);border-radius:var(--radius);padding:8px 10px;display:flex;flex-direction:column;gap:4px}
+.pantone-card{border:1px solid var(--border);border-radius:8px;padding:8px 10px;display:flex;flex-direction:column;gap:4px;background:var(--white)}
 .pantone-fields{display:flex;flex-direction:column;gap:4px}
-.pantone-fields input{border:1px solid var(--border);border-radius:var(--radius);padding:5px 7px;font-size:12px;width:100%;font-family:'DM Sans',sans-serif;outline:none}
-.pantone-fields input:focus{border-color:var(--black)}
-.pantone-label{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:2px}
-.upload-zone{border:2px dashed var(--border);border-radius:var(--radius);padding:24px 16px;text-align:center;transition:all 0.15s;margin-top:14px;cursor:pointer}
-.upload-zone:hover,.upload-zone.dragover{border-color:var(--black);background:var(--cream)}
+.pantone-fields input{border:1px solid var(--border);border-radius:6px;padding:6px 8px;font-size:12px;width:100%;font-family:'Poppins',sans-serif;outline:none}
+.pantone-fields input:focus{border-color:var(--blue)}
+.pantone-label{font-size:9px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:2px;font-weight:500}
+.upload-zone{border:2px dashed var(--border);border-radius:var(--radius);padding:24px 16px;text-align:center;transition:all 0.15s;margin-top:14px;cursor:pointer;background:var(--card)}
+.upload-zone:hover,.upload-zone.dragover{border-color:var(--blue);background:var(--grey2)}
 input.field-error, select.field-error, textarea.field-error {
   border-color: #c0392b !important;
   background: #fff5f5 !important;
   box-shadow: 0 0 0 2px rgba(192,57,43,0.15);
 }
-.section-disabled{opacity:0.4;pointer-events:none;position:relative}
-.section-disabled::after{content:'Not available for this garment';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(13,13,13,0.85);color:#fff;padding:8px 18px;border-radius:3px;font-size:13px;white-space:nowrap;pointer-events:none}
+.section-disabled{opacity:0.45;pointer-events:none;position:relative}
+.section-disabled::after{content:'Not available for this style';position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);background:rgba(17,17,17,0.85);color:#fff;padding:8px 18px;border-radius:8px;font-size:13px;white-space:nowrap;pointer-events:none}
 .upload-icon{font-size:22px;margin-bottom:6px}
 .upload-label{font-size:13px;font-weight:500;margin-bottom:3px}
 .upload-sub{font-size:11px;color:var(--muted)}
-.upload-btn{display:inline-block;margin-top:8px;padding:5px 14px;border:1px solid var(--border);border-radius:var(--radius);font-size:12px;cursor:pointer;background:var(--white)}
+.upload-btn{display:inline-block;margin-top:8px;padding:6px 16px;border:1px solid var(--border);border-radius:50px;font-size:12px;cursor:pointer;background:var(--white);font-weight:500}
 .upload-preview{margin-top:10px;display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
-.preview-img{width:64px;height:64px;object-fit:contain;border:1px solid var(--border);border-radius:var(--radius);background:var(--cream);padding:3px}
+.preview-img{width:64px;height:64px;object-fit:contain;border:1px solid var(--border);border-radius:8px;background:var(--card);padding:3px}
 .preview-filename{font-size:9px;color:var(--muted);text-align:center;margin-top:2px;max-width:64px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 /* Mockup */
-.mockup-section{background:var(--cream);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-top:18px}
-.mockup-header{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.2em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.mockup-section{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px;margin-top:18px}
+.mockup-header{font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);margin-bottom:10px;display:flex;align-items:center;gap:8px;font-weight:500}
 .mockup-header::after{content:'';flex:1;height:1px;background:var(--border)}
 .mockup-row{display:flex;gap:14px;justify-content:center}
 .mockup-col{flex:1;max-width:300px;text-align:center}
-.mockup-col-title{font-family:'DM Mono',monospace;font-size:9px;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);margin-bottom:5px}
-.mockup-canvas{width:100%;display:block;border:1px solid var(--border);background:white;border-radius:var(--radius)}
+.mockup-col-title{font-size:10px;letter-spacing:0.08em;text-transform:uppercase;color:var(--muted);margin-bottom:5px;font-weight:500}
+.mockup-canvas{width:100%;display:block;border:1px solid var(--border);background:white;border-radius:8px}
 .mockup-hint{font-size:11px;color:var(--muted);text-align:center;margin-top:8px}
 /* Generate bar */
-.generate-bar{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1px solid var(--border);padding:12px 22px;display:flex;align-items:center;justify-content:space-between;z-index:100}
+.generate-bar{position:fixed;bottom:0;left:0;right:0;background:var(--white);border-top:1px solid var(--border);padding:12px 22px;display:flex;align-items:center;justify-content:space-between;z-index:100;gap:12px;flex-wrap:wrap}
 .generate-note{font-size:12px;color:var(--muted)}
-.btn-gen{background:var(--black);color:var(--white);border:none;padding:12px 28px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;letter-spacing:0.04em;border-radius:var(--radius);cursor:pointer;display:flex;align-items:center;gap:8px;transition:opacity 0.15s}
-.btn-gen:hover{opacity:0.8}
+.btn-gen{background:var(--blue);color:#fff;border:none;padding:12px 30px;font-family:'Poppins',sans-serif;font-size:14px;font-weight:500;letter-spacing:0.02em;border-radius:50px;cursor:pointer;display:flex;align-items:center;gap:8px;transition:opacity 0.15s}
+.btn-gen:hover{opacity:0.9}
 .btn-gen:disabled{opacity:0.4;cursor:not-allowed}
+.btn-gen.secondary{background:var(--white);color:var(--ink);border:1px solid var(--border)}
 .spinner{width:15px;height:15px;border:2px solid rgba(255,255,255,0.3);border-top-color:white;border-radius:50%;animation:spin 0.7s linear infinite;display:none}
 @keyframes spin{to{transform:rotate(360deg)}}
-.success-banner{display:none;background:#e8f5e9;border:1px solid #a5d6a7;border-radius:var(--radius);padding:12px 16px;margin-bottom:18px;font-size:14px;color:#2d6a4f;align-items:center;gap:8px}
-@media(max-width:600px){.page-header{flex-direction:column;gap:16px}.grid-2,.grid-3{grid-template-columns:1fr}.mockup-row{flex-direction:column}.form-wrapper{padding:18px 14px 100px}}
+.success-banner{display:none;background:#eef4ff;border:1px solid #cdddff;border-radius:var(--radius);padding:12px 16px;margin-bottom:18px;font-size:14px;color:#1846d7;align-items:center;gap:8px}
+@media(max-width:600px){.page-header{flex-direction:column;gap:16px}.grid-2,.grid-3{grid-template-columns:1fr}.mockup-row{flex-direction:column}.form-wrapper{padding:18px 14px 120px}}
+/* ==== maquete flow: lead gate + choose Blank/Custom ==== */
+.rb-head{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;border-bottom:1px solid var(--border);padding-bottom:18px;margin-bottom:8px}
+.rb-brand{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--blue);font-weight:600;margin-bottom:8px}
+.rb-title{font-size:clamp(28px,4.5vw,42px);font-weight:700;letter-spacing:-.03em;line-height:1.05}
+.rb-sub{font-size:13px;color:var(--muted);margin-top:10px}
+.rb-sec{display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border);padding-bottom:10px;margin:26px 0 14px}
+.rb-sec .num{font-size:12px;color:var(--blue);font-weight:600}
+.rb-sec .t{font-size:12px;font-weight:600;letter-spacing:.14em;text-transform:uppercase}
+.choose{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:8px}
+.choose.locked{opacity:.5;pointer-events:none}
+.opt{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:26px;cursor:pointer;transition:all .15s}
+.opt:hover{border-color:var(--blue);transform:translateY(-2px)}
+.optic{color:var(--ink);margin-bottom:12px}
+.opth{font-size:20px;font-weight:700;letter-spacing:-.02em;margin-bottom:8px}
+.opts{font-size:12.5px;color:var(--muted);line-height:1.6;margin-bottom:16px}
+.opts b{color:var(--ink);font-weight:600}
+.optgo{font-size:12px;font-weight:600;color:var(--blue)}
+.topback{text-align:right;margin-bottom:10px}
+.linkbtn{background:var(--ink);border:none;color:#fff;font-family:'Poppins',sans-serif;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;padding:8px 16px;border-radius:50px;cursor:pointer}
+.linkbtn:hover{opacity:.9}
+.needDetails{font-size:12px;color:#9a5a00;background:#fbf2e2;border:1px solid #efd9ac;border-radius:8px;padding:9px 12px;margin-bottom:12px}
+.grid4{display:grid;grid-template-columns:1.4fr 1.4fr .8fr .9fr;gap:12px;align-items:end}
+.blankRow{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px;margin-bottom:12px}
+.rowDel{background:none;border:none;color:var(--muted);font-size:12px;cursor:pointer;margin-top:10px;font-family:'Poppins',sans-serif}
+.rowDel:hover{color:#b00}
+.lineTotal{font-weight:700;font-size:15px;padding:10px 0}
+.small-add{background:#fff;border:1.5px solid var(--ink);color:var(--ink);font-family:'Poppins',sans-serif;font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.06em;padding:10px 18px;border-radius:50px;cursor:pointer;margin-top:4px}
+.small-add:hover{background:var(--ink);color:#fff}
+.btn{width:100%;background:var(--blue);color:#fff;border:1px solid var(--blue);padding:15px 28px;font-family:'Poppins',sans-serif;font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;cursor:pointer;border-radius:50px;margin-top:18px}
+.btn:hover{opacity:.9}
+.foothint{font-size:11px;color:var(--muted);text-align:center;margin-top:12px}
+.blankTotalBox{display:flex;justify-content:space-between;align-items:center;background:var(--card);border-radius:var(--radius);padding:16px 20px;margin-top:16px}
+.dl-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:20px}
+.dl-row .btn-gen{justify-content:center}
+@media(max-width:620px){.dl-row{grid-template-columns:1fr}}
+@media(max-width:620px){.choose,.grid4{grid-template-columns:1fr 1fr}}
 </style>
 </head>
 <body>
 
-<div class="page-header">
-  <div>
-    <div class="brand-label">René Bassett</div>
-    <div class="header-title"><strong>Tech Pack</strong> Builder</div>
-    <div class="header-sub">Fill in the details below and download your tech pack.</div>
-  </div>
-  <div class="header-steps">
-    <div class="step-item active"><span class="step-num">1</span> Fill in the form</div>
-    <div class="step-item"><span class="step-num">2</span> Upload your artwork</div>
-    <div class="step-item"><span class="step-num">3</span> Generate &amp; download PDF</div>
-    <div class="step-item"><span class="step-num">4</span> Email it to us</div>
-  </div>
-</div>
+<!-- per-screen headers are used below -->
+
 
 <div class="form-wrapper">
-  <div class="success-banner" id="successBanner">✓ &nbsp;Downloaded. Please email your tech pack to <strong>info@renebassett.com</strong></div>
+
+  <!-- ===================== CHOOSE SCREEN ===================== -->
+  <div id="chooseScreen">
+    <div class="rb-head"><div>
+      <div class="rb-title">Get a <span style="color:var(--ink)">quote</span></div>
+      <div class="rb-sub">Tell us who you are, then pick what you need.</div>
+    </div></div>
+    <div style="background:var(--card);border-radius:var(--radius);padding:16px 18px;margin:8px 0 4px;font-size:13.5px;color:var(--ink);line-height:1.75">
+      Price your order in minutes. Get an instant quote for <b>blank products</b>, or a full quote for <b>custom pieces</b> decorated on our blanks (with the <b>sample price</b> included), and generate the <b>tech pack</b> you'll need for both the sample and production. Minimum order is 50 units per color and style for custom pieces.
+    </div>
+    <div class="rb-sec"><span class="num">01</span><span class="t">Your details</span></div>
+    <div class="grid-3">
+      <div class="field"><label>Name</label><input type="text" id="leadName" placeholder="Your name" oninput="leadCheck()"></div>
+      <div class="field"><label>Company / brand</label><input type="text" id="leadCompany" placeholder="Company / brand" oninput="leadCheck()"></div>
+      <div class="field"><label>Email</label><input type="email" id="leadEmail" placeholder="you@email.com" oninput="leadCheck()"></div>
+    </div>
+    <div class="rb-sec"><span class="num">02</span><span class="t">What do you need?</span></div>
+    <div id="needDetails" class="needDetails">Please fill in your details above to see prices.</div>
+    <div class="choose locked" id="chooseOpts">
+      <div class="opt" onclick="choose('blank')">
+        <div class="optic"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 8l-9-5-9 5v8l9 5 9-5V8z"/><path d="M3 8l9 5 9-5"/><path d="M12 13v8"/></svg></div>
+        <div class="opth">Blank products</div>
+        <div class="opts">Get a <b>quote</b> for an order of blanks only. Instant price, no artwork needed.</div>
+        <div class="optgo">Choose →</div>
+      </div>
+      <div class="opt" onclick="choose('custom')">
+        <div class="optic"><svg width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3 4 6l2 4 2.5-1.2V21h7V8.8L18 10l2-4-5-3a3 3 0 0 1-6 0z"/></svg></div>
+        <div class="opth">Custom pieces</div>
+        <div class="opts">Get your <b>quote</b> and <b>tech pack</b> for a bulk order and sample.</div>
+        <div class="optgo">Choose →</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===================== BLANK SCREEN ===================== -->
+  <div id="blankScreen" style="display:none">
+    <div class="topback"><button class="linkbtn" type="button" onclick="goChoose()">← Change quote type</button></div>
+    <div class="rb-head"><div>
+      <div class="rb-title">Blank <span style="color:var(--ink)">quote</span></div>
+      <div class="rb-sub">Add each product - style, color and quantity. We add it all up.</div>
+    </div></div>
+    <div class="rb-sec"><span class="num">-</span><span class="t">Your products</span></div>
+    <div id="blankRows"></div>
+    <button class="small-add" type="button" onclick="addBlankRow()">+ Add product</button>
+    <div class="blankTotalBox"><div style="font-size:13px;color:var(--muted)">Total</div><div style="font-size:24px;font-weight:700" id="blankTotal">0,00 €</div></div>
+    <div id="reqNoteBlank" class="needDetails" style="display:none;margin-top:12px">Some lines show "price on request" - that style/finish isn't priced yet. We confirm those by email.</div>
+    <button class="btn" type="button" onclick="downloadBlankPDF()">Download Quote (PDF)</button>
+    <p class="foothint">Indicative prices, excl. VAT and shipping. Final quote confirmed by René Bassett.</p>
+  </div>
+
+  <!-- ===================== CUSTOM SCREEN ===================== -->
+  <div id="customScreen" style="display:none">
+  <div class="topback"><button class="linkbtn" type="button" onclick="goChoose()">← Change quote type</button></div>
 
   <!-- 01 STYLE INFO -->
   <div class="section">
@@ -124,19 +207,23 @@ input.field-error, select.field-error, textarea.field-error {
         <div class="field">
           <label>Garment Type</label>
           <select id="garmentType">
-            <option value="">Select...</option>
-            <option>T-Shirt</option>
-            <option>Hoodie</option>
-            <option>Crewneck</option>
-            <option>Knit Sweater</option>
-            <option>Sweatpants</option>
-            <option>Zip Hoodie</option>
-            <option>Long Sleeve</option>
-            <option>Shorts</option>
+            <option value="" disabled selected>Select style...</option>
+            <option>200gsm Regular T-shirt</option>
+            <option>300gsm T-shirt</option>
+            <option>300gsm Long Sleeve</option>
+            <option>480gsm Long Sleeve Polo</option>
+            <option>480gsm Crewneck</option>
+            <option>480gsm Hoodie</option>
+            <option>330gsm Poly Hoodie</option>
+            <option>480gsm Zip-hoodie</option>
+            <option>480gsm Short</option>
+            <option>480gsm Straight Leg Sweatpant</option>
+            <option>480gsm Sweatpant (elastic)</option>
+            <option>Tote Bag</option>
             <option>Other</option>
           </select>
         </div>
-        <div class="field"><label>Garment Color</label><input type="text" id="garmentColor" placeholder="e.g. Vintage Black"></div>
+        <div class="field"><label>Garment Color</label><select id="garmentColor" onchange="rbUpdateFinish()"><option value="" disabled selected>Select color...</option></select><div class="field-note" id="finishNote" style="font-size:11px;color:var(--muted);margin-top:4px"></div></div>
         <div class="field"><label>Total Units</label><input type="number" id="totalUnits" placeholder="e.g. 100"></div>
       </div>
       <div class="divider">Size Breakdown</div>
@@ -197,7 +284,9 @@ input.field-error, select.field-error, textarea.field-error {
             <option value="right">Front Right Chest</option>
           </select>
         </div>
-        <div class="field"><label>Width (cm)</label><input type="number" step="0.5" id="frontWidth" placeholder="e.g. 10"></div>
+        <div class="field"><label>Width (cm)</label><input type="number" step="0.5" id="frontWidth" placeholder="e.g. 10" oninput="rbQuote()"><div class="hint" id="frontSizeHint" style="font-size:11px;color:var(--muted);margin-top:4px;display:none">Print size: <b id="frontSizeInd">-</b> (&lt;15 cm = Small)</div></div>
+        <div class="field" id="frontColorsField" style="display:none"><label>Number of colors (1-7)</label><input type="number" min="1" max="7" id="frontColors" placeholder="e.g. 2" oninput="rbQuote()"></div>
+        <div class="field" id="frontAreaField" style="display:none"><label>Embroidery area (cm&sup2;)</label><select id="frontArea" onchange="rbQuote()"><option value="">Select area...</option><option>4</option><option>10</option><option>16</option><option>22</option><option>30</option><option>40</option><option>75</option><option>150</option></select></div>
         <div class="field"><label id="frontHPSLabel">Distance HPS to artwork top (cm)</label><input type="number" step="0.5" id="frontHPS" placeholder="e.g. 15"></div>
         <div class="field"><label id="frontCenterLabel">Distance center to artwork (cm)</label><input type="number" step="0.5" id="frontCenter" placeholder="e.g. 3"></div>
         
@@ -252,7 +341,9 @@ input.field-error, select.field-error, textarea.field-error {
             <option value="other">Other</option>
           </select>
         </div>
-        <div class="field"><label>Width (cm)</label><input type="number" step="0.5" id="backWidth" placeholder="e.g. 35"></div>
+        <div class="field"><label>Width (cm)</label><input type="number" step="0.5" id="backWidth" placeholder="e.g. 35" oninput="rbQuote()"><div class="hint" id="backSizeHint" style="font-size:11px;color:var(--muted);margin-top:4px;display:none">Print size: <b id="backSizeInd">-</b> (&lt;15 cm = Small)</div></div>
+        <div class="field" id="backColorsField" style="display:none"><label>Number of colors (1-7)</label><input type="number" min="1" max="7" id="backColors" placeholder="e.g. 2" oninput="rbQuote()"></div>
+        <div class="field" id="backAreaField" style="display:none"><label>Embroidery area (cm&sup2;)</label><select id="backArea" onchange="rbQuote()"><option value="">Select area...</option><option>4</option><option>10</option><option>16</option><option>22</option><option>30</option><option>40</option><option>75</option><option>150</option></select></div>
         <div class="field"><label id="backHPSLabel">Distance HPS to artwork top (cm)</label><input type="number" step="0.5" id="backHPS" placeholder="e.g. 12"></div>
         
         
@@ -316,19 +407,45 @@ input.field-error, select.field-error, textarea.field-error {
       <div class="field"><label>Any other instructions</label><textarea id="additionalNotes" style="min-height:80px" placeholder="e.g. Packaging requirements, sample before production..."></textarea></div>
     </div>
   </div>
-</div>
+  </div><!-- /customScreen -->
 
-<div class="generate-bar">
-  <label style="display:flex;align-items:flex-start;gap:10px;font-size:13px;color:#0d0d0d;cursor:pointer;margin-bottom:10px;line-height:1.4">
-    <input type="checkbox" id="artworkConsent" style="margin-top:2px;width:16px;height:16px;flex-shrink:0;accent-color:#0d0d0d;cursor:pointer">
-    When sending the tech pack, I will also include the artwork in the same email.
-  </label>
+  <!-- ===================== RESULT SCREEN ===================== -->
+  <div id="resultScreen" style="display:none">
+    <div class="topback"><button class="linkbtn" type="button" onclick="rbShow('customScreen')">← Edit details</button></div>
+    <div class="rb-head"><div>
+      <div class="rb-title">Your <span style="color:var(--ink)">quote</span></div>
+      <div class="rb-sub">Here is your price. Download your tech pack and quote below.</div>
+    </div></div>
+    <div style="background:var(--card);border-radius:var(--radius);padding:16px 18px;margin-bottom:16px">
+      <div style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)">Product</div>
+      <div id="resProduct" style="font-weight:600;margin:2px 0 10px">-</div>
+      <div style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)">For</div>
+      <div id="resCustomer" style="font-weight:600;margin-top:2px">-</div>
+      <div id="resDecoWrap" style="margin-top:12px;display:none">
+        <div style="font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)">Decoration</div>
+        <div id="resDeco" style="font-weight:500;margin-top:3px;font-size:13.5px;line-height:1.7"></div>
+      </div>
+    </div>
+    <div id="quoteBody"></div>
+    <div style="margin-top:14px;border-left:2px solid var(--ink);padding-left:12px;font-size:12px;color:var(--muted);line-height:1.9">
+      <div style="font-weight:600;color:var(--ink);margin-bottom:4px">Good to know</div>
+      <div>Sample lead time: around 4 weeks.</div>
+      <div>Production lead time: around 4 weeks.</div>
+      <div>Production quantities may vary by 5-10%.</div>
+      <div>Maximum 2 pieces per style for samples.</div>
+    </div>
+    <div class="success-banner" id="successBanner">✓ &nbsp;Tech pack downloaded. Please email it to <strong>info@renebassett.com</strong></div>
+    <div class="dl-row">
+      <button class="btn-gen" id="genBtn" onclick="generatePDF()"><span class="spinner" id="spinner"></span><span id="btnText">Download Tech Pack</span></button>
+      <button class="btn-gen secondary" type="button" onclick="downloadQuotePDF()">Download Quote</button>
+    </div>
+  </div>
+</div><!-- /form-wrapper -->
+
+<div class="generate-bar" id="generateBar" style="display:none">
   <div style="display:flex;align-items:center;justify-content:space-between;width:100%;gap:16px">
-    <div class="generate-note">After downloading, email to <strong>info@renebassett.com</strong></div>
-    <button class="btn-gen" id="genBtn" onclick="generatePDF()">
-      <span class="spinner" id="spinner"></span>
-      <span id="btnText">Generate &amp; Download Tech Pack</span>
-    </button>
+    <div class="generate-note" id="genNote">Review your details, then see your quote.</div>
+    <button class="btn-gen" id="gotoResultBtn" type="button" onclick="rbGotoResult()">Get quote &amp; tech pack</button>
   </div>
 </div>
 
@@ -696,7 +813,7 @@ function renderCanvas(canvasId, isFront) {
   var ctx = canvas.getContext('2d');
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-  var garment = v('garmentType').toLowerCase().replace(/[\s-]+/g,'');
+  var garment = (window.MODEL_CAT && MODEL_CAT[v('garmentType')]) || '';
   var placement = (document.getElementById(isFront ? 'frontPlacement' : 'backPlacement') || {value:'center'}).value;
   var key = garment + '_' + (isFront ? 'front' : 'back') + '_' + placement;
   var tmpl = TMPL[key];
@@ -785,9 +902,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Show/hide mockup based on garment type
   document.getElementById('garmentType').addEventListener('change', function() {
-    var g = this.value;
-    var isLeg = (g === 'Shorts' || g === 'Sweatpants');
-    var show = ['T-Shirt','Zip Hoodie','Hoodie','Crewneck','Knit Sweater','Long Sleeve','Shorts','Sweatpants'].includes(g);
+    var g = (window.MODEL_CAT && MODEL_CAT[this.value]) || '';
+    var isLeg = (g === 'shorts' || g === 'sweatpants');
+    var show = ['tshirt','ziphoodie','hoodie','crewneck','longsleeve','shorts','sweatpants'].includes(g);
     document.getElementById('mockupSection').style.display = show ? '' : 'none';
 
     // Update front placement options
@@ -803,7 +920,7 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     } else {
       fp.innerHTML = '<option value="left">Front Left Chest</option><option value="center">Front Center</option><option value="right">Front Right Chest</option>';
-      if (g === 'Zip Hoodie') {
+      if (g === 'ziphoodie') {
         bp.innerHTML = '<option value="center">Back Center</option><option value="other">Other</option>';
       } else {
         bp.innerHTML = '<option value="center">Back Center</option><option value="other">Other</option>';
@@ -811,13 +928,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     // Disable back decoration for Shorts
     var backSection = document.querySelector('#backTech').closest('.section');
-    if (g === 'Shorts' || g === 'Sweatpants') {
+    if (g === 'shorts' || g === 'sweatpants') {
       backSection.classList.add('section-disabled');
     } else {
       backSection.classList.remove('section-disabled');
     }
     // Update HPS label based on garment
-    var isLegGarment = (g === 'Shorts' || g === 'Sweatpants');
+    var isLegGarment = (g === 'shorts' || g === 'sweatpants');
     var hpsLabel = isLegGarment ? 'Distance from Pocket (cm)' : 'Distance HPS to artwork top (cm)';
     var flEl = document.getElementById('frontHPSLabel');
     var blEl = document.getElementById('backHPSLabel');
@@ -837,11 +954,11 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Disable distance-from-center field when Front Center is selected
   function updateCenterFieldState() {
-    var g = v('garmentType');
+    var g = (window.MODEL_CAT && MODEL_CAT[v('garmentType')]) || '';
     var placement = v('frontPlacement');
     var centerField = document.getElementById('frontCenter');
     var centerLabel = document.getElementById('frontCenterLabel');
-    var isChestGarment = ['T-Shirt','Hoodie','Crewneck','Zip Hoodie','Knit Sweater','Long Sleeve'].includes(g);
+    var isChestGarment = ['tshirt','hoodie','crewneck','ziphoodie','longsleeve'].includes(g);
     var disabled = isChestGarment && placement === 'center';
     if (centerField) {
       centerField.disabled = disabled;
@@ -850,6 +967,13 @@ document.addEventListener('DOMContentLoaded', function() {
       if (disabled) centerField.value = '';
     }
     if (centerLabel) centerLabel.style.opacity = disabled ? '0.35' : '1';
+    // Front HPS label depends on placement: center is measured from the collar
+    var fHps = document.getElementById('frontHPSLabel');
+    if (fHps) {
+      var isLeg = (g === 'shorts' || g === 'sweatpants');
+      fHps.textContent = isLeg ? 'Distance from Pocket (cm)'
+        : (placement === 'center' ? 'Distance from bottom of collar (cm)' : 'Distance HPS to artwork top (cm)');
+    }
   }
   document.getElementById('frontPlacement').addEventListener('change', function() {
     updateCenterFieldState(); renderAll();
@@ -867,8 +991,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
   // Render once image loads
   TSHIRT_IMG.onload = function() {
-    var gt = v('garmentType');
-    if (gt === 'T-Shirt' || gt === 'Zip Hoodie') renderAll();
+    var gt = (window.MODEL_CAT && MODEL_CAT[v('garmentType')]) || '';
+    if (gt === 'tshirt' || gt === 'ziphoodie') renderAll();
   };
 });
 
@@ -885,8 +1009,19 @@ function validateForm() {
     // Width conditionally required if technique selected
     var frontTechEl = document.getElementById('frontTech');
     var backTechEl  = document.getElementById('backTech');
-    if (frontTechEl && frontTechEl.value) fields.push({ id: 'frontWidth', label: 'Width (cm) in Front Decoration' });
-    if (backTechEl  && backTechEl.value)  fields.push({ id: 'backWidth',  label: 'Width (cm) in Back Decoration' });
+    function reqForSide(side, techEl){
+      if (!techEl || !techEl.value) return;
+      var cap = side.charAt(0).toUpperCase()+side.slice(1);
+      var t = techEl.value;
+      fields.push({ id: side+'Width', label: 'Width (cm) in '+cap+' Decoration' });
+      if (t==='Screen Print' || t==='Puff Print') fields.push({ id: side+'Colors', label: 'Number of colors in '+cap+' Decoration' });
+      if (t==='Embroidery' || t==='Puff Embroidery') fields.push({ id: side+'Area', label: 'Embroidery area in '+cap+' Decoration' });
+      fields.push({ id: side+'HPS', label: 'Distance in '+cap+' Decoration' });
+      var fc = document.getElementById(side+'Center');
+      if (fc && !fc.disabled && fc.offsetParent !== null) fields.push({ id: side+'Center', label: 'Distance center to artwork in '+cap+' Decoration' });
+    }
+    reqForSide('front', frontTechEl);
+    reqForSide('back', backTechEl);
 
     // Label size only required if Woven label selected
     var labelTypeEl = document.getElementById('neckLabelType');
@@ -942,13 +1077,6 @@ async function generatePDF() {
       alert('Please fill in the following required fields before downloading:\n\n• ' + errors.join('\n• '));
       return;
     }
-    var consent = document.getElementById('artworkConsent');
-    if (!consent || !consent.checked) {
-      consent.style.outline = '2px solid #c0392b';
-      setTimeout(function(){ consent.style.outline = ''; }, 3000);
-      alert('Please confirm that you will include the artwork when sending the tech pack.');
-      return;
-    }
 
     // Klaviyo — subscribe profile to Tech Pack Downloads list
     var kEmail = v('contactEmail');
@@ -999,24 +1127,49 @@ async function generatePDF() {
     function v2(id){ return (document.getElementById(id)||{}).value||''; }
     function n2(id){ return parseFloat(document.getElementById(id)?.value)||0; }
 
-    async function readImgs(inputId) {
-      var input = document.getElementById(inputId);
-      var imgs = [];
-      if (!input || !input.files) return imgs;
-      for (var file of Array.from(input.files)) {
-        if (file.type.startsWith('image/')) {
-          var url = await new Promise(function(res) {
-            var r = new FileReader(); r.onload = function(e){ res(e.target.result); }; r.readAsDataURL(file);
-          });
-          imgs.push(url);
+    function imgDims(url){ return new Promise(function(res){ var im=new Image(); im.onload=function(){res({w:im.naturalWidth||200,h:im.naturalHeight||200});}; im.onerror=function(){res({w:200,h:200});}; im.src=url; }); }
+    function readDataURL(file){ return new Promise(function(res){ var r=new FileReader(); r.onload=function(e){res(e.target.result);}; r.readAsDataURL(file); }); }
+    async function fileToImage(file){
+      try {
+        if (file.type && file.type.indexOf('image/')===0 && file.type!=='image/svg+xml'){
+          var u = await readDataURL(file); var d = await imgDims(u); return {url:u, iw:d.w, ih:d.h};
         }
-      }
-      return imgs;
+        if ((file.type==='application/pdf') || /\.pdf$/i.test(file.name)){
+          if (window.pdfjsLib){
+            if (!pdfjsLib.GlobalWorkerOptions.workerSrc) pdfjsLib.GlobalWorkerOptions.workerSrc='https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+            var buf = await file.arrayBuffer();
+            var pdf = await pdfjsLib.getDocument({data:buf}).promise;
+            var page = await pdf.getPage(1);
+            var vp = page.getViewport({scale:2});
+            var c = document.createElement('canvas'); c.width=vp.width; c.height=vp.height;
+            await page.render({canvasContext:c.getContext('2d'), viewport:vp}).promise;
+            return {url:c.toDataURL('image/png'), iw:vp.width, ih:vp.height};
+          }
+        }
+        if (file.type==='image/svg+xml' || /\.svg$/i.test(file.name)){
+          var u2 = await readDataURL(file); var d2 = await imgDims(u2);
+          var im = new Image(); await new Promise(function(res,rej){ im.onload=res; im.onerror=rej; im.src=u2; });
+          var cc = document.createElement('canvas'); cc.width=d2.w||600; cc.height=d2.h||600;
+          cc.getContext('2d').drawImage(im,0,0,cc.width,cc.height);
+          return {url:cc.toDataURL('image/png'), iw:cc.width, ih:cc.height};
+        }
+      } catch(e){ console.warn('artwork render failed for', file.name, e); }
+      return null;
     }
+    async function readImgs(inputId) {
+      var input = document.getElementById(inputId); var out = [];
+      if (!input || !input.files) return out;
+      for (var file of Array.from(input.files)) { var it = await fileToImage(file); if (it) out.push(it); }
+      return out;
+    }
+    function readNames(inputId){ var i=document.getElementById(inputId); return (i&&i.files)?Array.from(i.files).map(function(f){return f.name;}):[]; }
 
     var frontImgs = await readImgs('frontFiles');
     var backImgs = await readImgs('backFiles');
     var lblImgs = await readImgs('lblFiles');
+    var frontNames = readNames('frontFiles');
+    var backNames = readNames('backFiles');
+    var lblNames = readNames('lblFiles');
 
     function drawHeader() {
       var hh = 26; // header height
@@ -1057,12 +1210,13 @@ async function generatePDF() {
       doc.text(name||'', x, y+28);
     }
 
-    function placeImg(url, x, y, maxW, maxH) {
+    function placeImg(item, x, y, maxW, maxH) {
       try {
+        var url = (typeof item==='string') ? item : item.url;
+        var iw = (typeof item==='string') ? 200 : (item.iw||200);
+        var ih = (typeof item==='string') ? 200 : (item.ih||200);
         var fmt = url.split(';')[0].split('/')[1].toUpperCase();
-        if (fmt==='JPG'||fmt==='JPEG') fmt='JPEG'; else if (fmt!=='PNG') fmt='JPEG';
-        var img = new Image(); img.src = url;
-        var iw = img.naturalWidth||200, ih = img.naturalHeight||200;
+        fmt = (fmt==='JPG'||fmt==='JPEG') ? 'JPEG' : 'PNG';
         var scale = Math.min(maxW/iw, maxH/ih);
         doc.addImage(url, fmt, x+(maxW-iw*scale)/2, y+(maxH-ih*scale)/2, iw*scale, ih*scale);
       } catch(e){}
@@ -1198,7 +1352,7 @@ async function generatePDF() {
 
       var mockW = 74, mockH = 82, mockY = M+28;
       // Use template image directly for PDF (avoids canvas timing issues)
-      var fGarment = v2('garmentType').toLowerCase().replace(/\s+/g,'');
+      var fGarment = (window.MODEL_CAT && MODEL_CAT[v2('garmentType')]) || '';
       var fPlaVal = (document.getElementById('frontPlacement')||{value:'center'}).value;
       var fTmplKey = fGarment + '_front_' + fPlaVal;
       var fTmplImg = TMPL[fTmplKey];
@@ -1229,7 +1383,8 @@ async function generatePDF() {
         doc.setFillColor(246,246,246); doc.setDrawColor(210,210,210); doc.setLineWidth(0.3);
         doc.rect(artX, mockY, artW2, mockH, 'FD');
         doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(190,190,190);
-        doc.text('[No artwork uploaded]', artX+artW2/2, mockY+mockH/2, {align:'center'});
+        if (frontNames.length) { doc.setTextColor(120,120,120); doc.text(doc.splitTextToSize('Artwork attached: '+frontNames.join(', ')+' (sent separately)', artW2-8), artX+artW2/2, mockY+mockH/2-2, {align:'center'}); }
+        else { doc.text('[No artwork uploaded]', artX+artW2/2, mockY+mockH/2, {align:'center'}); }
       }
 
       var ipx = artX + artW2 + 6;
@@ -1270,7 +1425,7 @@ async function generatePDF() {
       doc.text('Back Decoration Details', M, M+26);
 
       var mockWB = 74, mockHB = 82, mockYB = M+28;
-      var bGarment = v2('garmentType').toLowerCase().replace(/\s+/g,'');
+      var bGarment = (window.MODEL_CAT && MODEL_CAT[v2('garmentType')]) || '';
       var bPlaVal = (document.getElementById('backPlacement')||{value:'center'}).value;
       var bTmplKey = bGarment + '_back_' + bPlaVal;
       var bTmplImg = TMPL[bTmplKey];
@@ -1301,7 +1456,8 @@ async function generatePDF() {
         doc.setFillColor(246,246,246); doc.setDrawColor(210,210,210); doc.setLineWidth(0.3);
         doc.rect(artXB, mockYB, artWB, mockHB, 'FD');
         doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(190,190,190);
-        doc.text('[No artwork uploaded]', artXB+artWB/2, mockYB+mockHB/2, {align:'center'});
+        if (backNames.length) { doc.setTextColor(120,120,120); doc.text(doc.splitTextToSize('Artwork attached: '+backNames.join(', ')+' (sent separately)', artWB-8), artXB+artWB/2, mockYB+mockHB/2-2, {align:'center'}); }
+        else { doc.text('[No artwork uploaded]', artXB+artWB/2, mockYB+mockHB/2, {align:'center'}); }
       }
 
       var ipxB = artXB + artWB + 6;
@@ -1368,7 +1524,8 @@ async function generatePDF() {
         doc.setFillColor(245,245,245); doc.setDrawColor(210,210,210); doc.setLineWidth(0.3);
         doc.rect(artLX, lY, artLW, lH, 'FD');
         doc.setFont('helvetica','normal'); doc.setFontSize(8); doc.setTextColor(180,180,180);
-        doc.text('[No artwork uploaded]', artLX+artLW/2, lY+lH/2, {align:'center'});
+        if (lblNames.length) { doc.setTextColor(120,120,120); doc.text(doc.splitTextToSize('Artwork attached: '+lblNames.join(', ')+' (sent separately)', artLW-8), artLX+artLW/2, lY+lH/2-2, {align:'center'}); }
+        else { doc.text('[No artwork uploaded]', artLX+artLW/2, lY+lH/2, {align:'center'}); }
       }
       // Label color info
       var lblInfoY = lY+lH+14;
@@ -1410,8 +1567,7 @@ async function generatePDF() {
     doc.save(fn);
 
     var banner = document.getElementById('successBanner');
-    banner.style.display = 'flex';
-    banner.scrollIntoView({behavior:'smooth'});
+    if (banner) banner.style.display = 'flex';
 
   } catch(err) {
     console.error(err);
@@ -1431,6 +1587,647 @@ async function generatePDF() {
   window.addEventListener('resize', sendHeight);
   // Also send periodically to catch dynamic content changes
   setInterval(sendHeight, 500);
+</script>
+<script>
+/* ===== RB QUOTE ENGINE (inlined) ===== */
+/* ============================================================================
+ * RB QUOTE ENGINE  (Fase 3 - tech pack + cotação)
+ * ----------------------------------------------------------------------------
+ * Pure, data-driven pricing engine for René Bassett custom (decorated) quotes.
+ * It takes the LIVE price tables (exactly as read from the Retool DB) plus a
+ * tech-pack configuration, and returns the per-tier price breaks + sample cost.
+ *
+ * Design goals:
+ *  - No hard-coded prices. Everything comes from `prices` (live read).
+ *  - Same math the app's Cotações page uses, so the website quote never drifts.
+ *  - Reusable in a Retool Workflow JS block AND embeddable in the builder.
+ *
+ * Tiers: decoration pricing (screen print / embroidery) only exists at qty >= 50.
+ * The real decoration tiers (from precos_serigrafia_tiers / precos_bordado_tiers):
+ *      tier 0: 50-100    tier 1: 101-300    tier 2: 301+
+ * The quote is shown across these 3 breaks. For the BLANK component inside each
+ * break we use the blank price at the break's MINIMUM quantity (the guaranteed
+ * price at that volume). This single rule lives in blankTierForQty() so it is
+ * trivial to change if René prefers a different banding.
+ * ========================================================================== */
+
+'use strict';
+
+/* ---- Builders: turn flat DB rows into fast lookup maps -------------------- */
+
+function buildPrices(rows) {
+  // rows: { sp, spT, emb, embT, blank, blankT, puff, amoBase, amoSp, amoEmb, amoDtg }
+  const P = {};
+
+  // Screen print: sp[tamanho][n_cores][tier_idx] = preco
+  P.sp = {};
+  (rows.sp || []).forEach(r => {
+    (P.sp[r.tamanho] = P.sp[r.tamanho] || {});
+    (P.sp[r.tamanho][r.n_cores] = P.sp[r.tamanho][r.n_cores] || {})[r.tier_idx] = Number(r.preco);
+  });
+
+  // Embroidery: emb[area_cm2][tier_idx] = preco ; keep sorted area list
+  P.emb = {};
+  P.embAreas = [];
+  (rows.emb || []).forEach(r => {
+    (P.emb[r.area_cm2] = P.emb[r.area_cm2] || {})[r.tier_idx] = Number(r.preco);
+  });
+  P.embAreas = Object.keys(P.emb).map(Number).sort((a, b) => a - b);
+
+  // Decoration tiers (sp and emb share the same banding)
+  P.decoTiers = (rows.spT || rows.embT || []).map(t => ({
+    tier_idx: t.tier_idx, min: t.qtd_min, max: t.qtd_max,
+  })).sort((a, b) => a.tier_idx - b.tier_idx);
+
+  // Blank: blank[model|finish][tier_idx] = preco
+  P.blank = {};
+  (rows.blank || []).forEach(r => {
+    (P.blank[r.modelo + '|' + r.acabamento] = P.blank[r.modelo + '|' + r.acabamento] || {})[r.tier_idx] = Number(r.preco);
+  });
+  P.blankTiers = (rows.blankT || []).map(t => ({
+    tier_idx: t.tier_idx, min: t.qtd_min, max: t.qtd_max,
+  })).sort((a, b) => a.tier_idx - b.tier_idx);
+
+  // Puff: { print:{producao,amostra}, emb:{producao,amostra} }
+  P.puff = { print: { producao: 0, amostra: 0 }, emb: { producao: 0, amostra: 0 } };
+  (rows.puff || []).forEach(r => {
+    P.puff[r.tipo] = { producao: Number(r.acrescimo_producao) || 0, amostra: Number(r.acrescimo_amostra) || 0 };
+  });
+
+  // Sample base + adds
+  P.amoBase = {};
+  (rows.amoBase || []).forEach(r => { P.amoBase[r.modelo] = Number(r.preco); });
+  P.amoSp = {};
+  (rows.amoSp || []).forEach(r => { P.amoSp[r.n_cores] = Number(r.acrescimo); });
+  P.amoEmb = (rows.amoEmb || []).map(r => ({ area_max: r.area_max, acrescimo: Number(r.acrescimo) }))
+    .sort((a, b) => a.area_max - b.area_max);
+  P.amoDtg = (rows.amoDtg && rows.amoDtg[0]) ? Number(rows.amoDtg[0].valor) : 0;
+
+  return P;
+}
+
+/* ---- Helpers -------------------------------------------------------------- */
+
+function blankTierForQty(P, qty) {
+  const t = P.blankTiers.find(t => qty >= t.min && (t.max == null || qty <= t.max));
+  return t ? t.tier_idx : (P.blankTiers[P.blankTiers.length - 1] || {}).tier_idx;
+}
+
+function isScreen(tech) { return tech === 'Screen Print' || tech === 'Puff Print'; }
+function isEmb(tech) { return tech === 'Embroidery' || tech === 'Puff Embroidery'; }
+function isPuff(tech) { return tech === 'Puff Print' || tech === 'Puff Embroidery'; }
+function isOnRequest(tech) { return tech === 'DTG' || tech === 'DTF'; }
+
+function spSize(widthCm) { return (Number(widthCm) || 0) < 15 ? 'Small' : 'Big'; }
+
+function embBandArea(P, areaCm2) {
+  const a = Number(areaCm2) || 0;
+  // smallest priced area >= requested (ceil to band); fall back to largest
+  return P.embAreas.find(x => a <= x) || P.embAreas[P.embAreas.length - 1];
+}
+
+function embSampleAdd(P, areaCm2) {
+  const a = Number(areaCm2) || 0;
+  const band = P.amoEmb.find(b => a <= b.area_max) || P.amoEmb[P.amoEmb.length - 1];
+  return band ? band.acrescimo : 0;
+}
+
+/* ---- Per-decoration production price at one tier -------------------------- */
+
+function decorationUnit(P, dec, tier_idx) {
+  const t = dec.technique;
+  if (isScreen(t)) {
+    const size = spSize(dec.widthCm);
+    const colors = Math.max(1, Math.min(7, Number(dec.colors) || 1));
+    const base = P.sp[size] && P.sp[size][colors] ? P.sp[size][colors][tier_idx] : undefined;
+    if (base == null) return { price: 0, onRequest: true };
+    const puff = isPuff(t) ? (P.puff.print.producao || 0) : 0;
+    return { price: base + puff, onRequest: false };
+  }
+  if (isEmb(t)) {
+    const area = embBandArea(P, dec.areaCm2);
+    const base = P.emb[area] ? P.emb[area][tier_idx] : undefined;
+    if (base == null) return { price: 0, onRequest: true };
+    const puff = isPuff(t) ? (P.puff.emb.producao || 0) : 0;
+    return { price: base + puff, onRequest: false };
+  }
+  // DTG / DTF -> quoted separately
+  return { price: 0, onRequest: true };
+}
+
+/* ---- Sample add per decoration -------------------------------------------- */
+
+function decorationSampleAdd(P, dec) {
+  const t = dec.technique;
+  if (isScreen(t)) {
+    const colors = Math.max(1, Math.min(7, Number(dec.colors) || 1));
+    const puff = isPuff(t) ? (P.puff.print.amostra || 0) : 0;
+    return (P.amoSp[colors] || 0) + puff;
+  }
+  if (isEmb(t)) {
+    const puff = isPuff(t) ? (P.puff.emb.amostra || 0) : 0;
+    return embSampleAdd(P, dec.areaCm2) + puff;
+  }
+  if (t === 'DTG') return P.amoDtg || 0;
+  return 0; // DTF sample not tabled -> treated as 0 / on request
+}
+
+/* ---- Main entry ----------------------------------------------------------- */
+
+function quote(rows, config) {
+  const P = buildPrices(rows);
+  const model = config.model;
+  const finish = config.finish; // 'stock' | 'vintage' | 'sunfaded' | 'other'
+  const decos = (config.decorations || []).filter(d => d && d.technique && d.technique !== '- none -');
+
+  const blankKey = model + '|' + finish;
+  const hasBlank = !!P.blank[blankKey];
+
+  const breaks = P.decoTiers.map(tier => {
+    const qtyForBlank = tier.min; // guaranteed price at the tier minimum
+    const blankTier = blankTierForQty(P, qtyForBlank);
+    const blankUnitRaw = hasBlank ? P.blank[blankKey][blankTier] : undefined;
+    const blankUnit = (blankUnitRaw && blankUnitRaw > 0) ? blankUnitRaw : 0;
+    let decoSum = 0;
+    let onRequest = !blankUnit; // missing/zero blank price -> whole break on request
+
+    decos.forEach(d => {
+      const u = decorationUnit(P, d, tier.tier_idx);
+      if (u.onRequest) onRequest = true; else decoSum += u.price;
+    });
+
+    return {
+      tier_idx: tier.tier_idx,
+      label: tier.max == null ? `${tier.min}+` : `${tier.min}-${tier.max}`,
+      qtyMin: tier.min,
+      qtyMax: tier.max,
+      blankUnit: round2(blankUnit),
+      decorationUnit: round2(decoSum),
+      pricePerPiece: onRequest ? null : round2(blankUnit + decoSum),
+      onRequest: onRequest,
+    };
+  });
+
+  // Sample (one-off): base(model) + per-decoration adds
+  let sample = P.amoBase[model] || 0;
+  decos.forEach(d => { sample += decorationSampleAdd(P, d); });
+
+  return {
+    model, finish,
+    currency: 'EUR',
+    minimumForDecoration: P.decoTiers.length ? P.decoTiers[0].min : 50,
+    priceBreaks: breaks,
+    sample: round2(sample),
+    hasOnRequest: breaks.some(b => b.onRequest) || decos.some(d => isOnRequest(d.technique)),
+    decorations: decos.map(d => ({
+      technique: d.technique, side: d.side, placement: d.placement,
+      colors: d.colors, areaCm2: d.areaCm2, widthCm: d.widthCm,
+    })),
+  };
+}
+
+function round2(n) { return Math.round((Number(n) || 0) * 100) / 100; }
+
+/* ---- exports (Node + Retool) --------------------------------------------- */
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { buildPrices, quote, blankTierForQty, decorationUnit, decorationSampleAdd };
+}
+
+/* ===== LIVE PRICE SNAPSHOT (fallback; overridden by fetch prices.json) ===== */
+var PRICES_FALLBACK = {"generatedAt":"2026-10-20T14:55:37.481Z","sp":[{"tamanho":"Small","n_cores":1,"tier_idx":0,"preco":2},{"tamanho":"Small","n_cores":2,"tier_idx":0,"preco":2.3},{"tamanho":"Small","n_cores":3,"tier_idx":0,"preco":2.6},{"tamanho":"Small","n_cores":4,"tier_idx":0,"preco":2.9},{"tamanho":"Small","n_cores":5,"tier_idx":0,"preco":3.1},{"tamanho":"Small","n_cores":6,"tier_idx":0,"preco":3.5},{"tamanho":"Small","n_cores":7,"tier_idx":0,"preco":3.9},{"tamanho":"Big","n_cores":1,"tier_idx":0,"preco":2.5},{"tamanho":"Big","n_cores":2,"tier_idx":0,"preco":2.9},{"tamanho":"Big","n_cores":3,"tier_idx":0,"preco":3.3},{"tamanho":"Big","n_cores":4,"tier_idx":0,"preco":3.7},{"tamanho":"Big","n_cores":5,"tier_idx":0,"preco":3.75},{"tamanho":"Big","n_cores":6,"tier_idx":0,"preco":4.15},{"tamanho":"Big","n_cores":7,"tier_idx":0,"preco":4.55},{"tamanho":"Small","n_cores":1,"tier_idx":1,"preco":1.5},{"tamanho":"Small","n_cores":2,"tier_idx":1,"preco":1.9},{"tamanho":"Small","n_cores":3,"tier_idx":1,"preco":2.3},{"tamanho":"Small","n_cores":4,"tier_idx":1,"preco":2.7},{"tamanho":"Small","n_cores":5,"tier_idx":1,"preco":2.9},{"tamanho":"Small","n_cores":6,"tier_idx":1,"preco":3.3},{"tamanho":"Small","n_cores":7,"tier_idx":1,"preco":3.7},{"tamanho":"Big","n_cores":1,"tier_idx":1,"preco":2.15},{"tamanho":"Big","n_cores":2,"tier_idx":1,"preco":2.55},{"tamanho":"Big","n_cores":3,"tier_idx":1,"preco":2.95},{"tamanho":"Big","n_cores":4,"tier_idx":1,"preco":3.55},{"tamanho":"Big","n_cores":5,"tier_idx":1,"preco":3.5},{"tamanho":"Big","n_cores":6,"tier_idx":1,"preco":3.9},{"tamanho":"Big","n_cores":7,"tier_idx":1,"preco":4.3},{"tamanho":"Small","n_cores":1,"tier_idx":2,"preco":1},{"tamanho":"Small","n_cores":2,"tier_idx":2,"preco":1.4},{"tamanho":"Small","n_cores":3,"tier_idx":2,"preco":1.8},{"tamanho":"Small","n_cores":4,"tier_idx":2,"preco":2.2},{"tamanho":"Small","n_cores":5,"tier_idx":2,"preco":2.6},{"tamanho":"Small","n_cores":6,"tier_idx":2,"preco":3},{"tamanho":"Small","n_cores":7,"tier_idx":2,"preco":3.4},{"tamanho":"Big","n_cores":1,"tier_idx":2,"preco":1.5},{"tamanho":"Big","n_cores":2,"tier_idx":2,"preco":1.9},{"tamanho":"Big","n_cores":3,"tier_idx":2,"preco":2.3},{"tamanho":"Big","n_cores":4,"tier_idx":2,"preco":2.7},{"tamanho":"Big","n_cores":5,"tier_idx":2,"preco":3.1},{"tamanho":"Big","n_cores":6,"tier_idx":2,"preco":3.5},{"tamanho":"Big","n_cores":7,"tier_idx":2,"preco":3.9}],"spT":[{"tier_idx":0,"qtd_min":50,"qtd_max":100},{"tier_idx":1,"qtd_min":101,"qtd_max":300},{"tier_idx":2,"qtd_min":301,"qtd_max":null}],"emb":[{"area_cm2":4,"tier_idx":2,"preco":0.8},{"area_cm2":10,"tier_idx":2,"preco":1.2},{"area_cm2":16,"tier_idx":2,"preco":1.5},{"area_cm2":22,"tier_idx":2,"preco":1.9},{"area_cm2":30,"tier_idx":2,"preco":2.2},{"area_cm2":40,"tier_idx":2,"preco":2.5},{"area_cm2":75,"tier_idx":2,"preco":3.4},{"area_cm2":150,"tier_idx":2,"preco":3.9},{"area_cm2":4,"tier_idx":0,"preco":1.5},{"area_cm2":4,"tier_idx":1,"preco":1.2},{"area_cm2":10,"tier_idx":0,"preco":1.9},{"area_cm2":10,"tier_idx":1,"preco":1.6},{"area_cm2":16,"tier_idx":0,"preco":2.25},{"area_cm2":16,"tier_idx":1,"preco":1.95},{"area_cm2":22,"tier_idx":0,"preco":2.6},{"area_cm2":22,"tier_idx":1,"preco":2.3},{"area_cm2":30,"tier_idx":0,"preco":3},{"area_cm2":30,"tier_idx":1,"preco":2.65},{"area_cm2":40,"tier_idx":0,"preco":3.4},{"area_cm2":40,"tier_idx":1,"preco":3.05},{"area_cm2":75,"tier_idx":0,"preco":4.2},{"area_cm2":75,"tier_idx":1,"preco":3.85},{"area_cm2":150,"tier_idx":0,"preco":4.8},{"area_cm2":150,"tier_idx":1,"preco":4.35}],"embT":[{"tier_idx":0,"qtd_min":50,"qtd_max":100},{"tier_idx":1,"qtd_min":101,"qtd_max":300},{"tier_idx":2,"qtd_min":301,"qtd_max":null}],"blank":[{"modelo":"480gsm Hoodie","acabamento":"stock","tier_idx":1,"preco":41.9},{"modelo":"480gsm Hoodie","acabamento":"stock","tier_idx":2,"preco":35.9},{"modelo":"480gsm Hoodie","acabamento":"stock","tier_idx":3,"preco":33.9},{"modelo":"480gsm Hoodie","acabamento":"stock","tier_idx":4,"preco":30.5},{"modelo":"480gsm Hoodie","acabamento":"stock","tier_idx":5,"preco":29.9},{"modelo":"480gsm Hoodie","acabamento":"stock","tier_idx":6,"preco":28.9},{"modelo":"480gsm Short","acabamento":"stock","tier_idx":3,"preco":22.5},{"modelo":"300gsm T-shirt","acabamento":"stock","tier_idx":0,"preco":21.5},{"modelo":"300gsm T-shirt","acabamento":"stock","tier_idx":1,"preco":19.5},{"modelo":"300gsm T-shirt","acabamento":"stock","tier_idx":2,"preco":15.2},{"modelo":"300gsm T-shirt","acabamento":"stock","tier_idx":3,"preco":13.9},{"modelo":"300gsm T-shirt","acabamento":"stock","tier_idx":4,"preco":12.9},{"modelo":"300gsm T-shirt","acabamento":"stock","tier_idx":5,"preco":12.5},{"modelo":"300gsm T-shirt","acabamento":"stock","tier_idx":6,"preco":12},{"modelo":"480gsm Short","acabamento":"other","tier_idx":0,"preco":0},{"modelo":"480gsm Short","acabamento":"other","tier_idx":1,"preco":0},{"modelo":"480gsm Short","acabamento":"other","tier_idx":2,"preco":0},{"modelo":"480gsm Short","acabamento":"other","tier_idx":3,"preco":0},{"modelo":"480gsm Short","acabamento":"other","tier_idx":4,"preco":24.9},{"modelo":"480gsm Short","acabamento":"other","tier_idx":5,"preco":23.9},{"modelo":"480gsm Short","acabamento":"other","tier_idx":6,"preco":22.9},{"modelo":"300gsm T-shirt","acabamento":"other","tier_idx":0,"preco":0},{"modelo":"300gsm T-shirt","acabamento":"other","tier_idx":1,"preco":0},{"modelo":"480gsm Hoodie","acabamento":"sunfaded","tier_idx":5,"preco":33.9},{"modelo":"480gsm Hoodie","acabamento":"sunfaded","tier_idx":6,"preco":32.9},{"modelo":"300gsm T-shirt","acabamento":"sunfaded","tier_idx":3,"preco":17.9},{"modelo":"300gsm T-shirt","acabamento":"sunfaded","tier_idx":4,"preco":16.9},{"modelo":"300gsm T-shirt","acabamento":"sunfaded","tier_idx":5,"preco":16.5},{"modelo":"480gsm Hoodie","acabamento":"other","tier_idx":5,"preco":31.9},{"modelo":"480gsm Hoodie","acabamento":"other","tier_idx":6,"preco":30.9},{"modelo":"300gsm T-shirt","acabamento":"other","tier_idx":4,"preco":14.9},{"modelo":"300gsm T-shirt","acabamento":"other","tier_idx":5,"preco":14.5},{"modelo":"300gsm T-shirt","acabamento":"other","tier_idx":6,"preco":14},{"modelo":"480gsm Short","acabamento":"stock","tier_idx":0,"preco":31.9},{"modelo":"480gsm Hoodie","acabamento":"stock","tier_idx":0,"preco":43.9},{"modelo":"480gsm Short","acabamento":"stock","tier_idx":1,"preco":29.9},{"modelo":"480gsm Short","acabamento":"stock","tier_idx":2,"preco":24.5},{"modelo":"480gsm Short","acabamento":"stock","tier_idx":4,"preco":21.5},{"modelo":"480gsm Short","acabamento":"stock","tier_idx":5,"preco":20.9},{"modelo":"480gsm Short","acabamento":"stock","tier_idx":6,"preco":19.9},{"modelo":"300gsm Long Sleeve","acabamento":"stock","tier_idx":0,"preco":23.9},{"modelo":"300gsm Long Sleeve","acabamento":"stock","tier_idx":1,"preco":21.9},{"modelo":"300gsm Long Sleeve","acabamento":"stock","tier_idx":2,"preco":16.9},{"modelo":"300gsm Long Sleeve","acabamento":"stock","tier_idx":3,"preco":15.9},{"modelo":"300gsm Long Sleeve","acabamento":"stock","tier_idx":4,"preco":14.9},{"modelo":"300gsm Long Sleeve","acabamento":"stock","tier_idx":5,"preco":14.5},{"modelo":"300gsm Long Sleeve","acabamento":"stock","tier_idx":6,"preco":14},{"modelo":"200gsm Regular T-shirt","acabamento":"stock","tier_idx":0,"preco":19.9},{"modelo":"200gsm Regular T-shirt","acabamento":"stock","tier_idx":1,"preco":17.9},{"modelo":"200gsm Regular T-shirt","acabamento":"stock","tier_idx":2,"preco":13.9},{"modelo":"200gsm Regular T-shirt","acabamento":"stock","tier_idx":3,"preco":12.5},{"modelo":"200gsm Regular T-shirt","acabamento":"stock","tier_idx":4,"preco":9.95},{"modelo":"200gsm Regular T-shirt","acabamento":"stock","tier_idx":5,"preco":9.7},{"modelo":"200gsm Regular T-shirt","acabamento":"stock","tier_idx":6,"preco":9.5},{"modelo":"300gsm T-shirt","acabamento":"other","tier_idx":2,"preco":0},{"modelo":"300gsm T-shirt","acabamento":"other","tier_idx":3,"preco":0},{"modelo":"300gsm Long Sleeve","acabamento":"other","tier_idx":0,"preco":0},{"modelo":"480gsm Zip-hoodie","acabamento":"other","tier_idx":0,"preco":0},{"modelo":"480gsm Crewneck","acabamento":"stock","tier_idx":0,"preco":36.9},{"modelo":"480gsm Hoodie","acabamento":"vintage","tier_idx":0,"preco":45.9},{"modelo":"480gsm Hoodie","acabamento":"vintage","tier_idx":1,"preco":43.9},{"modelo":"480gsm Hoodie","acabamento":"vintage","tier_idx":2,"preco":37.9},{"modelo":"480gsm Hoodie","acabamento":"vintage","tier_idx":3,"preco":35.9},{"modelo":"480gsm Hoodie","acabamento":"vintage","tier_idx":4,"preco":32.5},{"modelo":"480gsm Hoodie","acabamento":"vintage","tier_idx":6,"preco":30.9},{"modelo":"480gsm Short","acabamento":"vintage","tier_idx":0,"preco":34.9},{"modelo":"480gsm Short","acabamento":"vintage","tier_idx":1,"preco":32.9},{"modelo":"480gsm Short","acabamento":"vintage","tier_idx":2,"preco":27.9},{"modelo":"480gsm Short","acabamento":"vintage","tier_idx":3,"preco":25.9},{"modelo":"480gsm Short","acabamento":"vintage","tier_idx":4,"preco":24.9},{"modelo":"480gsm Short","acabamento":"vintage","tier_idx":5,"preco":23.9},{"modelo":"480gsm Short","acabamento":"vintage","tier_idx":6,"preco":22.9},{"modelo":"300gsm T-shirt","acabamento":"vintage","tier_idx":0,"preco":22.5},{"modelo":"300gsm T-shirt","acabamento":"vintage","tier_idx":1,"preco":20.5},{"modelo":"300gsm T-shirt","acabamento":"vintage","tier_idx":2,"preco":16.5},{"modelo":"300gsm T-shirt","acabamento":"vintage","tier_idx":3,"preco":14.9},{"modelo":"300gsm T-shirt","acabamento":"vintage","tier_idx":4,"preco":14.5},{"modelo":"300gsm T-shirt","acabamento":"vintage","tier_idx":5,"preco":13.9},{"modelo":"300gsm T-shirt","acabamento":"vintage","tier_idx":6,"preco":13.5},{"modelo":"300gsm Long Sleeve","acabamento":"vintage","tier_idx":1,"preco":22.9},{"modelo":"300gsm Long Sleeve","acabamento":"vintage","tier_idx":2,"preco":18.5},{"modelo":"300gsm Long Sleeve","acabamento":"vintage","tier_idx":3,"preco":17.5},{"modelo":"300gsm Long Sleeve","acabamento":"vintage","tier_idx":4,"preco":15.9},{"modelo":"300gsm Long Sleeve","acabamento":"vintage","tier_idx":5,"preco":15.5},{"modelo":"300gsm Long Sleeve","acabamento":"vintage","tier_idx":6,"preco":15},{"modelo":"480gsm Zip-hoodie","acabamento":"vintage","tier_idx":0,"preco":50.9},{"modelo":"480gsm Crewneck","acabamento":"vintage","tier_idx":0,"preco":38.9},{"modelo":"480gsm Hoodie","acabamento":"sunfaded","tier_idx":0,"preco":48.9},{"modelo":"480gsm Hoodie","acabamento":"sunfaded","tier_idx":1,"preco":46.9},{"modelo":"480gsm Hoodie","acabamento":"sunfaded","tier_idx":2,"preco":40.5},{"modelo":"480gsm Hoodie","acabamento":"sunfaded","tier_idx":3,"preco":35.9},{"modelo":"480gsm Hoodie","acabamento":"sunfaded","tier_idx":4,"preco":34.9},{"modelo":"300gsm T-shirt","acabamento":"sunfaded","tier_idx":0,"preco":25.9},{"modelo":"300gsm T-shirt","acabamento":"sunfaded","tier_idx":1,"preco":23.9},{"modelo":"300gsm T-shirt","acabamento":"sunfaded","tier_idx":2,"preco":19.9},{"modelo":"300gsm T-shirt","acabamento":"sunfaded","tier_idx":6,"preco":15.9},{"modelo":"300gsm Long Sleeve","acabamento":"sunfaded","tier_idx":0,"preco":28.9},{"modelo":"480gsm Hoodie","acabamento":"other","tier_idx":0,"preco":0},{"modelo":"480gsm Hoodie","acabamento":"other","tier_idx":1,"preco":0},{"modelo":"480gsm Hoodie","acabamento":"other","tier_idx":2,"preco":0},{"modelo":"480gsm Hoodie","acabamento":"other","tier_idx":3,"preco":0},{"modelo":"480gsm Hoodie","acabamento":"other","tier_idx":4,"preco":32.9},{"modelo":"300gsm Long Sleeve","acabamento":"other","tier_idx":1,"preco":0},{"modelo":"480gsm Crewneck","acabamento":"other","tier_idx":0,"preco":0},{"modelo":"300gsm Long Sleeve","acabamento":"other","tier_idx":2,"preco":0},{"modelo":"480gsm Sweatpant (elastic)","acabamento":"other","tier_idx":0,"preco":0},{"modelo":"480gsm Long Sleeve Polo","acabamento":"other","tier_idx":0,"preco":0},{"modelo":"480gsm Straight Leg Sweatpant","acabamento":"other","tier_idx":0,"preco":0},{"modelo":"480gsm Zip-hoodie","acabamento":"other","tier_idx":1,"preco":0},{"modelo":"480gsm Crewneck","acabamento":"other","tier_idx":1,"preco":0},{"modelo":"480gsm Sweatpant (elastic)","acabamento":"other","tier_idx":1,"preco":0},{"modelo":"480gsm Long Sleeve Polo","acabamento":"other","tier_idx":1,"preco":0},{"modelo":"480gsm Straight Leg Sweatpant","acabamento":"other","tier_idx":1,"preco":0},{"modelo":"480gsm Zip-hoodie","acabamento":"other","tier_idx":2,"preco":0},{"modelo":"480gsm Crewneck","acabamento":"other","tier_idx":2,"preco":0},{"modelo":"480gsm Sweatpant (elastic)","acabamento":"other","tier_idx":2,"preco":0},{"modelo":"480gsm Long Sleeve Polo","acabamento":"other","tier_idx":2,"preco":0},{"modelo":"480gsm Straight Leg Sweatpant","acabamento":"other","tier_idx":2,"preco":0},{"modelo":"300gsm Long Sleeve","acabamento":"other","tier_idx":3,"preco":0},{"modelo":"480gsm Zip-hoodie","acabamento":"other","tier_idx":3,"preco":0},{"modelo":"480gsm Crewneck","acabamento":"other","tier_idx":3,"preco":0},{"modelo":"480gsm Sweatpant (elastic)","acabamento":"other","tier_idx":3,"preco":0},{"modelo":"480gsm Long Sleeve Polo","acabamento":"other","tier_idx":3,"preco":0},{"modelo":"480gsm Zip-hoodie","acabamento":"stock","tier_idx":2,"preco":40.9},{"modelo":"480gsm Crewneck","acabamento":"stock","tier_idx":1,"preco":34.9},{"modelo":"480gsm Crewneck","acabamento":"stock","tier_idx":2,"preco":27.9},{"modelo":"480gsm Crewneck","acabamento":"stock","tier_idx":3,"preco":25.9},{"modelo":"480gsm Sweatpant (elastic)","acabamento":"stock","tier_idx":0,"preco":36.9},{"modelo":"480gsm Sweatpant (elastic)","acabamento":"stock","tier_idx":1,"preco":34.9},{"modelo":"480gsm Sweatpant (elastic)","acabamento":"stock","tier_idx":2,"preco":27.9},{"modelo":"480gsm Long Sleeve Polo","acabamento":"stock","tier_idx":0,"preco":38.9},{"modelo":"480gsm Long Sleeve Polo","acabamento":"stock","tier_idx":1,"preco":36.9},{"modelo":"480gsm Long Sleeve Polo","acabamento":"stock","tier_idx":2,"preco":29.9},{"modelo":"480gsm Long Sleeve Polo","acabamento":"stock","tier_idx":3,"preco":27.9},{"modelo":"330gsm Poly Hoodie","acabamento":"stock","tier_idx":0,"preco":39.9},{"modelo":"330gsm Poly Hoodie","acabamento":"stock","tier_idx":1,"preco":35.9},{"modelo":"330gsm Poly Hoodie","acabamento":"stock","tier_idx":2,"preco":31.9},{"modelo":"330gsm Poly Hoodie","acabamento":"stock","tier_idx":3,"preco":28.9},{"modelo":"480gsm Straight Leg Sweatpant","acabamento":"stock","tier_idx":0,"preco":38.9},{"modelo":"480gsm Straight Leg Sweatpant","acabamento":"stock","tier_idx":2,"preco":29.9},{"modelo":"480gsm Zip-hoodie","acabamento":"vintage","tier_idx":1,"preco":48.9},{"modelo":"480gsm Zip-hoodie","acabamento":"vintage","tier_idx":2,"preco":42.9},{"modelo":"480gsm Zip-hoodie","acabamento":"vintage","tier_idx":3,"preco":40.9},{"modelo":"480gsm Crewneck","acabamento":"vintage","tier_idx":1,"preco":36.9},{"modelo":"480gsm Crewneck","acabamento":"vintage","tier_idx":2,"preco":29.9},{"modelo":"480gsm Crewneck","acabamento":"vintage","tier_idx":3,"preco":27.9},{"modelo":"480gsm Sweatpant (elastic)","acabamento":"vintage","tier_idx":0,"preco":38.9},{"modelo":"480gsm Sweatpant (elastic)","acabamento":"vintage","tier_idx":1,"preco":36.9},{"modelo":"480gsm Sweatpant (elastic)","acabamento":"vintage","tier_idx":2,"preco":29.9},{"modelo":"480gsm Sweatpant (elastic)","acabamento":"vintage","tier_idx":3,"preco":27.9},{"modelo":"480gsm Long Sleeve Polo","acabamento":"vintage","tier_idx":0,"preco":40.9},{"modelo":"480gsm Long Sleeve Polo","acabamento":"vintage","tier_idx":1,"preco":38.9},{"modelo":"480gsm Long Sleeve Polo","acabamento":"vintage","tier_idx":2,"preco":32.9},{"modelo":"480gsm Long Sleeve Polo","acabamento":"vintage","tier_idx":3,"preco":30.9},{"modelo":"480gsm Straight Leg Sweatpant","acabamento":"vintage","tier_idx":0,"preco":43.9},{"modelo":"480gsm Straight Leg Sweatpant","acabamento":"vintage","tier_idx":1,"preco":40.9},{"modelo":"480gsm Straight Leg Sweatpant","acabamento":"vintage","tier_idx":2,"preco":33.9},{"modelo":"300gsm Long Sleeve","acabamento":"sunfaded","tier_idx":1,"preco":27.9},{"modelo":"300gsm Long Sleeve","acabamento":"sunfaded","tier_idx":2,"preco":22.9},{"modelo":"300gsm Long Sleeve","acabamento":"sunfaded","tier_idx":3,"preco":20.9},{"modelo":"300gsm Long Sleeve","acabamento":"other","tier_idx":4,"preco":15.9},{"modelo":"300gsm Long Sleeve","acabamento":"other","tier_idx":5,"preco":15.5},{"modelo":"300gsm Long Sleeve","acabamento":"other","tier_idx":6,"preco":15},{"modelo":"480gsm Straight Leg Sweatpant","acabamento":"other","tier_idx":3,"preco":0},{"modelo":"480gsm Zip-hoodie","acabamento":"other","tier_idx":4,"preco":37.9},{"modelo":"480gsm Zip-hoodie","acabamento":"other","tier_idx":5,"preco":36.9},{"modelo":"480gsm Zip-hoodie","acabamento":"other","tier_idx":6,"preco":35.9},{"modelo":"480gsm Crewneck","acabamento":"other","tier_idx":4,"preco":26.9},{"modelo":"480gsm Crewneck","acabamento":"other","tier_idx":5,"preco":25.9},{"modelo":"480gsm Crewneck","acabamento":"other","tier_idx":6,"preco":24.9},{"modelo":"480gsm Sweatpant (elastic)","acabamento":"other","tier_idx":4,"preco":26.9},{"modelo":"480gsm Sweatpant (elastic)","acabamento":"other","tier_idx":5,"preco":25.9},{"modelo":"480gsm Sweatpant (elastic)","acabamento":"other","tier_idx":6,"preco":24.9},{"modelo":"480gsm Long Sleeve Polo","acabamento":"other","tier_idx":4,"preco":28.9},{"modelo":"480gsm Long Sleeve Polo","acabamento":"other","tier_idx":5,"preco":27.9},{"modelo":"480gsm Long Sleeve Polo","acabamento":"other","tier_idx":6,"preco":26.9},{"modelo":"480gsm Straight Leg Sweatpant","acabamento":"other","tier_idx":4,"preco":0},{"modelo":"480gsm Straight Leg Sweatpant","acabamento":"other","tier_idx":5,"preco":0},{"modelo":"480gsm Straight Leg Sweatpant","acabamento":"other","tier_idx":6,"preco":0},{"modelo":"480gsm Zip-hoodie","acabamento":"stock","tier_idx":0,"preco":48.9},{"modelo":"480gsm Zip-hoodie","acabamento":"stock","tier_idx":1,"preco":46.9},{"modelo":"480gsm Zip-hoodie","acabamento":"stock","tier_idx":3,"preco":37.9},{"modelo":"480gsm Zip-hoodie","acabamento":"stock","tier_idx":4,"preco":35.9},{"modelo":"480gsm Zip-hoodie","acabamento":"stock","tier_idx":5,"preco":34.9},{"modelo":"480gsm Zip-hoodie","acabamento":"stock","tier_idx":6,"preco":33.6},{"modelo":"480gsm Crewneck","acabamento":"stock","tier_idx":4,"preco":23.9},{"modelo":"480gsm Crewneck","acabamento":"stock","tier_idx":5,"preco":22.9},{"modelo":"480gsm Crewneck","acabamento":"stock","tier_idx":6,"preco":21.9},{"modelo":"480gsm Sweatpant (elastic)","acabamento":"stock","tier_idx":3,"preco":25.9},{"modelo":"480gsm Sweatpant (elastic)","acabamento":"stock","tier_idx":4,"preco":23.9},{"modelo":"480gsm Sweatpant (elastic)","acabamento":"stock","tier_idx":5,"preco":22.9},{"modelo":"480gsm Sweatpant (elastic)","acabamento":"stock","tier_idx":6,"preco":21.9},{"modelo":"480gsm Long Sleeve Polo","acabamento":"stock","tier_idx":4,"preco":26.9},{"modelo":"480gsm Long Sleeve Polo","acabamento":"stock","tier_idx":5,"preco":25.9},{"modelo":"480gsm Long Sleeve Polo","acabamento":"stock","tier_idx":6,"preco":24.9},{"modelo":"330gsm Poly Hoodie","acabamento":"stock","tier_idx":4,"preco":26.9},{"modelo":"330gsm Poly Hoodie","acabamento":"stock","tier_idx":5,"preco":24.9},{"modelo":"330gsm Poly Hoodie","acabamento":"stock","tier_idx":6,"preco":22.9},{"modelo":"480gsm Straight Leg Sweatpant","acabamento":"stock","tier_idx":1,"preco":36.9},{"modelo":"480gsm Straight Leg Sweatpant","acabamento":"stock","tier_idx":3,"preco":27.9},{"modelo":"480gsm Straight Leg Sweatpant","acabamento":"stock","tier_idx":4,"preco":25.9},{"modelo":"480gsm Straight Leg Sweatpant","acabamento":"stock","tier_idx":5,"preco":24.5},{"modelo":"480gsm Straight Leg Sweatpant","acabamento":"stock","tier_idx":6,"preco":23.5},{"modelo":"480gsm Hoodie","acabamento":"vintage","tier_idx":5,"preco":31.9},{"modelo":"300gsm Long Sleeve","acabamento":"vintage","tier_idx":0,"preco":24.9},{"modelo":"480gsm Zip-hoodie","acabamento":"vintage","tier_idx":4,"preco":37.9},{"modelo":"480gsm Zip-hoodie","acabamento":"vintage","tier_idx":5,"preco":36.9},{"modelo":"480gsm Zip-hoodie","acabamento":"vintage","tier_idx":6,"preco":35.9},{"modelo":"480gsm Crewneck","acabamento":"vintage","tier_idx":4,"preco":26.9},{"modelo":"480gsm Crewneck","acabamento":"vintage","tier_idx":5,"preco":25.9},{"modelo":"480gsm Crewneck","acabamento":"vintage","tier_idx":6,"preco":24.9},{"modelo":"480gsm Sweatpant (elastic)","acabamento":"vintage","tier_idx":4,"preco":26.9},{"modelo":"480gsm Sweatpant (elastic)","acabamento":"vintage","tier_idx":5,"preco":25.9},{"modelo":"480gsm Sweatpant (elastic)","acabamento":"vintage","tier_idx":6,"preco":24.9},{"modelo":"480gsm Long Sleeve Polo","acabamento":"vintage","tier_idx":4,"preco":28.9},{"modelo":"480gsm Long Sleeve Polo","acabamento":"vintage","tier_idx":5,"preco":27.9},{"modelo":"480gsm Long Sleeve Polo","acabamento":"vintage","tier_idx":6,"preco":26.9},{"modelo":"480gsm Straight Leg Sweatpant","acabamento":"vintage","tier_idx":3,"preco":30.9},{"modelo":"480gsm Straight Leg Sweatpant","acabamento":"vintage","tier_idx":4,"preco":29.9},{"modelo":"480gsm Straight Leg Sweatpant","acabamento":"vintage","tier_idx":5,"preco":28.9},{"modelo":"480gsm Straight Leg Sweatpant","acabamento":"vintage","tier_idx":6,"preco":27.9},{"modelo":"300gsm Long Sleeve","acabamento":"sunfaded","tier_idx":4,"preco":19.9},{"modelo":"300gsm Long Sleeve","acabamento":"sunfaded","tier_idx":5,"preco":18.9},{"modelo":"300gsm Long Sleeve","acabamento":"sunfaded","tier_idx":6,"preco":17.9}],"blankT":[{"tier_idx":0,"qtd_min":1,"qtd_max":1},{"tier_idx":1,"qtd_min":2,"qtd_max":4},{"tier_idx":2,"qtd_min":5,"qtd_max":25},{"tier_idx":3,"qtd_min":26,"qtd_max":49},{"tier_idx":4,"qtd_min":50,"qtd_max":120},{"tier_idx":5,"qtd_min":121,"qtd_max":300},{"tier_idx":6,"qtd_min":301,"qtd_max":null}],"puff":[{"tipo":"print","acrescimo_producao":0.3,"acrescimo_amostra":0},{"tipo":"emb","acrescimo_producao":0.3,"acrescimo_amostra":0}],"amoBase":[{"modelo":"200gsm Regular T-shirt","preco":35},{"modelo":"300gsm T-shirt","preco":35},{"modelo":"300gsm Long Sleeve","preco":40},{"modelo":"480gsm Long Sleeve Polo","preco":40},{"modelo":"330gsm Poly Hoodie","preco":65},{"modelo":"480gsm Hoodie","preco":65},{"modelo":"480gsm Zip-hoodie","preco":75},{"modelo":"480gsm Crewneck","preco":55},{"modelo":"480gsm Straight Leg Sweatpant","preco":55},{"modelo":"480gsm Sweatpant (elastic)","preco":55},{"modelo":"480gsm Short","preco":45},{"modelo":"Tote Bag","preco":30}],"amoSp":[{"n_cores":1,"acrescimo":30},{"n_cores":2,"acrescimo":55},{"n_cores":3,"acrescimo":80},{"n_cores":4,"acrescimo":105},{"n_cores":5,"acrescimo":130},{"n_cores":6,"acrescimo":155},{"n_cores":7,"acrescimo":180}],"amoEmb":[{"banda_idx":0,"area_max":4,"acrescimo":25},{"banda_idx":1,"area_max":10,"acrescimo":30},{"banda_idx":2,"area_max":18,"acrescimo":35},{"banda_idx":3,"area_max":40,"acrescimo":50},{"banda_idx":4,"area_max":150,"acrescimo":70}],"amoDtg":[{"valor":30}],"models":["200gsm Regular T-shirt","300gsm Long Sleeve","300gsm T-shirt","330gsm Poly Hoodie","480gsm Crewneck","480gsm Hoodie","480gsm Long Sleeve Polo","480gsm Short","480gsm Straight Leg Sweatpant","480gsm Sweatpant (elastic)","480gsm Zip-hoodie"]};
+/* ===== RB quote layer (Fase 3) — UI glue ================================== */
+// Model -> mockup template category (so the live mockups + tech pack PDF keep working)
+window.MODEL_CAT = {
+  "200gsm Regular T-shirt":"tshirt",
+  "300gsm T-shirt":"tshirt",
+  "300gsm Long Sleeve":"longsleeve",
+  "480gsm Long Sleeve Polo":"longsleeve",
+  "480gsm Crewneck":"crewneck",
+  "480gsm Hoodie":"hoodie",
+  "330gsm Poly Hoodie":"hoodie",
+  "480gsm Zip-hoodie":"ziphoodie",
+  "480gsm Short":"shorts",
+  "480gsm Straight Leg Sweatpant":"sweatpants",
+  "480gsm Sweatpant (elastic)":"sweatpants",
+  "Tote Bag":"",
+  "Other":""
+};
+
+var RB_COLORS = [["Apricot","stock"],["Black","stock"],["Black Sun Faded","sunfaded"],["Blue","stock"],["Brown","stock"],["Burgundy","stock"],["Chocolate Sun Faded","sunfaded"],["Creme","stock"],["Desert Dust","sunfaded"],["Ensign Blue Sun Faded","sunfaded"],["Green","stock"],["Hazel","stock"],["Ice Blue","stock"],["Light Gray","stock"],["Midnight Pigment","sunfaded"],["Navy","stock"],["Olive","stock"],["Pink","stock"],["Purple","stock"],["Purple Sun Faded","sunfaded"],["Pyrite Sun Faded","sunfaded"],["Red Flame","stock"],["Vintage Black","vintage"],["Vintage White","stock"],["White","stock"],["Yellow","stock"],["Other color","other"]];
+var RB_FIN = { stock:"Solid color", vintage:"Vintage wash", sunfaded:"Sunfaded", other:"Other color" };
+
+var RB_PRICES = PRICES_FALLBACK;        // replaced by live fetch when available
+function rbMoney(n){ var p=(Math.round((n||0)*100)/100).toFixed(2).split('.'); return p[0].replace(/\B(?=(\d{3})+(?!\d))/g,' ')+','+p[1]+' €'; }
+
+// Fetch live prices (same-origin prices.json). Falls back silently to the embedded snapshot.
+(function(){
+  try {
+    fetch('./prices.json', {cache:'no-store'}).then(function(r){ return r.ok ? r.json() : null; })
+      .then(function(j){ if (j && j.sp && j.blank) { RB_PRICES = j; rbQuote(); } })
+      .catch(function(){});
+  } catch(e){}
+})();
+
+function rbFinishOf(){
+  var sel = document.getElementById('garmentColor');
+  var opt = sel && sel.selectedOptions && sel.selectedOptions[0];
+  return opt ? (opt.getAttribute('data-finish') || '') : '';
+}
+function rbUpdateFinish(){
+  var f = rbFinishOf();
+  var note = document.getElementById('finishNote');
+  if (note) note.textContent = f ? ('Finish: ' + (RB_FIN[f] || f)) : '';
+  rbQuote();
+}
+
+// Show/hide the colors / embroidery-area fields + size hint per technique
+function rbTechFields(side){
+  var tech = (document.getElementById(side+'Tech')||{}).value || '';
+  var isScreen = (tech === 'Screen Print' || tech === 'Puff Print');
+  var isEmb = (tech === 'Embroidery' || tech === 'Puff Embroidery');
+  var cf = document.getElementById(side+'ColorsField');
+  var af = document.getElementById(side+'AreaField');
+  var sh = document.getElementById(side+'SizeHint');
+  if (cf) cf.style.display = isScreen ? '' : 'none';
+  if (af) af.style.display = isEmb ? '' : 'none';
+  if (sh) sh.style.display = isScreen ? '' : 'none';
+  if (isScreen){
+    var w = parseFloat((document.getElementById(side+'Width')||{}).value) || 0;
+    var ind = document.getElementById(side+'SizeInd');
+    if (ind) ind.textContent = w ? (w < 15 ? 'Small' : 'Big') : '-';
+  }
+}
+
+function rbDecoration(side){
+  var tech = (document.getElementById(side+'Tech')||{}).value || '';
+  if (!tech) return null;
+  return {
+    technique: tech,
+    side: side,
+    widthCm: parseFloat((document.getElementById(side+'Width')||{}).value) || 0,
+    colors: parseInt((document.getElementById(side+'Colors')||{}).value) || 1,
+    areaCm2: parseFloat((document.getElementById(side+'Area')||{}).value) || 0,
+  };
+}
+
+function rbCurrentQuote(){
+  var model = (document.getElementById('garmentType')||{}).value || '';
+  var finish = rbFinishOf();
+  var decos = [rbDecoration('front'), rbDecoration('back')].filter(Boolean);
+  if (!model || !finish || decos.length === 0) return null;
+  if (!RB_PRICES || !RB_PRICES.blank) return null;
+  try { return quote(RB_PRICES, { model: model, finish: finish, decorations: decos }); }
+  catch(e){ console.warn('quote error', e); return null; }
+}
+
+function rbQuote(){
+  rbTechFields('front'); rbTechFields('back');
+  if (typeof rbCheckMin === 'function') rbCheckMin();
+  var body = document.getElementById('quoteBody');
+  if (!body) return;
+  var q = rbCurrentQuote();
+  if (!q){
+    body.innerHTML = '<p style="font-size:13px;color:var(--muted)">Select a style, color and at least one decoration to see your price. Bulk orders start at 50 units.</p>';
+    return;
+  }
+  var rows = q.priceBreaks.map(function(b){
+    var val = b.onRequest ? '<span style="color:#9a5a00">price on request</span>' : '<b>'+rbMoney(b.pricePerPiece)+'</b> / pc';
+    return '<tr><td style="padding:10px 12px;border-bottom:1px solid var(--border)">'+b.label+' units</td>'+
+           '<td style="padding:10px 12px;border-bottom:1px solid var(--border);text-align:right">'+val+'</td></tr>';
+  }).join('');
+  var html = '';
+  html += '<table style="width:100%;border-collapse:collapse;border:1px solid var(--border);border-radius:8px;overflow:hidden">';
+  html += '<thead><tr style="background:var(--card)"><th style="text-align:left;padding:10px 12px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)">Order quantity</th><th style="text-align:right;padding:10px 12px;font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)">Price per piece</th></tr></thead>';
+  html += '<tbody>'+rows+'</tbody></table>';
+  html += '<div style="display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding:12px 14px;background:var(--card);border-radius:8px">'+
+          '<span style="font-size:13px;color:var(--muted)">Sample</span>'+
+          '<b style="font-size:15px">'+rbMoney(q.sample)+'</b></div>';
+  if (q.hasOnRequest) html += '<p style="font-size:12px;color:#9a5a00;margin-top:10px">Some items (e.g. DTG / DTF, or this style) are quoted separately. Our team will confirm by email.</p>';
+  html += '<p style="font-size:11px;color:var(--muted);margin-top:10px">Indicative prices, excl. VAT and shipping. Final quote confirmed by René Bassett. Decoration pricing starts at 50 units.</p>';
+  body.innerHTML = html;
+}
+
+function rbTechniqueLabel(d){
+  var s = d.technique;
+  if (d.technique === 'Screen Print' || d.technique === 'Puff Print') s += ' (' + (d.widthCm<15?'Small':'Big') + ', ' + d.colors + ' color' + (d.colors>1?'s':'') + ')';
+  else if (d.technique === 'Embroidery' || d.technique === 'Puff Embroidery') s += ' (' + d.areaCm2 + ' cm²)';
+  return d.side.charAt(0).toUpperCase()+d.side.slice(1) + ': ' + s;
+}
+
+function downloadQuotePDF(){
+  var q = rbCurrentQuote();
+  if (!q){ alert('Please select a style, a color and at least one decoration first.'); return; }
+  function v2(id){ return (document.getElementById(id)||{}).value||''; }
+  var doc = new window.jspdf.jsPDF({orientation:'portrait', unit:'mm', format:'a4'});
+  var PW = 210, M = 16, y = M;
+  doc.setFont('helvetica','bold'); doc.setFontSize(16); doc.setTextColor(17,17,17);
+  doc.text('RENÉ BASSETT', M, y+2);
+  doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.setTextColor(120,120,120);
+  doc.text('Bulk order quote', M, y+8);
+  doc.setFontSize(8); doc.setTextColor(150,150,150);
+  doc.text(new Date().toLocaleDateString('en-GB'), PW-M, y+2, {align:'right'});
+  y += 18;
+  doc.setDrawColor(228,228,228); doc.line(M, y, PW-M, y); y += 8;
+
+  // Customer
+  doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(17,17,17);
+  doc.text('PREPARED FOR', M, y); y += 5;
+  doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.setTextColor(60,60,60);
+  doc.text((v2('brandName')||'-') + (v2('designerName')? ('  ·  '+v2('designerName')):''), M, y); y += 5;
+  if (v2('contactEmail')) { doc.text(v2('contactEmail'), M, y); y += 5; }
+  y += 3;
+
+  // Product
+  doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(17,17,17);
+  doc.text('PRODUCT', M, y); y += 5;
+  doc.setFont('helvetica','normal'); doc.setFontSize(10); doc.setTextColor(60,60,60);
+  doc.text(q.model + '  ·  ' + v2('garmentColor') + ' (' + (RB_FIN[q.finish]||q.finish) + ')', M, y); y += 6;
+  (q.decorations||[]).forEach(function(d){ doc.text('•  ' + rbTechniqueLabel(d), M+2, y); y += 5; });
+  y += 4;
+
+  // Price table
+  doc.setFont('helvetica','bold'); doc.setFontSize(9); doc.setTextColor(17,17,17);
+  doc.text('PRICE PER PIECE', M, y); y += 3;
+  var cw = (PW-M*2);
+  doc.setFillColor(242,242,242); doc.rect(M, y, cw, 8, 'F');
+  doc.setFontSize(8); doc.setTextColor(110,110,110);
+  doc.text('ORDER QUANTITY', M+3, y+5.5);
+  doc.text('PRICE PER PIECE', PW-M-3, y+5.5, {align:'right'});
+  y += 8;
+  q.priceBreaks.forEach(function(b){
+    doc.setDrawColor(228,228,228); doc.rect(M, y, cw, 9, 'S');
+    doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(40,40,40);
+    doc.text(b.label + ' units', M+3, y+6);
+    doc.setFont('helvetica','bold');
+    doc.text(b.onRequest ? 'price on request' : rbMoney(b.pricePerPiece), PW-M-3, y+6, {align:'right'});
+    y += 9;
+  });
+  y += 6;
+  doc.setFillColor(242,242,242); doc.rect(M, y, cw, 10, 'F');
+  doc.setFont('helvetica','normal'); doc.setFontSize(9); doc.setTextColor(90,90,90);
+  doc.text('Sample', M+3, y+6.5);
+  doc.setFont('helvetica','bold'); doc.setFontSize(11); doc.setTextColor(17,17,17);
+  doc.text(rbMoney(q.sample), PW-M-3, y+6.5, {align:'right'});
+  y += 18;
+
+  doc.setFont('helvetica','bold'); doc.setFontSize(8); doc.setTextColor(17,17,17);
+  doc.text('Good to know', M, y); y += 5;
+  doc.setFont('helvetica','normal'); doc.setFontSize(7.5); doc.setTextColor(90,90,90);
+  ['Sample lead time: around 4 weeks.',
+   'Production lead time: around 4 weeks.',
+   'Production quantities may vary by 5-10%.',
+   'Maximum 2 pieces per style for samples.'].forEach(function(p){ doc.text('•  ' + p, M, y); y += 4.6; });
+  y += 2;
+  doc.setTextColor(140,140,140);
+  var note = 'Indicative prices, excluding VAT and shipping. Decoration pricing applies from 50 units. Final quote confirmed by René Bassett. DTG / DTF and unlisted styles are quoted separately.';
+  doc.text(doc.splitTextToSize(note, cw), M, y);
+
+  var fn = 'quote_' + (v2('brandName')||'rene-bassett').replace(/\s+/g,'-').toLowerCase() + '.pdf';
+  doc.save(fn);
+}
+
+// ── init ──────────────────────────────────────────────────────────────────
+(function(){
+  function boot(){
+    // populate colors
+    var cs = document.getElementById('garmentColor');
+    if (cs && cs.options.length <= 1){
+      RB_COLORS.forEach(function(c){
+        var o = document.createElement('option');
+        o.textContent = c[0]; o.setAttribute('data-finish', c[1]);
+        cs.appendChild(o);
+      });
+    }
+    // live-update hooks
+    ['garmentType','frontTech','backTech','frontColors','backColors','frontArea','backArea','frontWidth','backWidth','totalUnits'].forEach(function(id){
+      var el = document.getElementById(id);
+      if (!el) return;
+      el.addEventListener('change', rbQuote);
+      el.addEventListener('input', rbQuote);
+    });
+    rbQuote();
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+  else boot();
+})();
+
+</script>
+<script>
+/* ===== RB flow: lead gate + Blank vs Custom (maquete) ===================== */
+// Paste the Retool Workflow webhook URL here to save leads + quotes (Opção A).
+// Leave empty to disable saving (e.g. for local testing).
+var RB_LEAD_ENDPOINT = 'https://renebassett.retool.com/url/run-workflow';
+function rbLeadBase(){
+  return {
+    nome:((document.getElementById('leadName')||{}).value||'').trim(),
+    empresa:((document.getElementById('leadCompany')||{}).value||'').trim(),
+    email:((document.getElementById('leadEmail')||{}).value||'').trim()
+  };
+}
+function rbSaveLead(kind, cotacao){
+  if(!RB_LEAD_ENDPOINT) return;
+  var lead=rbLeadBase();
+  if(!lead.email) return;
+  try{
+    fetch(RB_LEAD_ENDPOINT, {
+      method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain'},
+      body: JSON.stringify({ kind:kind, lead:lead, cotacao:cotacao||{} })
+    }).catch(function(){});
+  }catch(e){}
+}
+function rbShow(id){
+  ['chooseScreen','blankScreen','customScreen','resultScreen'].forEach(function(s){
+    var el=document.getElementById(s); if(el) el.style.display=(s===id?'':'none');
+  });
+  var bar=document.getElementById('generateBar'); if(bar) bar.style.display=(id==='customScreen'?'':'none');
+  window.scrollTo(0,0);
+}
+function rbDetailsOk(){
+  var n=((document.getElementById('leadName')||{}).value||'').trim();
+  var c=((document.getElementById('leadCompany')||{}).value||'').trim();
+  var e=((document.getElementById('leadEmail')||{}).value||'').trim();
+  return !!(n && c && /.+@.+\..+/.test(e));
+}
+function leadCheck(){
+  var ok=rbDetailsOk();
+  var opts=document.getElementById('chooseOpts'); if(opts) opts.classList.toggle('locked',!ok);
+  var nd=document.getElementById('needDetails'); if(nd) nd.style.display= ok?'none':'';
+}
+function choose(mode){
+  if(!rbDetailsOk()){ var nd=document.getElementById('needDetails'); if(nd) nd.style.display=''; window.scrollTo(0,0); return; }
+  if(mode==='blank'){ if(!document.querySelector('.blankRow')) addBlankRow(); rbShow('blankScreen'); }
+  else {
+    // Prefill + hide lead fields in custom (already captured on the first screen)
+    var map={brandName:'leadCompany',designerName:'leadName',contactEmail:'leadEmail'};
+    Object.keys(map).forEach(function(id){
+      var src=document.getElementById(map[id]), dst=document.getElementById(id);
+      if(src&&dst){ dst.value=src.value; var f=dst.closest('.field'); if(f) f.style.display='none'; }
+    });
+    var qs=document.getElementById('quoteSection'); if(qs) qs.style.display='none';
+    rbShow('customScreen'); if(typeof rbQuote==='function') rbQuote();
+  }
+}
+function goChoose(){ rbShow('chooseScreen'); }
+function rbCheckMin(){
+  var u = Number((document.getElementById('totalUnits')||{}).value) || 0;
+  var low = u > 0 && u < 50;
+  var note = document.getElementById('genNote');
+  if (note){
+    if (low){ note.textContent = 'Minimum order is 50 units per color and style.'; note.style.color = '#c0392b'; }
+    else { note.textContent = 'Review your details, then see your quote.'; note.style.color = ''; }
+  }
+  var btn = document.getElementById('gotoResultBtn');
+  if (btn){ btn.disabled = low; btn.style.opacity = low ? '0.5' : ''; btn.style.cursor = low ? 'not-allowed' : ''; }
+  return !low;
+}
+function rbGotoResult(){
+  if (typeof validateForm === 'function'){
+    var errs = validateForm();
+    if (errs && errs.length){
+      alert('Please fill in the following required fields before continuing:\n\n- ' + errs.join('\n- '));
+      var first = document.querySelector('#customScreen .field-error');
+      if (first && first.scrollIntoView) first.scrollIntoView({block:'center', behavior:'smooth'});
+      return;
+    }
+  }
+  var _u = Number((document.getElementById('totalUnits')||{}).value) || 0;
+  if (_u < 50){
+    if (typeof rbCheckMin === 'function') rbCheckMin();
+    var _tu = document.getElementById('totalUnits');
+    if (_tu){ _tu.classList.add('field-error'); _tu.scrollIntoView({block:'center', behavior:'smooth'}); if (_tu.focus) _tu.focus(); }
+    alert('Minimum order is 50 units per color and style.');
+    return;
+  }
+  if (typeof rbQuote === 'function') rbQuote();
+  var model = (document.getElementById('garmentType')||{}).value || '';
+  var color = (document.getElementById('garmentColor')||{}).value || '';
+  var fin = (typeof rbFinishOf === 'function') ? rbFinishOf() : '';
+  var rp = document.getElementById('resProduct');
+  if (rp) rp.textContent = (model||'-') + (color ? (' · ' + color + (fin ? (' (' + ((window.RB_FIN&&RB_FIN[fin])||fin) + ')') : '')) : '');
+  var rc = document.getElementById('resCustomer');
+  if (rc){ var c=(document.getElementById('leadCompany')||{}).value||''; var n=(document.getElementById('leadName')||{}).value||''; rc.textContent = c + (n ? (' - ' + n) : ''); }
+  var q0 = (typeof rbCurrentQuote === 'function') ? rbCurrentQuote() : null;
+  var dw = document.getElementById('resDecoWrap'), dd = document.getElementById('resDeco');
+  if (dd){
+    if (q0 && q0.decorations && q0.decorations.length && typeof rbTechniqueLabel === 'function'){
+      dd.innerHTML = q0.decorations.map(function(d){ return rbTechniqueLabel(d); }).join('<br>');
+      if (dw) dw.style.display = '';
+    } else { if (dw) dw.style.display = 'none'; }
+  }
+  var sb = document.getElementById('successBanner'); if (sb) sb.style.display = 'none';
+  rbShow('resultScreen');
+  try {
+    if (typeof rbSaveLead === 'function' && typeof rbCurrentQuote === 'function'){
+      var q = rbCurrentQuote();
+      if (q) rbSaveLead('custom', {
+        itens: { type:'custom',
+          product: { model:q.model, finish:q.finish, color:color,
+                     styleName:(document.getElementById('styleName')||{}).value||'',
+                     styleNumber:(document.getElementById('styleNumber')||{}).value||'',
+                     totalUnits:Number((document.getElementById('totalUnits')||{}).value)||0 },
+          decorations:q.decorations, priceBreaks:q.priceBreaks, sample:q.sample, hasOnRequest:q.hasOnRequest },
+        n_modelos: 1, subtotal: null, total: null
+      });
+    }
+  } catch(e){}
+}
+
+/* ---- Blank quote ---------------------------------------------------------- */
+function rbBlankMap(){
+  if(window.__RB_BLANKMAP && window.__RB_BLANKMAP._src===RB_PRICES) return window.__RB_BLANKMAP;
+  var m={_src:RB_PRICES, tiers:(RB_PRICES.blankT||[]).slice().sort(function(a,b){return a.tier_idx-b.tier_idx;}), p:{}};
+  (RB_PRICES.blank||[]).forEach(function(r){ (m.p[r.modelo+'|'+r.acabamento]=m.p[r.modelo+'|'+r.acabamento]||{})[r.tier_idx]=r.preco; });
+  window.__RB_BLANKMAP=m; return m;
+}
+function rbBlankTier(q){ var ts=rbBlankMap().tiers; var t=ts.find(function(t){return q>=t.qtd_min && (t.qtd_max==null||q<=t.qtd_max);}); return t?t.tier_idx:(ts[ts.length-1]||{}).tier_idx; }
+function rbEur(n){ var p=(Math.round((n||0)*100)/100).toFixed(2).split('.'); return p[0].replace(/\B(?=(\d{3})+(?!\d))/g,' ')+','+p[1]+' €'; }
+function rbBlankOptions(){
+  var models=(RB_PRICES.models||[]).slice();
+  return {
+    m:'<option value="" disabled selected>Select style...</option>'+models.map(function(x){return '<option>'+x+'</option>';}).join(''),
+    c:'<option value="" disabled selected>Select color...</option>'+RB_COLORS.map(function(x){return '<option data-finish="'+x[1]+'">'+x[0]+'</option>';}).join('')
+  };
+}
+function addBlankRow(){
+  var o=rbBlankOptions();
+  var div=document.createElement('div'); div.className='blankRow';
+  div.innerHTML='<div class="grid4">'+
+    '<div class="field"><label>Style</label><select class="bModel" onchange="recalcBlanks()">'+o.m+'</select></div>'+
+    '<div class="field"><label>Color</label><select class="bColor" onchange="recalcBlanks()">'+o.c+'</select></div>'+
+    '<div class="field"><label>Quantity</label><input type="number" class="bQty" placeholder="e.g. 50" oninput="recalcBlanks()"></div>'+
+    '<div class="field"><label>Line total</label><div class="lineTotal">-</div></div></div>'+
+    '<button class="rowDel" type="button" onclick="delBlankRow(this)">✕ remove</button>';
+  document.getElementById('blankRows').appendChild(div); recalcBlanks();
+}
+function delBlankRow(btn){ if(document.querySelectorAll('.blankRow').length>1) btn.closest('.blankRow').remove(); recalcBlanks(); }
+function recalcBlanks(){
+  var map=rbBlankMap(), total=0, anyReq=false;
+  document.querySelectorAll('.blankRow').forEach(function(row){
+    var model=row.querySelector('.bModel').value;
+    var co=row.querySelector('.bColor').selectedOptions[0];
+    var fin=co?co.getAttribute('data-finish'):'';
+    var qty=Number(row.querySelector('.bQty').value)||0;
+    var cell=row.querySelector('.lineTotal');
+    if(!model||!fin||qty<=0){ cell.textContent='-'; cell.style.color=''; return; }
+    var arr=map.p[model+'|'+fin]; var unit=arr?arr[rbBlankTier(qty)]:0;
+    if(!unit){ cell.textContent='price on request'; cell.style.color='#9a5a00'; anyReq=true; return; }
+    cell.style.color=''; var line=unit*qty; cell.textContent=rbEur(line)+'  ('+rbEur(unit)+'/pc)'; total+=line;
+  });
+  var bt=document.getElementById('blankTotal'); if(bt) bt.textContent=rbEur(total);
+  var rn=document.getElementById('reqNoteBlank'); if(rn) rn.style.display=anyReq?'':'none';
+}
+function downloadBlankPDF(){
+  var rows=[]; document.querySelectorAll('.blankRow').forEach(function(row){
+    var model=row.querySelector('.bModel').value; var co=row.querySelector('.bColor').selectedOptions[0];
+    var color=co?co.textContent:''; var fin=co?co.getAttribute('data-finish'):''; var qty=Number(row.querySelector('.bQty').value)||0;
+    if(model&&fin&&qty>0) rows.push({model:model,color:color,fin:fin,qty:qty});
+  });
+  if(!rows.length){ alert('Add at least one product with a quantity.'); return; }
+  var map=rbBlankMap();
+  function v2(id){return (document.getElementById(id)||{}).value||'';}
+  var doc=new window.jspdf.jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
+  var PW=210,M=16,y=M;
+  doc.setFont('helvetica','bold');doc.setFontSize(16);doc.setTextColor(17,17,17);doc.text('RENÉ BASSETT',M,y+2);
+  doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(120,120,120);doc.text('Blank order quote',M,y+8);
+  doc.setFontSize(8);doc.setTextColor(150,150,150);doc.text(new Date().toLocaleDateString('en-GB'),PW-M,y+2,{align:'right'});
+  y+=18; doc.setDrawColor(228,228,228); doc.line(M,y,PW-M,y); y+=8;
+  doc.setFont('helvetica','bold');doc.setFontSize(9);doc.setTextColor(17,17,17);doc.text('PREPARED FOR',M,y);y+=5;
+  doc.setFont('helvetica','normal');doc.setFontSize(10);doc.setTextColor(60,60,60);
+  doc.text((v2('leadCompany')||'-')+(v2('leadName')?('  ·  '+v2('leadName')):''),M,y);y+=5;
+  if(v2('leadEmail')){doc.text(v2('leadEmail'),M,y);y+=5;} y+=4;
+  doc.setFillColor(242,242,242);doc.rect(M,y,PW-2*M,8,'F');
+  doc.setFontSize(8);doc.setTextColor(110,110,110);
+  doc.text('PRODUCT',M+3,y+5.5); doc.text('QTY',M+92,y+5.5); doc.text('UNIT',M+118,y+5.5); doc.text('LINE TOTAL',PW-M-3,y+5.5,{align:'right'});
+  y+=8; var total=0;
+  rows.forEach(function(r){
+    var arr=map.p[r.model+'|'+r.fin]; var unit=arr?arr[rbBlankTier(r.qty)]:0;
+    doc.setDrawColor(228,228,228);doc.rect(M,y,PW-2*M,9,'S');
+    doc.setFont('helvetica','normal');doc.setFontSize(8.5);doc.setTextColor(40,40,40);
+    doc.text(doc.splitTextToSize(r.model+' · '+r.color,80)[0],M+3,y+6);
+    doc.text(String(r.qty),M+92,y+6);
+    if(!unit){ doc.text('on request',M+118,y+6); doc.text('-',PW-M-3,y+6,{align:'right'}); }
+    else { var line=unit*r.qty; total+=line; doc.text(rbEur(unit),M+118,y+6); doc.setFont('helvetica','bold'); doc.text(rbEur(line),PW-M-3,y+6,{align:'right'}); }
+    y+=9;
+  });
+  y+=4; doc.setFillColor(242,242,242);doc.rect(M,y,PW-2*M,11,'F');
+  doc.setFont('helvetica','bold');doc.setFontSize(10);doc.setTextColor(17,17,17);
+  doc.text('TOTAL',M+3,y+7); doc.text(rbEur(total),PW-M-3,y+7,{align:'right'});
+  y+=18; doc.setFont('helvetica','normal');doc.setFontSize(7.5);doc.setTextColor(140,140,140);
+  doc.text(doc.splitTextToSize('Indicative prices, excluding VAT and shipping. Unit price depends on quantity (price break) and finish. Unlisted styles / finishes are quoted separately. Final quote confirmed by René Bassett.',PW-2*M),M,y);
+  // Save lead + blank quote
+  try {
+    var _lines = rows.map(function(r){ var arr=map.p[r.model+'|'+r.fin]; var unit=arr?arr[rbBlankTier(r.qty)]:0; return {model:r.model,color:r.color,finish:r.fin,qty:r.qty,unit:unit||null,line:unit?unit*r.qty:null}; });
+    rbSaveLead('blank', { itens:{ type:'blank', lines:_lines }, n_modelos:rows.length, subtotal:total, total:total });
+  } catch(e){}
+  doc.save('blank-quote_'+(v2('leadCompany')||'rene-bassett').replace(/\s+/g,'-').toLowerCase()+'.pdf');
+}
+
+// start on the choose screen
+(function(){
+  function boot(){ if(typeof rbShow==='function'){ rbShow('chooseScreen'); leadCheck(); } }
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',boot); else boot();
+})();
+
 </script>
 </body>
 </html>
