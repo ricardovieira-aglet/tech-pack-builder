@@ -1586,7 +1586,24 @@ async function generatePDF() {
       doc.addPage(); drawHeader();
       doc.setFont('helvetica','bold'); doc.setFontSize(15); doc.setTextColor(20,20,20);
       doc.text(title, M, M+26);
-      var mockY = M+28, mockH = 82, artX = M, artW2 = 108;
+      var mockY = M+28, mockH = 82;
+      var xpsel = xb.querySelector('.xPlace');
+      var xpval = xpsel ? xpsel.value : '';
+      var xplace = (xpsel && xpval) ? xpsel.options[xpsel.selectedIndex].text : '';
+      // Placement preview (front/back only, using the same template image as the main pages)
+      var xGarment = (window.MODEL_CAT && MODEL_CAT[v2('garmentType')]) || '';
+      var xMockUrl = null;
+      if ((side==='front' || side==='back') && xpval) {
+        var xTmplImg = TMPL[xGarment + '_' + side + '_' + xpval];
+        if (xTmplImg && xTmplImg.complete && xTmplImg.naturalWidth>0) xMockUrl = xTmplImg.src;
+      }
+      var artX = M, artW2 = 108, mockW = 74;
+      if (xMockUrl) {
+        doc.setFillColor(248,248,248); doc.setDrawColor(200,200,200); doc.setLineWidth(0.3); doc.rect(M, mockY, mockW, mockH, 'FD');
+        doc.addImage(xMockUrl, 'PNG', M, mockY, mockW, mockH);
+        doc.setFont('helvetica','normal'); doc.setFontSize(6); doc.setTextColor(140,140,140); doc.text('Placement preview', M+mockW/2, mockY+mockH+4, {align:'center'});
+        artX = M + mockW + 5;
+      }
       var xImgs = []; var xinp = xb.querySelector('.xFiles');
       if (xinp && xinp.files) { for (var xf of Array.prototype.slice.call(xinp.files)) { var xit = await fileToImage(xf); if (xit) xImgs.push(xit); } }
       if (xImgs.length>0) {
@@ -1602,14 +1619,13 @@ async function generatePDF() {
       }
       var ipx = artX + artW2 + 6, ipw = PW - M - ipx;
       var xtech = (xb.querySelector('.xTech')||{}).value || '';
-      var xpsel = xb.querySelector('.xPlace'); var xplace = xpsel ? xpsel.options[xpsel.selectedIndex].text : '';
       var xw = parseFloat((xb.querySelector('.xWidth')||{}).value)||0;
       var xc = parseInt((xb.querySelector('.xColors')||{}).value)||0;
       var xa = (xb.querySelector('.xArea')||{}).value || '';
       var xd = parseFloat((xb.querySelector('.xDist')||{}).value)||0;
       var xn = (xb.querySelector('.xNotes')||{}).value || '';
       doc.setFont('helvetica','bold'); doc.setFontSize(8); doc.setTextColor(20,20,20); doc.text(title.toUpperCase(), ipx, mockY+5);
-      var xrows = [['Technique', xtech], ['Placement', xplace], ['Width', xw ? xw+' cm' : '-']];
+      var xrows = [['Technique', xtech], ['Placement', xplace||'-'], ['Width', xw ? xw+' cm' : '-']];
       if (xc) xrows.push(['Colors', String(xc)]);
       if (xa) xrows.push(['Embroidery area', xa+' cm²']);
       xrows.push(['Distance', xd ? xd+' cm' : '-']);
@@ -2301,8 +2317,8 @@ function downloadBlankPDF(){
 var RB_TECH_OPTS='<option value="" disabled selected>Select technique...</option><option>Screen Print</option><option>Puff Print</option><option>Embroidery</option><option>Puff Embroidery</option><option>DTG</option><option>DTF</option>';
 var RB_AREA_OPTS='<option value="">Select area...</option><option>4</option><option>10</option><option>16</option><option>22</option><option>30</option><option>40</option><option>75</option><option>150</option>';
 var RB_PLACE={
-  front:'<option value="" disabled selected>Select placement...</option><option>Front Left Chest</option><option>Front Center</option><option>Front Right Chest</option>',
-  back:'<option value="" disabled selected>Select placement...</option><option>Back Center</option><option>Upper Back</option><option>Other</option>',
+  front:'<option value="" disabled selected>Select placement...</option><option value="left">Front Left Chest</option><option value="center">Front Center</option><option value="right">Front Right Chest</option>',
+  back:'<option value="" disabled selected>Select placement...</option><option value="center">Back Center</option><option value="center">Upper Back</option><option value="other">Other</option>',
   sleeve:'<option value="" disabled selected>Select placement...</option><option>Left sleeve</option><option>Right sleeve</option><option>Both sleeves</option>'
 };
 function rbPantoneCards(n){
