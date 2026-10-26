@@ -1806,8 +1806,8 @@ function decorationSampleAdd(P, dec) {
     const puff = isPuff(t) ? (P.puff.emb.amostra || 0) : 0;
     return embSampleAdd(P, dec.areaCm2) + puff;
   }
-  if (t === 'DTG') return P.amoDtg || 0;
-  return 0; // DTF sample not tabled -> treated as 0 / on request
+  if (t === 'DTG' || t === 'DTF') return P.amoDtg || 0;
+  return 0; // other techniques: no tabled sample add
 }
 
 /* ---- Main entry ----------------------------------------------------------- */
