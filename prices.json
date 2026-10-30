@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-26T16:45:53.252Z",
+  "generatedAt": "2026-10-30T17:13:59.884Z",
   "sp": [
     {
       "tamanho": "Big",
@@ -497,6 +497,48 @@
     },
     {
       "modelo": "300gsm Long Sleeve",
+      "acabamento": "pigments",
+      "tier_idx": 0,
+      "preco": 28.91
+    },
+    {
+      "modelo": "300gsm Long Sleeve",
+      "acabamento": "pigments",
+      "tier_idx": 1,
+      "preco": 27.9
+    },
+    {
+      "modelo": "300gsm Long Sleeve",
+      "acabamento": "pigments",
+      "tier_idx": 2,
+      "preco": 22.9
+    },
+    {
+      "modelo": "300gsm Long Sleeve",
+      "acabamento": "pigments",
+      "tier_idx": 3,
+      "preco": 20.9
+    },
+    {
+      "modelo": "300gsm Long Sleeve",
+      "acabamento": "pigments",
+      "tier_idx": 4,
+      "preco": 19.9
+    },
+    {
+      "modelo": "300gsm Long Sleeve",
+      "acabamento": "pigments",
+      "tier_idx": 5,
+      "preco": 18.9
+    },
+    {
+      "modelo": "300gsm Long Sleeve",
+      "acabamento": "pigments",
+      "tier_idx": 6,
+      "preco": 17.9
+    },
+    {
+      "modelo": "300gsm Long Sleeve",
       "acabamento": "stock",
       "tier_idx": 0,
       "preco": 23.9
@@ -662,6 +704,48 @@
       "acabamento": "other",
       "tier_idx": 6,
       "preco": 14
+    },
+    {
+      "modelo": "300gsm T-shirt",
+      "acabamento": "pigments",
+      "tier_idx": 0,
+      "preco": 25.91
+    },
+    {
+      "modelo": "300gsm T-shirt",
+      "acabamento": "pigments",
+      "tier_idx": 1,
+      "preco": 23.9
+    },
+    {
+      "modelo": "300gsm T-shirt",
+      "acabamento": "pigments",
+      "tier_idx": 2,
+      "preco": 19.9
+    },
+    {
+      "modelo": "300gsm T-shirt",
+      "acabamento": "pigments",
+      "tier_idx": 3,
+      "preco": 17.9
+    },
+    {
+      "modelo": "300gsm T-shirt",
+      "acabamento": "pigments",
+      "tier_idx": 4,
+      "preco": 16.9
+    },
+    {
+      "modelo": "300gsm T-shirt",
+      "acabamento": "pigments",
+      "tier_idx": 5,
+      "preco": 16.5
+    },
+    {
+      "modelo": "300gsm T-shirt",
+      "acabamento": "pigments",
+      "tier_idx": 6,
+      "preco": 15.9
     },
     {
       "modelo": "300gsm T-shirt",
@@ -998,6 +1082,48 @@
       "acabamento": "other",
       "tier_idx": 6,
       "preco": 30.9
+    },
+    {
+      "modelo": "480gsm Hoodie",
+      "acabamento": "pigments",
+      "tier_idx": 0,
+      "preco": 48.91
+    },
+    {
+      "modelo": "480gsm Hoodie",
+      "acabamento": "pigments",
+      "tier_idx": 1,
+      "preco": 46.9
+    },
+    {
+      "modelo": "480gsm Hoodie",
+      "acabamento": "pigments",
+      "tier_idx": 2,
+      "preco": 40.5
+    },
+    {
+      "modelo": "480gsm Hoodie",
+      "acabamento": "pigments",
+      "tier_idx": 3,
+      "preco": 35.9
+    },
+    {
+      "modelo": "480gsm Hoodie",
+      "acabamento": "pigments",
+      "tier_idx": 4,
+      "preco": 34.9
+    },
+    {
+      "modelo": "480gsm Hoodie",
+      "acabamento": "pigments",
+      "tier_idx": 5,
+      "preco": 33.9
+    },
+    {
+      "modelo": "480gsm Hoodie",
+      "acabamento": "pigments",
+      "tier_idx": 6,
+      "preco": 32.9
     },
     {
       "modelo": "480gsm Hoodie",
