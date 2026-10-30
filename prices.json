@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-30T17:13:59.884Z",
+  "generatedAt": "2026-10-30T17:14:13.561Z",
   "sp": [
     {
       "tamanho": "Big",
@@ -499,7 +499,7 @@
       "modelo": "300gsm Long Sleeve",
       "acabamento": "pigments",
       "tier_idx": 0,
-      "preco": 28.91
+      "preco": 28.9
     },
     {
       "modelo": "300gsm Long Sleeve",
@@ -709,7 +709,7 @@
       "modelo": "300gsm T-shirt",
       "acabamento": "pigments",
       "tier_idx": 0,
-      "preco": 25.91
+      "preco": 25.9
     },
     {
       "modelo": "300gsm T-shirt",
@@ -1087,7 +1087,7 @@
       "modelo": "480gsm Hoodie",
       "acabamento": "pigments",
       "tier_idx": 0,
-      "preco": 48.91
+      "preco": 48.9
     },
     {
       "modelo": "480gsm Hoodie",
