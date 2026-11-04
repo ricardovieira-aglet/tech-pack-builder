@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-11-04T09:22:48.454Z",
+  "generatedAt": "2026-11-04T09:49:32.946Z",
   "sp": [
     {
       "tamanho": "Big",
@@ -691,19 +691,19 @@
       "modelo": "300gsm T-shirt",
       "acabamento": "other",
       "tier_idx": 4,
-      "preco": 14.9
-    },
-    {
-      "modelo": "300gsm T-shirt",
-      "acabamento": "other",
-      "tier_idx": 5,
       "preco": 14.5
     },
     {
       "modelo": "300gsm T-shirt",
       "acabamento": "other",
+      "tier_idx": 5,
+      "preco": 13.9
+    },
+    {
+      "modelo": "300gsm T-shirt",
+      "acabamento": "other",
       "tier_idx": 6,
-      "preco": 14
+      "preco": 13.5
     },
     {
       "modelo": "300gsm T-shirt",
