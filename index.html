@@ -1258,16 +1258,23 @@ async function generatePDF() {
       } catch(e){ return null; }
     }
 
+    // Info boxes (label + value). Long values (e.g. Notes) wrap inside the box and the box
+    // grows to fit them. Returns the y right below the last box.
     function infoPanel(x, y, iw, rows) {
       rows.forEach(function(row) {
+        doc.setFont('helvetica','bold'); doc.setFontSize(7.5);
+        var lines = doc.splitTextToSize(String(row[1]||'-'), iw-4);
+        if (lines.length > 14) { lines = lines.slice(0, 14); lines[13] = lines[13].replace(/\s*\S*$/, '') + ' …'; }
+        var h = 11 + (lines.length-1)*3.2;
         doc.setFillColor(245,242,238); doc.setDrawColor(218,213,208); doc.setLineWidth(0.2);
-        doc.rect(x, y, iw, 11, 'FD');
+        doc.rect(x, y, iw, h, 'FD');
         doc.setFont('helvetica','normal'); doc.setFontSize(6); doc.setTextColor(110,110,110);
         doc.text(row[0], x+2, y+4);
         doc.setFont('helvetica','bold'); doc.setFontSize(7.5); doc.setTextColor(20,20,20);
-        doc.text(String(row[1]||'-'), x+2, y+9.5);
-        y += 13;
+        doc.text(lines, x+2, y+9.5);
+        y += h + 2;
       });
+      return y;
     }
 
     // ── PAGE 1: How it works ────────────────────────────────────────────────
@@ -1420,7 +1427,7 @@ async function generatePDF() {
       var fPlaEl = document.getElementById('frontPlacement');
       var fPlaText = fPlaEl ? fPlaEl.options[fPlaEl.selectedIndex].text : '';
       var fW2 = n2('frontWidth'), fH2 = n2('frontHPS'), fC2 = n2('frontCenter');
-      infoPanel(ipx, mockY+9, ipw, [
+      var fEndY = infoPanel(ipx, mockY+9, ipw, [
         ['Technique', v2('frontTech')],
         ['Placement', fPlaText],
         ['Width', fW2 ? fW2+' cm' : '-'],
@@ -1429,7 +1436,7 @@ async function generatePDF() {
         ['Notes', v2('frontNotes')||'-'],
       ]);
 
-      var panY = mockY + 9 + 6*13 + 6;
+      var panY = fEndY + 6;
       doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(20,20,20);
       doc.text('Colors (Pantone TPG)', ipx, panY);
       var fPanX = ipx; var fPanRow = 0;
@@ -1493,7 +1500,7 @@ async function generatePDF() {
       var bPlaEl = document.getElementById('backPlacement');
       var bPlaText = bPlaEl ? bPlaEl.options[bPlaEl.selectedIndex].text : '';
       var bW2 = n2('backWidth'), bH2 = n2('backHPS'), bC2 = n2('backCenter');
-      infoPanel(ipxB, mockYB+9, ipwB, [
+      var bEndY = infoPanel(ipxB, mockYB+9, ipwB, [
         ['Technique', v2('backTech')],
         ['Placement', bPlaText],
         ['Width', bW2 ? bW2+' cm' : '-'],
@@ -1502,7 +1509,7 @@ async function generatePDF() {
         ['Notes', v2('backNotes')||'-'],
       ]);
 
-      var panYB = mockYB + 9 + 6*13 + 6;
+      var panYB = bEndY + 6;
       doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(20,20,20);
       doc.text('Colors (Pantone TPG)', ipxB, panYB);
       var bPanRow = 0;
@@ -1640,8 +1647,8 @@ async function generatePDF() {
       if (xa) xrows.push(['Embroidery area', xa+' cm²']);
       if (side!=='sleeve') xrows.push(['Distance', xd ? xd+' cm' : '-']);
       xrows.push(['Notes', xn || '-']);
-      infoPanel(ipx, mockY+9, ipw, xrows);
-      var panY = mockY + 9 + xrows.length*13 + 6;
+      var xEndY = infoPanel(ipx, mockY+9, ipw, xrows);
+      var panY = xEndY + 6;
       doc.setFont('helvetica','bold'); doc.setFontSize(7); doc.setTextColor(20,20,20); doc.text('Colors (Pantone TPG)', ipx, panY);
       var xpr = 0; var xpns = xb.querySelectorAll('.xPN'); var xnms = xb.querySelectorAll('.xPNm');
       for (var pi=0; pi<xpns.length; pi++) { var pnv = xpns[pi].value, pnn = xnms[pi] ? xnms[pi].value : ''; if (!pnv && !pnn) continue; var prr = Math.floor(xpr/4), pcc = xpr%4; drawPantone(ipx + pcc*32, panY+4 + prr*34, '#f0f0f0', pnv, pnn); xpr++; }
