@@ -989,8 +989,18 @@ document.addEventListener('DOMContentLoaded', function() {
       fHps.textContent = isLeg ? 'Distance from Pocket (cm)'
         : (placement === 'center' ? 'Distance from bottom of collar (cm)' : 'Distance HPS to artwork top (cm)');
     }
+    // Back HPS label: Back Center is also measured from the bottom of the collar
+    var bHps = document.getElementById('backHPSLabel');
+    if (bHps) {
+      var isLegB = (g === 'shorts' || g === 'sweatpants');
+      bHps.textContent = isLegB ? 'Distance from Pocket (cm)'
+        : (v('backPlacement') === 'center' ? 'Distance from bottom of collar (cm)' : 'Distance HPS to artwork top (cm)');
+    }
   }
   document.getElementById('frontPlacement').addEventListener('change', function() {
+    updateCenterFieldState(); renderAll();
+  });
+  document.getElementById('backPlacement').addEventListener('change', function() {
     updateCenterFieldState(); renderAll();
   });
   document.getElementById('garmentType').addEventListener('change', function() {
@@ -1414,7 +1424,7 @@ async function generatePDF() {
         ['Technique', v2('frontTech')],
         ['Placement', fPlaText],
         ['Width', fW2 ? fW2+' cm' : '-'],
-        ['HPS to artwork top', fH2 ? fH2+' cm' : '-'],
+        [(fPlaEl && fPlaEl.value === 'center') ? 'Collar to artwork top' : 'HPS to artwork top', fH2 ? fH2+' cm' : '-'],
         ['Distance from center', fC2 ? fC2+' cm' : 'Centered'],
         ['Notes', v2('frontNotes')||'-'],
       ]);
@@ -1487,7 +1497,7 @@ async function generatePDF() {
         ['Technique', v2('backTech')],
         ['Placement', bPlaText],
         ['Width', bW2 ? bW2+' cm' : '-'],
-        ['HPS to artwork top', bH2 ? bH2+' cm' : '-'],
+        [(bPlaEl && bPlaEl.value === 'center') ? 'Collar to artwork top' : 'HPS to artwork top', bH2 ? bH2+' cm' : '-'],
         ['Distance from center', bC2 ? bC2+' cm' : 'Centered'],
         ['Notes', v2('backNotes')||'-'],
       ]);
