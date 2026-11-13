@@ -225,6 +225,7 @@ input.field-error, select.field-error, textarea.field-error {
         </div>
         <div class="field"><label>Garment Color</label><select id="garmentColor" onchange="rbUpdateFinish()"><option value="" disabled selected>Select color...</option></select><div class="field-note" id="finishNote" style="font-size:11px;color:var(--muted);margin-top:4px"></div></div>
         <div class="field"><label>Total Units</label><input type="number" id="totalUnits" placeholder="e.g. 100"></div>
+        <div class="field"><label>Sample Size</label><select id="sampleSize"><option value="" disabled selected>Select size...</option><option>XS</option><option>S</option><option>M</option><option>L</option><option>XL</option><option>XXL</option></select><div class="field-note" style="font-size:11px;color:var(--muted);margin-top:4px">Size of the garment for your sample</div></div>
       </div>
       <div class="divider">Size Breakdown</div>
       <div style="overflow-x:auto">
@@ -1027,6 +1028,7 @@ function validateForm() {
     var fields = [
       { id: 'garmentColor',  label: 'Garment Color' },
       { id: 'totalUnits',    label: 'Total Units' },
+      { id: 'sampleSize',    label: 'Sample Size' },
       // Width added conditionally after loop based on technique
       // Label size only required if Woven label selected
     ];
@@ -1219,8 +1221,9 @@ async function generatePDF() {
       cell('Garment', v2('garmentType'), x+cw1, M+7.5, cw2, 7.5);
       cell('Contact', v2('contactEmail'), x+cw1+cw2, M+7.5, PW-M-x-cw1-cw2, 7.5);
       cell('Units', v2('totalUnits'), x, M+15, cw1, 7);
+      cell('Sample Size', v2('sampleSize'), x+cw1, M+15, cw2, 7);
       doc.setFillColor(245,245,245); doc.setDrawColor(200,200,200);
-      doc.rect(x+cw1, M+15, PW-M-x-cw1, 7, 'FD');
+      doc.rect(x+cw1+cw2, M+15, PW-M-x-cw1-cw2, 7, 'FD');
       doc.setDrawColor(20,20,20); doc.setLineWidth(0.5); doc.rect(M,M,PW-M*2,hh,'D');
     }
 
@@ -2231,7 +2234,8 @@ function rbGotoResult(){
           product: { model:q.model, finish:q.finish, color:color,
                      styleName:(document.getElementById('styleName')||{}).value||'',
                      styleNumber:(document.getElementById('styleNumber')||{}).value||'',
-                     totalUnits:Number((document.getElementById('totalUnits')||{}).value)||0 },
+                     totalUnits:Number((document.getElementById('totalUnits')||{}).value)||0,
+                     sampleSize:(document.getElementById('sampleSize')||{}).value||'' },
           decorations:q.decorations, priceBreaks:q.priceBreaks, sample:q.sample, hasOnRequest:q.hasOnRequest },
         n_modelos: 1, subtotal: null, total: null
       });
